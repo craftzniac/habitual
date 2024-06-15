@@ -8,6 +8,8 @@ import Settings_24_Active from "./settings_24_active.svg"
 import Buddies_24 from "./buddies_24.svg"
 import Buddies_24_Active from "./buddies_24_active.svg"
 import Angle_Right_16 from "./angle_right_16.svg"
+import Plus_16_White from "./plus_16_white.svg"
+import Plus_16_Purple from "./plus_16_purple.svg"
 
 export {
     GoogleLogo,
@@ -19,5 +21,7 @@ export {
     Settings_24_Active,
     Buddies_24,
     Buddies_24_Active,
-    Angle_Right_16
+    Angle_Right_16,
+    Plus_16_White,
+    Plus_16_Purple
 }

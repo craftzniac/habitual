@@ -28,7 +28,7 @@ export default function FeaturedHabitsList({
                     )
                 }
             </div>
-            <div className="flex flex-col gap-4 w-full h-full">
+            <ul className="flex flex-col gap-4 w-full h-full">
                 {
                     habits.map(habit => (
                         <HabitCard
@@ -37,7 +37,7 @@ export default function FeaturedHabitsList({
                         />
                     ))
                 }
-            </div>
+            </ul>
         </section>
     )
 }

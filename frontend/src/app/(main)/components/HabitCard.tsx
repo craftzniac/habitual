@@ -1,13 +1,17 @@
 import { Habit } from "@/app/types"
+import Link from "next/link"
 import ReactApexChart from "react-apexcharts"
 
 type Prop = {
-    habit: Habit
+    habit: Habit,
+    showStats: boolean
 }
 
-export default function HabitCard({ habit }: Prop) {
+export default function HabitCard({ habit, showStats = true }: Prop) {
     return (
-        <div className="p-4 flex flex-col gap-2 bg-gray-2 rounded-2xl border-2 border-primary-100">
+        <Link
+            href={`/habits/${habit.id}`}
+            className="p-4 flex flex-col gap-2 bg-gray-2 rounded-2xl border-2 border-primary-100">
             <div className="flex gap-4 items-start">
                 <div className="">
                     <p className="font-bold">{habit.title}</p>
@@ -17,8 +21,12 @@ export default function HabitCard({ habit }: Prop) {
                     {/* radial chart here */}
                 </div>
             </div>
-            <HabitCardStats stats={habit.stats} isHabitCompleted={habit.isCompleted} />
-        </div>
+            {
+                showStats && (
+                    <HabitCardStats stats={habit.stats} isHabitCompleted={habit.isCompleted} />
+                )
+            }
+        </Link>
     )
 }
 

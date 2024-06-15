@@ -1,17 +1,33 @@
 "use client"
 import { navPaths } from "@/app/data"
 import { usePathname } from "next/navigation"
+import AddHabitBtn from "../habits/components/AddHabitBtn"
 
 export default function Header() {
-    let title = <></>
     const path = usePathname()
 
+    const pageSpecificOptions = getPageSpecificOptions(path)
+
     return (
-        <header className="flex flex-col p-4">
+        <header className="flex p-4 items-center justify-between">
             <Title path={path} />
+            {
+                pageSpecificOptions
+            }
         </header>
     )
 }
+
+function getPageSpecificOptions(path: string) {
+    if (path.startsWith(navPaths.HABITS)) {
+        // possibly other stuff too like url params
+        return <>
+            <AddHabitBtn />
+        </>
+    }
+    return <></>
+}
+
 
 function Title({ path }: { path: string }) {
     let title = ""

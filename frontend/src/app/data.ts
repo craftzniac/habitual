@@ -98,3 +98,23 @@ export const completedHabits: Habit[] = [
 		description: "I want to form the habit of observing my morning routine, so I'll do just that for 21 days"
 	},
 ]
+
+
+export const habitSegBtns = [
+	{
+		text: "Today",
+		filter: "today"
+	},
+	{
+		text: "In-Progress",
+		filter: "in-progress"
+	},
+	{
+		text: "Completed",
+		filter: "completed"
+	},
+	{
+		text: "All",
+		filter: "all"
+	},
+]

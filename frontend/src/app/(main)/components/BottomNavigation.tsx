@@ -19,10 +19,7 @@ export default function BottomNavigation() {
                                         <span className="text-primary-500">{item.label}</span>
                                     </>
                                 ) : (
-                                    <>
-                                        <Image src={item.icon} alt={`${item.label} page icon`} />
-
-                                    </>
+                                    <Image src={item.icon} alt={`${item.label} page icon`} />
                                 )
                             }
                         </Link>
