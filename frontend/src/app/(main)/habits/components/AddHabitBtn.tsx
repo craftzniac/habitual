@@ -1,8 +1,10 @@
 "use client"
 import { Plus_16_White } from "@/app/assets/icons";
-import { useIsDesktop } from "@/app/hooks/useDeviceScreen";
 import Image from "next/image"
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const { } = dynamic(() => import("@/app/hooks/useIsDesktop").then((mod) => mod.useIsDesktop));
 
 export default function AddHabitBtn() {
     const { isDesktop } = useIsDesktop();

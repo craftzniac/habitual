@@ -6,6 +6,7 @@ import StatsCard from "./components/StatsCard";
 import { completedHabits, habits } from "@/app/data";
 import FeaturedHabitsList from "./components/FeaturedHabitsList";
 
+
 function Overview() {
     const username = "victor123";
     const greeting = "Good Afternoon";

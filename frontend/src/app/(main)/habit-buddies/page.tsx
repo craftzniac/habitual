@@ -1,5 +1,18 @@
+"use client"
+import { useEffect, useState } from "react"
+import CircularProgressBar from "../components/CircularProgressBar"
 export default function HabitBuddies() {
+    const [isClient, setIsClient] = useState(false)
+    useEffect(() => {
+        setIsClient(true)
+    }, [])
     return (
-        <section>hbit buddies</section>
+        <section className="w-full">
+            {
+                isClient && (
+                    <CircularProgressBar />
+                )
+            }
+        </section >
     )
 }

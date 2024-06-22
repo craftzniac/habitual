@@ -1,6 +1,7 @@
+"use client"
 import { Habit } from "@/app/types"
 import Link from "next/link"
-import ReactApexChart from "react-apexcharts"
+import CircularProgressBar from "./CircularProgressBar"
 
 type Prop = {
     habit: Habit,
@@ -8,25 +9,24 @@ type Prop = {
 }
 
 export default function HabitCard({ habit, showStats = true }: Prop) {
+
     return (
         <Link
             href={`/habits/${habit.id}`}
             className="p-4 flex flex-col gap-2 bg-gray-2 rounded-2xl border-2 border-primary-100">
             <div className="flex gap-4 items-start">
-                <div className="">
+                <div className="w-full">
                     <p className="font-bold">{habit.title}</p>
                     <p className="text-sm line-clamp-2 text-gray-75">{habit.description}</p>
                 </div>
-                <div>
-                    {/* radial chart here */}
-                </div>
+                <CircularProgressBar />
             </div>
             {
                 showStats && (
                     <HabitCardStats stats={habit.stats} isHabitCompleted={habit.isCompleted} />
                 )
             }
-        </Link>
+        </Link >
     )
 }
 

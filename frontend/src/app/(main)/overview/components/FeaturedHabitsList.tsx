@@ -34,6 +34,7 @@ export default function FeaturedHabitsList({
                         <HabitCard
                             key={habit.id}
                             habit={habit}
+                            showStats={false}
                         />
                     ))
                 }
