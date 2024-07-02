@@ -1,14 +1,35 @@
+import fetchHabit from "@/app/actions/fetchHabit"
+import HabitDaysStats from "../../components/HabitDaysStats"
+import HabitDays from "./components/HabitDays"
+
 type Props = {
     params: {
         id: string
     }
 }
-export default function Habit({ params }: Props) {
+
+export default async function Habit({ params }: Props) {
     const id = params.id
-    console.log("habit id: ", id);
+    const habit = await fetchHabit(id)
+    if (habit) {
+        return (
+            <section className="w-full h-full flex flex-col px-4">
+                <div className="w-full flex flex-col gap-2">
+                    <p>{habit.title}</p>
+                    <p className="text-sm text-gray-75 leading-[1.5em]">{habit.description}</p>
+                </div>
+                <div className="flex flex-col py-6">
+                    <HabitDaysStats stats={habit.stats} />
+                </div>
+                <HabitDays />
+            </section>
+        )
+    }
     return (
         <section className="w-full h-fit flex flex-col gap-12 px-4">
-            habit page {id}
+            <h2>
+                This item was not found
+            </h2>
         </section>
     )
 }

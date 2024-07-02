@@ -9,8 +9,6 @@ export default function Habits({ searchParams }: {
     }
 }) {
     if (!searchParams.filter) {
-        // TODO: Something weird is going on here. Adding a console.log() that prints something to this block makes the redirect() work but if I don't add the console.log() the redirect won't work. Is this some cache related issue???? But I already tried exporting dynamic = "force-dynamic" from this file. Hmmm.
-        console.log("no search param, setting...");
         searchParams.filter = "today"
         redirect(`/habits?filter=${searchParams.filter}`)
     }
@@ -18,7 +16,7 @@ export default function Habits({ searchParams }: {
     return (
         <section className="w-full h-fit flex flex-col gap-4 px-4">
             {/* segmented buttons menu */}
-            <ul className="flex gap-2 w-full overflow-x-auto">
+            <ul className="flex gap-2 w-full overflow-x-auto thin-scrollbar">
                 {
                     habitSegBtns.map(
                         segBtn => (

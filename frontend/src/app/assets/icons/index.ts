@@ -10,6 +10,8 @@ import Buddies_24_Active from "./buddies_24_active.svg"
 import Angle_Right_16 from "./angle_right_16.svg"
 import Plus_16_White from "./plus_16_white.svg"
 import Plus_16_Purple from "./plus_16_purple.svg"
+import Arrow_Left_24 from "./arrow_left_24.svg"
+import Overflow_24 from "./overflow_24.svg"
 
 export {
     GoogleLogo,
@@ -23,5 +25,7 @@ export {
     Buddies_24_Active,
     Angle_Right_16,
     Plus_16_White,
-    Plus_16_Purple
+    Plus_16_Purple,
+    Arrow_Left_24,
+    Overflow_24
 }
