@@ -2,9 +2,8 @@
 import { navPaths } from "@/app/data"
 import { usePathname, useParams } from "next/navigation"
 import AddHabitBtn from "../habits/components/AddHabitBtn"
-import { Arrow_Left_24, Overflow_24 } from "@/app/assets/icons"
-import Image from "next/image"
 import BackButton from "./BackButton"
+import OverflowButton from "../habits/[id]/components/OverflowButton"
 
 type Params = {
     id: string
@@ -47,7 +46,7 @@ export default function Header() {
             <header className="flex p-4 items-center justify-between gap-2">
                 <BackButton />
                 <h1 className="font-bold text-lg line-clamp-1 w-full">Reading cal newport&apos;s &quot;So good they can&apos;t ignore you&quot;</h1>
-                <Image src={Overflow_24} alt="" />
+                {path === `${navPaths.HABITS.INDEX}/${id}` && <OverflowButton habitId={id} />}
             </header>
         )
     }

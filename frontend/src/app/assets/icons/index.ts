@@ -12,6 +12,10 @@ import Plus_16_White from "./plus_16_white.svg"
 import Plus_16_Purple from "./plus_16_purple.svg"
 import Arrow_Left_24 from "./arrow_left_24.svg"
 import Overflow_24 from "./overflow_24.svg"
+import Journal_16 from "./journal_16.svg"
+import Reminder_Clock_16 from "./reminder_clock_16.svg"
+import Edit_Pencil_16 from "./edit_pencil_16.svg"
+import Trash_16 from "./trash_16.svg"
 
 export {
     GoogleLogo,
@@ -27,5 +31,9 @@ export {
     Plus_16_White,
     Plus_16_Purple,
     Arrow_Left_24,
-    Overflow_24
+    Overflow_24,
+    Journal_16,
+    Reminder_Clock_16,
+    Edit_Pencil_16,
+    Trash_16
 }
