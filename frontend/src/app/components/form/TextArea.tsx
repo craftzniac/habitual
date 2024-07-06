@@ -1,15 +1,14 @@
 type Props = {
     label: string,
     name: string,
-    type?: "password" | "text",
     errMsg?: string
 }
 
-export default function TextField({ label, name, type = "text", errMsg }: Props) {
+export default function TextArea({ label, name, errMsg }: Props) {
     return (
         <div className="flex flex-col w-full gap-1">
             <label htmlFor={name} className="text-[0.81rem] font-bold">{label}</label>
-            <input id={name} type={type} className="border-[1px] text-[0.81rem] rounded-lg p-3 border-primary-300 w-full" />
+            <textarea id={name} className="border-[1px] text-[0.81rem] rounded-lg p-3 h-24 border-primary-300 w-full"></textarea>
             {
                 errMsg && (
                     <p>{errMsg}</p>

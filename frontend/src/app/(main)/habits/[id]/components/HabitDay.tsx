@@ -1,4 +1,5 @@
 import { Day } from "@/app/types";
+import getDatePartsFromIntlDate from "@/app/utils/getDatePartsFromIntlDate";
 
 type Props = {
     isToday: boolean,
@@ -7,13 +8,7 @@ type Props = {
 
 export default function HabitDay({ isToday, day }: Props) {
     const variant = day.status;
-    const intlDate = new Intl.DateTimeFormat("en-US", {
-        day: "2-digit",
-        month: "short"
-    });
-    const date = intlDate.formatToParts(new Date(day.date))
-    const dayOfMonth = date[2].value
-    const month = date[0].value
+    const { month, monthDay } = getDatePartsFromIntlDate(day.date)
 
     function getWrapperDivStyleBasedOnVariant() {
         if (variant === "fulfilled") {
@@ -29,7 +24,7 @@ export default function HabitDay({ isToday, day }: Props) {
     return (
         <div className={`w-full max-w-24 min-h-20 flex flex-col items-center justify-center rounded-2xl ${getWrapperDivStyleBasedOnVariant()
             } `}>
-            <p className="text-lg font-bold">{dayOfMonth}</p>
+            <p className="text-lg font-bold">{monthDay}</p>
             <p className="text-sm capitalize">{month}</p>
         </div>
     )

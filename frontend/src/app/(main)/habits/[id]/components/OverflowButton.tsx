@@ -42,7 +42,7 @@ function OverflowMenu({ habitId, isOpen }: { habitId: string, isOpen: boolean })
                         </li>
                     ))
                 }
-            </ul >
+            </ul>
             <button type="button" className="flex items-center p-3 gap-1" onClick={triggerDelete}>
                 <Image src={Trash_16} alt="" />
                 <span className="capitalize w-full text-start text-sm text-red">delete</span>
