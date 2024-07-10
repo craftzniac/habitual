@@ -16,7 +16,7 @@ export default function Button({ label, labelClassName, isSubmit = true, variant
     return (
         <button
             type={isSubmit === true ? "submit" : "button"}
-            className={`rounded-full w-full text-[0.81rem] p-3 font-bold flex items-center justify-center gap-1  ${variantStyle}`}>
+            className={`rounded-full w-fit text-sm py-3 px-6 font-bold flex items-center justify-center gap-1  ${variantStyle}`}>
             <span className="flex">
                 {children}
             </span>
