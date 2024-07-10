@@ -17,7 +17,10 @@ export const navPaths = {
 		NEW: "/habits/new",
 	},
 	HABIT_BUDDIES: "/habit-buddies",
-	SETTINGS: "/settings"
+	SETTINGS: {
+		INDEX: "/settings",
+		VERIFY_EMAIL: "/settings/verify-email"
+	},
 }
 
 export const navItems = [
@@ -41,7 +44,7 @@ export const navItems = [
 	},
 	{
 		label: "Settings",
-		path: navPaths.SETTINGS,
+		path: navPaths.SETTINGS.INDEX,
 		icon: Settings_24,
 		activeIcon: Settings_24_Active
 	},

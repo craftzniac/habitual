@@ -4,6 +4,7 @@ import { usePathname, useParams } from "next/navigation"
 import AddHabitBtn from "../habits/components/AddHabitBtn"
 import BackButton from "./BackButton"
 import OverflowButton from "../habits/[id]/components/OverflowButton"
+import { habits } from "@/app/data"
 
 type Params = {
     id: string
@@ -26,7 +27,7 @@ export default function Header() {
             return (
                 <header className="flex p-4 items-center justify-between gap-2">
                     <h1 className="font-bold text-lg">Habits</h1 >
-                    <AddHabitBtn />
+                    {habits.length > 0 && <AddHabitBtn />}
                 </header>
             )
         }
@@ -59,7 +60,16 @@ export default function Header() {
         )
     }
 
-    if (path.startsWith(navPaths.SETTINGS)) {
+    if (path.startsWith(navPaths.SETTINGS.INDEX)) {
+        if (path.startsWith(navPaths.SETTINGS.VERIFY_EMAIL)) {
+            return (
+                <header className="flex p-4 gap-2 items-center">
+                    <BackButton />
+                    <h1 className="font-bold text-lg">Verify Email</h1 >
+                </header>
+            )
+        }
+
         return (
             <header className="flex p-4 items-center justify-between">
                 <h1 className="font-bold text-lg">Settings</h1 >
