@@ -274,3 +274,24 @@ export const habitDays = [
 		status: "remaining"
 	},
 ] as Day[]
+
+export const reminders = [
+	{
+		id: "askdfnasoikwn",
+		habitId: "asd2i2kj2k2j",
+		timestamp: "06:00 am",
+		timezone: "Lagos/Nigeria"
+	},
+	{
+		id: "kwnkenafiafdaf",
+		habitId: "asd2i2kj2k2j",
+		timestamp: "06:15 am",
+		timezone: "Lagos/Nigeria"
+	},
+	{
+		id: "ask82upoidj34oww",
+		habitId: "asd2i2kj2k2j",
+		timestamp: "10:00 pm",
+		timezone: "Lagos/Nigeria"
+	},
+]

@@ -17,6 +17,9 @@ import Reminder_Clock_16 from "./reminder_clock_16.svg"
 import Trash_16 from "./trash_16.svg"
 import Edit_Pencil_16 from "./edit_pencil_16.svg"
 import Edit_Pencil_16_White from "./edit_pencil_16_white.svg"
+import Date_16 from "./date_16.svg"
+import X_16 from "./x_16.svg"
+import Reminder_Clock_24 from "./reminder_clock_24.svg"
 
 export {
     GoogleLogo,
@@ -37,5 +40,8 @@ export {
     Reminder_Clock_16,
     Edit_Pencil_16,
     Edit_Pencil_16_White,
-    Trash_16
+    Trash_16,
+    Date_16,
+    X_16,
+    Reminder_Clock_24
 }

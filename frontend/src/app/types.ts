@@ -1,3 +1,10 @@
+export type HabitReminder = {
+	id: string,
+	habitId: string,
+	timestamp: string,
+	timezone: string
+}
+
 export type HabitStats = {
 	numberOfHabitDays: number,
 	numberOfFulfilledHabitDays: number,
