@@ -4,12 +4,13 @@ type Props = {
     label: string,
     isSubmit?: boolean,
     variant?: ButtonVariant,
-    children?: ReactNode
+    children?: ReactNode,
+    labelClassName?: string
 }
 
 type ButtonVariant = "primary" | "text-btn" | "gray"
 
-export default function Button({ label, isSubmit = true, variant = "primary", children }: Props) {
+export default function Button({ label, labelClassName, isSubmit = true, variant = "primary", children }: Props) {
     const variantStyle = getVariantSpecificStyle(variant)
 
     return (
@@ -19,7 +20,7 @@ export default function Button({ label, isSubmit = true, variant = "primary", ch
             <span className="flex">
                 {children}
             </span>
-            <span>
+            <span className={labelClassName}>
                 {label}
             </span>
         </ button >
