@@ -1,10 +1,12 @@
 "use client"
 import { navPaths } from "@/app/data"
+import Image from "next/image"
 import { usePathname, useParams } from "next/navigation"
 import AddHabitBtn from "../habits/components/AddHabitBtn"
 import BackButton from "./BackButton"
 import OverflowButton from "../habits/[id]/components/OverflowButton"
 import { habits } from "@/app/data"
+import { Compass_24, Edit_Pencil_16, Edit_Pencil_24 } from "@/app/assets/icons"
 
 type Params = {
     id: string
@@ -52,10 +54,29 @@ export default function Header() {
         )
     }
 
-    if (path.startsWith(navPaths.HABIT_BUDDIES)) {
+    if (path.startsWith(navPaths.HABIT_BUDDIES.INDEX)) {
+        // /habit-buddies/message-requests
+        if (path.startsWith(navPaths.HABIT_BUDDIES.MESSAGE_REQUESTS)) {
+            return (
+                <header className="flex p-4 items-center justify-between gap-2">
+                    <BackButton />
+                    <h1 className="font-bold text-lg line-clamp-1 w-full">Message Requests</h1>
+                </header>
+            )
+        }
+
+        // /habit-buddies
         return (
             <header className="flex p-4 items-center justify-between">
                 <h1 className="font-bold text-lg">Habits Buddies</h1 >
+                <div className="flex items-center gap-4">
+                    <button type="button">
+                        <Image src={Compass_24} alt="" className="w-6 h-6" />
+                    </button>
+                    <button type="button">
+                        <Image src={Edit_Pencil_24} alt="" className="w-6 h-6" />
+                    </button>
+                </div>
             </header>
         )
     }

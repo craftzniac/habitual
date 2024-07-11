@@ -5,21 +5,27 @@ import CircularProgressBar from "./CircularProgressBar"
 
 type Prop = {
     habit: Habit,
-    showStats: boolean
+    showStats: boolean,
+    variant?: "primary" | "secondary"
 }
 
-export default function HabitCard({ habit, showStats = true }: Prop) {
+export default function HabitCard({ habit, showStats = true, variant = "primary" }: Prop) {
+    const completionRate = Math.round(
+        ((habit.stats.numberOfHabitDays - habit.stats.numberOfRemainingDays) / (habit.stats.numberOfHabitDays)) * 100
+    )
 
     return (
         <Link
             href={`/habits/${habit.id}`}
-            className="p-4 flex flex-col gap-2 bg-gray-2 rounded-2xl border-2 border-primary-100">
+            className={`flex flex-col gap-2 bg-gray-2 rounded-2xl border-2 border-primary-100 ${variant === "primary" ? "p-4" : (
+                variant === "secondary" ? "p-3" : ""
+            )}`}>
             <div className="flex gap-4 items-start">
                 <div className="w-full">
-                    <p className="font-bold">{habit.title}</p>
-                    <p className="text-sm line-clamp-2 text-gray-75">{habit.description}</p>
+                    <p className={`line-clamp-2 ${variant === "primary" ? "font-bold" : (variant === "secondary" ? "" : "")}`}>{habit.title}</p>
+                    <p className={`text-gray-75 ${variant === "primary" ? "line-clamp-2 text-sm" : (variant === "secondary" ? "line-clamp-4 text-xs" : "")}`}>{habit.description}</p>
                 </div>
-                <CircularProgressBar />
+                <CircularProgressBar value={completionRate} />
             </div>
             {
                 showStats && (
@@ -49,21 +55,21 @@ function HabitCardStats({
         <div className="flex flex-wrap w-full text-xs gap-x-4 gap-y-1">
             <p className="flex items-center gap-1">
                 <span className="text-gray-75">Duration: </span>
-                <strong className="">{numberOfHabitDays} Days</strong>
+                <span className="">{numberOfHabitDays} Days</span>
             </p>
             <p className="flex items-center gap-1">
                 <span className="text-gray-75">Fulfilled: </span>
-                <strong className="text-primary-500">{numberOfFulfilledHabitDays} Days</strong>
+                <span className="text-primary-500">{numberOfFulfilledHabitDays} Days</span>
             </p>
             <p className="flex items-center gap-1">
                 <span className="text-gray-75">Missed: </span>
-                <strong className="text-red">{numberOfMissedDays} Days</strong>
+                <span className="text-red">{numberOfMissedDays} Days</span>
             </p>
             {
                 isHabitCompleted === false && (
                     <p className="flex items-center gap-1 text-gray-75">
                         <span>Remaining: </span>
-                        <strong>{numberOfRemainingDays} Days</strong>
+                        <span>{numberOfRemainingDays} Days</span>
                     </p>
                 )
             }

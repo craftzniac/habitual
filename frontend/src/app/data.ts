@@ -9,6 +9,7 @@ import {
 	Settings_24
 } from "@/app/assets/icons"
 import { Day, Habit } from "./types"
+import { User1, User2, User3 } from "./assets/images"
 
 export const navPaths = {
 	OVERVIEW: "/overview",
@@ -16,7 +17,10 @@ export const navPaths = {
 		INDEX: "/habits",
 		NEW: "/habits/new",
 	},
-	HABIT_BUDDIES: "/habit-buddies",
+	HABIT_BUDDIES: {
+		INDEX: "/habit-buddies",
+		MESSAGE_REQUESTS: "/habit-buddies/message-requests"
+	},
 	SETTINGS: {
 		INDEX: "/settings",
 		VERIFY_EMAIL: {
@@ -44,7 +48,7 @@ export const navItems = [
 	},
 	{
 		label: "Habit Buddies",
-		path: navPaths.HABIT_BUDDIES,
+		path: navPaths.HABIT_BUDDIES.INDEX,
 		icon: Buddies_24,
 		activeIcon: Buddies_24_Active
 	},
@@ -304,3 +308,124 @@ export const reminders = [
 		timezone: "Lagos/Nigeria"
 	},
 ]
+
+export const habitBuddies = [
+	{
+		id: "akdsiwnkadfsdf",
+		username: "john_gray",
+		profileImage: User1,
+		isOnline: false,
+		unreadMessageCount: 0,
+		messages: [
+			{
+				id: "9i2jsudjafdjaksd",
+				author: "__you__",
+				message: "I just drank alot of coffee recently",
+				timestamp: "2d",
+				isRead: true
+			},
+			{
+				id: "adkfj92i3j2fad",
+				author: "john_gray",
+				message: "That was awesome. I could get you more info on this",
+				timestamp: "1d",
+				isRead: true
+			},
+		]
+	},
+	{
+		id: "k229u23i2j323j",
+		username: "Samy",
+		profileImage: User2,
+		isOnline: true,
+		unreadMessageCount: 2,
+		messages: [
+			{
+				id: "92ijasdijwlejae",
+				author: "__you__",
+				message: "Hello, whatsup",
+				timestamp: "25/06/2024",
+				isRead: false
+			},
+		]
+	},
+	{
+		id: "82uoi3jksdnfasdfj",
+		username: "vmars232",
+		profileImage: User3,
+		isOnline: true,
+		unreadMessageCount: 0,
+		messages: []
+	},
+]
+
+export const messageRequests = [
+	{
+		id: "k2iiojweknadnvav",
+		author: {
+			id: "kansi2j2oi23j2oij3",
+			username: "jonathan_clay",
+			isOnline: true,
+			profileImage: User2,
+		},
+		message: "Hi, I'm looking for someone to help keep me accountable while I prepare for my final exams at Uni. Are you interested?",
+		taggedHabit: {
+			id: "asdifnwkasdf",
+			title: "Do exam practice questions",
+			description: "do practice question everyday for the next 15 days",
+			isCompleted: false,
+			stats: {
+				numberOfHabitDays: 15,
+				numberOfFulfilledHabitDays: 1,
+				numberOfMissedDays: 0,
+				numberOfRemainingDays: 14
+			}
+		}
+	},
+	{
+		id: "kasnd92ijeq",
+		author: {
+			id: "290ijakdsjfaskd",
+			username: "ken89",
+			isOnline: false,
+			profileImage: User1,
+		},
+		message: "I recently started a coding bootcamp and I'm hoping we could keep each other accountable",
+		taggedHabit: {
+			id: "kasni2j22kj32j",
+			title: "Work on leetcode problems",
+			description: "leetcode problems, every tuesday, thursday and friday for the next 30 days",
+			isCompleted: false,
+			stats: {
+				numberOfHabitDays: 16,
+				numberOfFulfilledHabitDays: 3,
+				numberOfMissedDays: 1,
+				numberOfRemainingDays: 12
+			}
+		}
+	},
+
+	{
+		id: "akdf2023iija",
+		author: {
+			id: "290ijakdsjfaskd",
+			username: "ken89",
+			isOnline: false,
+			profileImage: User1,
+		},
+		message: "I recently started a coding bootcamp and I'm hoping we could keep each other accountable",
+		taggedHabit: {
+			id: "kasni2j22kj32j",
+			title: "Work on leetcode problems",
+			description: "leetcode problems, every tuesday, thursday and friday for the next 30 days",
+			isCompleted: false,
+			stats: {
+				numberOfHabitDays: 16,
+				numberOfFulfilledHabitDays: 3,
+				numberOfMissedDays: 1,
+				numberOfRemainingDays: 12
+			}
+		}
+	},
+]
+

@@ -1,9 +1,10 @@
 import { PolarAngleAxis, RadialBar, RadialBarChart, ResponsiveContainer } from "recharts"
-export default function CircularProgressBar() {
+type Props = { value: number }
+export default function CircularProgressBar({ value }: Props) {
     const data = [
         {
-            label: "18 - 24",
-            value: 89,
+            label: "",
+            value: value,
             fill: "#923DE7"
         },
     ]
