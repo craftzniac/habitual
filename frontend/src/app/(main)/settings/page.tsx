@@ -24,7 +24,7 @@ export default function Settings() {
                     <div className="flex w-full items-end gap-1">
                         <TextField label="Email Address" name="email" />
                         <Button label="Change" onClick={() => {
-                            router.push(navPaths.SETTINGS.VERIFY_EMAIL)
+                            router.push(navPaths.SETTINGS.VERIFY_EMAIL.INDEX)
                         }}>
                             <Image src={Edit_Pencil_16_White} alt="" />
                         </Button>

@@ -61,15 +61,39 @@ export default function Header() {
     }
 
     if (path.startsWith(navPaths.SETTINGS.INDEX)) {
-        if (path.startsWith(navPaths.SETTINGS.VERIFY_EMAIL)) {
+
+        //    /settings/verify-email/email-code/new-email
+        if (path.startsWith(navPaths.SETTINGS.VERIFY_EMAIL.EMAIL_CODE.NEW_EMAIL)) {
             return (
                 <header className="flex p-4 gap-2 items-center">
                     <BackButton />
-                    <h1 className="font-bold text-lg">Verify Email</h1 >
+                    <h1 className="font-bold text-lg capitalize">Enter new Email</h1>
                 </header>
             )
         }
 
+        //    /settings/verify-email/email-code
+        if (path.startsWith(navPaths.SETTINGS.VERIFY_EMAIL.EMAIL_CODE.INDEX)) {
+            return (
+                <header className="flex p-4 gap-2 items-center">
+                    <BackButton />
+                    <h1 className="font-bold text-lg capitalize">Enter Verification Code</h1>
+                </header>
+            )
+        }
+
+        //    /settings/verify-email
+        if (path.startsWith(navPaths.SETTINGS.VERIFY_EMAIL.INDEX)) {
+            return (
+                <header className="flex p-4 gap-2 items-center">
+                    <BackButton />
+                    <h1 className="font-bold text-lg capitalize">Verify Email</h1 >
+                </header>
+            )
+        }
+
+
+        //    /settings
         return (
             <header className="flex p-4 items-center justify-between">
                 <h1 className="font-bold text-lg">Settings</h1 >

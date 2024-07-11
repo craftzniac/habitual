@@ -19,7 +19,13 @@ export const navPaths = {
 	HABIT_BUDDIES: "/habit-buddies",
 	SETTINGS: {
 		INDEX: "/settings",
-		VERIFY_EMAIL: "/settings/verify-email"
+		VERIFY_EMAIL: {
+			INDEX: "/settings/verify-email",
+			EMAIL_CODE: {
+				INDEX: "/settings/verify-email/email-code",
+				NEW_EMAIL: "/settings/verify-email/email-code/new-email"
+			}
+		}
 	},
 }
 
