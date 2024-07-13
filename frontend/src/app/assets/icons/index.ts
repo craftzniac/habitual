@@ -4,6 +4,7 @@ import Habits_24_Active from "./habits_24_active.svg"
 import House_24 from "./house_24.svg"
 import House_24_Active from "./house_24_active.svg"
 import Settings_24 from "./settings_24.svg"
+import Settings_24_Gray from "./settings_24_gray.svg"
 import Settings_24_Active from "./settings_24_active.svg"
 import Buddies_24 from "./buddies_24.svg"
 import Buddies_24_Active from "./buddies_24_active.svg"
@@ -28,6 +29,9 @@ import Edit_Pencil_24 from "./edit_pencil_24.svg"
 import Compass_16_White from "./compass_16_white.svg"
 import Check_16_White from "./check_16_white.svg"
 import X_16_White from "./x _16_white.svg"
+import Stats_24 from "./stats_24.svg"
+import Hook from "./hook.svg"
+import Paper_Plane_24 from "./paper_plane_24.svg"
 
 export {
     GoogleLogo,
@@ -36,6 +40,7 @@ export {
     House_24,
     House_24_Active,
     Settings_24,
+    Settings_24_Gray,
     Settings_24_Active,
     Buddies_24,
     Buddies_24_Active,
@@ -59,5 +64,8 @@ export {
     Edit_Pencil_24,
     Compass_16_White,
     Check_16_White,
-    X_16_White
+    X_16_White,
+    Stats_24,
+    Hook,
+    Paper_Plane_24
 }

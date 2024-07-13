@@ -7,7 +7,7 @@ export default function BackButton() {
         <button type="button" onClick={() => {
             window.history.back()
         }}>
-            <Image src={Arrow_Left_24} alt="" />
+            <Image src={Arrow_Left_24} className="min-w-6" alt="" />
         </button >
     )
 }

@@ -5,7 +5,7 @@ import HabitCard from "../../components/HabitCard"
 
 export default function MessageRequests() {
     return (
-        <section className="w-full h-full px-4">
+        <section className="w-full h-full px-4 overflow-y-auto">
             <ul className="flex flex-col gap-8">
                 {
                     messageRequests.map(msgReq => (

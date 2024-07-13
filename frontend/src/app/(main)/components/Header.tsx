@@ -1,12 +1,12 @@
 "use client"
-import { navPaths } from "@/app/data"
+import { habitBuddies, navPaths } from "@/app/data"
 import Image from "next/image"
 import { usePathname, useParams } from "next/navigation"
 import AddHabitBtn from "../habits/components/AddHabitBtn"
 import BackButton from "./BackButton"
 import OverflowButton from "../habits/[id]/components/OverflowButton"
 import { habits } from "@/app/data"
-import { Compass_24, Edit_Pencil_16, Edit_Pencil_24 } from "@/app/assets/icons"
+import { Compass_24, Edit_Pencil_16, Edit_Pencil_24, Settings_24, Stats_24 } from "@/app/assets/icons"
 
 type Params = {
     id: string
@@ -25,6 +25,7 @@ export default function Header() {
     }
 
     if (path.startsWith(navPaths.HABITS.INDEX)) {
+        // /habits
         if (path === navPaths.HABITS.INDEX) {
             return (
                 <header className="flex p-4 items-center justify-between gap-2">
@@ -34,6 +35,7 @@ export default function Header() {
             )
         }
 
+        // /habits/new
         if (path === navPaths.HABITS.NEW) {
             return (
                 <header className="flex p-4 items-center justify-between gap-2">
@@ -55,6 +57,24 @@ export default function Header() {
     }
 
     if (path.startsWith(navPaths.HABIT_BUDDIES.INDEX)) {
+
+        // /habit-buddies
+        if (path === navPaths.HABIT_BUDDIES.INDEX) {
+            return (
+                <header className="flex p-4 items-center justify-between">
+                    <h1 className="font-bold text-lg">Habits Buddies</h1 >
+                    <div className="flex items-center gap-4">
+                        <button type="button">
+                            <Image src={Compass_24} alt="" className="w-6 h-6" />
+                        </button>
+                        <button type="button">
+                            <Image src={Edit_Pencil_24} alt="" className="w-6 h-6" />
+                        </button>
+                    </div>
+                </header>
+            )
+        }
+
         // /habit-buddies/message-requests
         if (path.startsWith(navPaths.HABIT_BUDDIES.MESSAGE_REQUESTS)) {
             return (
@@ -65,16 +85,24 @@ export default function Header() {
             )
         }
 
-        // /habit-buddies
+        // /habit-buddies/:id
+        const habitBuddy = habitBuddies[0];
         return (
-            <header className="flex p-4 items-center justify-between">
-                <h1 className="font-bold text-lg">Habits Buddies</h1 >
+            <header className="flex p-4 items-center justify-between gap-2">
+                <BackButton />
+                <div className="flex items-center w-full gap-2">
+                    <div className={`rounded-full`}>
+                        <Image src={habitBuddy.profileImage} alt={`habit buddy's profile picture`} className="rounded-full w-8 h-8 min-w-8" />
+                    </div>
+
+                    <h1 className="font-bold text-base line-clamp-1 w-full">{habitBuddy.username}</h1>
+                </div>
                 <div className="flex items-center gap-4">
                     <button type="button">
-                        <Image src={Compass_24} alt="" className="w-6 h-6" />
+                        <Image src={Stats_24} alt="" className="w-6 h-6 min-w-6" />
                     </button>
                     <button type="button">
-                        <Image src={Edit_Pencil_24} alt="" className="w-6 h-6" />
+                        <Image src={Settings_24} alt="" className="w-6 h-6 min-w-6" />
                     </button>
                 </div>
             </header>

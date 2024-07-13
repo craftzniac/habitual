@@ -321,15 +321,35 @@ export const habitBuddies = [
 				id: "9i2jsudjafdjaksd",
 				author: "__you__",
 				message: "I just drank alot of coffee recently",
-				timestamp: "2d",
-				isRead: true
+				timestamp: "12d",
+				createdAt: "30/06/2024 3:00pm",
+				lastUpdatedAt: "30/06/2024 3:00pm",
+				isRead: true,
+				replyTo: null
 			},
 			{
 				id: "adkfj92i3j2fad",
 				author: "john_gray",
 				message: "That was awesome. I could get you more info on this",
+				timestamp: "11d",
+				createdAt: "01/07/2024 2:00pm",
+				lastUpdatedAt: "01/07/2024 2:00pm",
+				isRead: true,
+				replyTo: null
+			},
+			{
+				id: "nakkasnldfkansdif",
+				author: "john_gray",
+				message: "Moving far and fast is the new hot thing. Just move a finger and a toe and you're likely done with that. tell me you know without telling me you know",
 				timestamp: "1d",
-				isRead: true
+				createdAt: "12/07/2024 1:05pm",
+				lastUpdatedAt: "12/07/2024 1:05pm",
+				isRead: false,
+				replyTo: {
+					id: "9i2jsudjafdjaksd",
+					author: "__you__",
+					message: "I just drank alot of coffee recently",
+				},
 			},
 		]
 	},
@@ -345,7 +365,10 @@ export const habitBuddies = [
 				author: "__you__",
 				message: "Hello, whatsup",
 				timestamp: "25/06/2024",
-				isRead: false
+				createdAt: "12/07/2024 1:05pm",
+				lastUpdatedAt: "12/07/2024 1:05pm",
+				isRead: false,
+				replyTo: null
 			},
 		]
 	},
@@ -429,3 +452,19 @@ export const messageRequests = [
 	},
 ]
 
+
+export const chatMessages = [
+	{
+		id: "akndaksdfnasks",
+		author: {
+			id: "290ijakdsjfaskd",
+			username: "jonathan_clay",
+			isOnline: false,
+			profileImage: User1,
+		},
+		message: "I recently started a coding bootcamp and I'm hoping we could keep each other accountable",
+		createdAt: new Date().toISOString(),
+		lastUpdatedAt: new Date().toISOString(),
+	},
+
+]
