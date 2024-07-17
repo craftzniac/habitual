@@ -26,7 +26,8 @@ const config: Config = {
       red: "#BE3455",
       white: "#FFFFFF",
       green: "#6E9C83",
-      yellow: "#897821"
+      yellow: "#897821",
+      transparent: "transparent"
     },
     extend: {
     },

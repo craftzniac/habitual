@@ -3,7 +3,7 @@ import { habitBuddies } from "@/app/data"
 import { User2 } from "@/app/assets/images"
 import Image from "next/image"
 import { Hook, Paper_Plane_24 } from "@/app/assets/icons"
-import { useRef } from "react"
+import { FormEventHandler, KeyboardEventHandler, useRef } from "react"
 
 export default function HabitBuddy() {
     const messages = habitBuddies[0].messages
@@ -46,12 +46,12 @@ function ChatMessage({ message }: { message: IChatMessage }) {
     }
     console.log("replyTo: ", replyTo);
     return (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col">
             {
                 message.replyTo && (
-                    <div className="flex w-full items-center gap-2 px-5">
-                        <Image src={Hook} alt="" className="w-5 h-5 min-w-5" />
-                        <div className="flex items-center gap-1">
+                    <div className="flex w-full items-center gap-1 px-5">
+                        <Image src={Hook} alt="" className="" />
+                        <div className="flex items-center gap-1 mb-2">
                             <Image src={author?.profileImage!} alt={`${author?.username}'s profile picture`} className="rounded-full w-5 h-5 min-w-5" />
                             <div className="flex items-center gap-1 text-[0.8rem]">
                                 <p className="font-bold">{author?.username}</p>
@@ -77,18 +77,26 @@ function ChatMessage({ message }: { message: IChatMessage }) {
 
 function ChatInput({ buddyUsername }: { buddyUsername: string }) {
     const inputRef = useRef<HTMLTextAreaElement | null>(null)
-    function recalculateHeight() {
-        if (!inputRef.current) return;
-        //
-        // console.log(inputRef.current.value);
-        // const maxNumberOfLines = 5
-        // const lineHeight = inputRef.current.scrollHeight / inputRef.current.offsetHeight
-        // inputRef.current.style.height = `${Math.min(lineHeight * numberOfTypedLines, lineHeight * maxNumberOfLines)}px`
+
+    const handleOnInput: FormEventHandler<HTMLTextAreaElement> = (e) => {
+        if (inputRef.current) {
+            inputRef.current.style.height = `${Math.min(e.currentTarget.scrollHeight, 102)}px`
+        }
     }
+
+    const handleOnKeydown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
+        const key = e.key
+        if (key === "Backspace" || key === "Delete") {
+            if (inputRef.current) {
+                inputRef.current.style.height = "auto"
+            }
+        }
+    }
+
     return (
-        <div className="p-2">
-            <div className="rounded-full flex items-center bg-primary-50 px-4 py-1 gap-2">
-                <textarea onInput={recalculateHeight} ref={inputRef} placeholder={`Send message to ${buddyUsername}`} className="min-h-fit p-0 outline-none text-sm w-full resize-none"></textarea>
+        <div className="p-2 h-fit flex items-end w-full">
+            <div className="rounded-2xl flex items-end bg-primary-50 px-4 py-2 gap-2 w-full">
+                <textarea onKeyDown={handleOnKeydown} onInput={handleOnInput} ref={inputRef} rows={1} placeholder={`Send message to ${buddyUsername} `} className="outline-none text-sm w-full resize-none bg-transparent"></textarea>
                 <button type="button">
                     <Image src={Paper_Plane_24} className="w-6 h-6 min-w-6" alt="" />
                 </button>

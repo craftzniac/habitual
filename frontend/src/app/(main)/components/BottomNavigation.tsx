@@ -6,8 +6,10 @@ import { usePathname } from "next/navigation"
 
 export default function BottomNavigation() {
     const currentPath = usePathname();
-    if (currentPath.startsWith(navPaths.HABIT_BUDDIES.INDEX) && currentPath !== navPaths.HABIT_BUDDIES.MESSAGE_REQUESTS) {
-        return null
+    if (currentPath.startsWith(navPaths.HABIT_BUDDIES.INDEX)) {
+        if (currentPath !== navPaths.HABIT_BUDDIES.INDEX) {
+            return null
+        }
     }
     return (
         <nav className="flex w-full px-6 py-2 bg-gray-2">
