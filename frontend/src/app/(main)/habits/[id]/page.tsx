@@ -1,6 +1,6 @@
 import fetchHabit from "@/app/actions/fetchHabit"
-import HabitDaysStats from "../../components/HabitDaysStats"
 import HabitDays from "./components/HabitDays"
+import HabitStats from "../../components/HabitStats"
 
 type Props = {
     params: {
@@ -19,7 +19,7 @@ export default async function Habit({ params }: Props) {
                     <p className="text-sm text-gray-75 leading-[1.5em]">{habit.description}</p>
                 </div>
                 <div className="flex flex-col py-6">
-                    <HabitDaysStats stats={habit.stats} />
+                    <HabitStats isHabitCompleted={habit.isCompleted} stats={habit.stats} variant="secondary" />
                 </div>
                 <HabitDays />
             </section>

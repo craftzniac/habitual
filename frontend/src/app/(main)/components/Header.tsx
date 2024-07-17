@@ -1,6 +1,7 @@
 "use client"
 import { habitBuddies, navPaths } from "@/app/data"
 import Image from "next/image"
+import Link from "next/link"
 import { usePathname, useParams } from "next/navigation"
 import AddHabitBtn from "../habits/components/AddHabitBtn"
 import BackButton from "./BackButton"
@@ -87,6 +88,7 @@ export default function Header() {
 
         // /habit-buddies/:id
         const habitBuddy = habitBuddies[0];
+
         return (
             <header className="flex p-4 items-center justify-between gap-2">
                 <BackButton />
@@ -98,12 +100,12 @@ export default function Header() {
                     <h1 className="font-bold text-base line-clamp-1 w-full">{habitBuddy.username}</h1>
                 </div>
                 <div className="flex items-center gap-4">
-                    <button type="button">
+                    <Link href={`/habit-buddies/${habitBuddy.id}/stats`} type="button">
                         <Image src={Stats_24} alt="" className="w-6 h-6 min-w-6" />
-                    </button>
-                    <button type="button">
+                    </Link>
+                    <Link href={`/habit-buddies/${habitBuddy.id}/settings`}>
                         <Image src={Settings_24} alt="" className="w-6 h-6 min-w-6" />
-                    </button>
+                    </Link>
                 </div>
             </header>
         )

@@ -2,6 +2,7 @@
 import { Habit } from "@/app/types"
 import Link from "next/link"
 import CircularProgressBar from "./CircularProgressBar"
+import HabitStats from "./HabitStats"
 
 type Prop = {
     habit: Habit,
@@ -29,50 +30,12 @@ export default function HabitCard({ habit, showStats = true, variant = "primary"
             </div>
             {
                 showStats && (
-                    <HabitCardStats stats={habit.stats} isHabitCompleted={habit.isCompleted} />
+                    <HabitStats stats={habit.stats} isHabitCompleted={habit.isCompleted} />
                 )
             }
-        </Link >
+        </Link>
     )
 }
 
-type HabitCardStatsProps = {
-    stats: Habit["stats"],
-    isHabitCompleted: boolean
-}
 
 
-function HabitCardStats({
-    stats: {
-        numberOfHabitDays,
-        numberOfFulfilledHabitDays,
-        numberOfMissedDays,
-        numberOfRemainingDays
-    },
-    isHabitCompleted
-}: HabitCardStatsProps) {
-    return (
-        <div className="flex flex-wrap w-full text-xs gap-x-4 gap-y-1">
-            <p className="flex items-center gap-1">
-                <span className="text-gray-75">Duration: </span>
-                <span className="">{numberOfHabitDays} Days</span>
-            </p>
-            <p className="flex items-center gap-1">
-                <span className="text-gray-75">Fulfilled: </span>
-                <span className="text-primary-500">{numberOfFulfilledHabitDays} Days</span>
-            </p>
-            <p className="flex items-center gap-1">
-                <span className="text-gray-75">Missed: </span>
-                <span className="text-red">{numberOfMissedDays} Days</span>
-            </p>
-            {
-                isHabitCompleted === false && (
-                    <p className="flex items-center gap-1 text-gray-75">
-                        <span>Remaining: </span>
-                        <span>{numberOfRemainingDays} Days</span>
-                    </p>
-                )
-            }
-        </div>
-    )
-}
