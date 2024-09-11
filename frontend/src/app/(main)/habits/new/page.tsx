@@ -1,7 +1,9 @@
+import HabitForm from "../components/HabitForm"
+
 export default function NewHabit() {
     return (
-        <section>
-            new habit page
+        <section className="flex flex-col px-4 w-full overflow-auto">
+            <HabitForm />
         </section>
     )
 }
