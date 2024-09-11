@@ -32,6 +32,8 @@ import X_16_White from "./x _16_white.svg"
 import Stats_24 from "./stats_24.svg"
 import Hook from "./hook.svg"
 import Paper_Plane_24 from "./paper_plane_24.svg"
+import X_16_Red from "./x _16_red.svg"
+import Angle_Down from "./angle_down_16.svg"
 
 export {
     GoogleLogo,
@@ -67,5 +69,7 @@ export {
     X_16_White,
     Stats_24,
     Hook,
-    Paper_Plane_24
+    Paper_Plane_24,
+    X_16_Red,
+    Angle_Down
 }
