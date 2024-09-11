@@ -14,7 +14,7 @@ function Overview() {
     const isDay = true;
 
     return (
-        <section className="w-full h-fit flex flex-col gap-12">
+        <section className="w-full h-full flex flex-col gap-12 overflow-y-auto">
             {/* greeting */}
             <section className="w-full flex items-center p-4 gap-4">
                 <div className="flex flex-col w-full items-start gap-2">
