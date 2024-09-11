@@ -46,12 +46,12 @@ export const navItems = [
 		icon: Habits_24,
 		activeIcon: Habits_24_Active
 	},
-	{
-		label: "Habit Buddies",
-		path: navPaths.HABIT_BUDDIES.INDEX,
-		icon: Buddies_24,
-		activeIcon: Buddies_24_Active
-	},
+	// {
+	// 	label: "Habit Buddies",
+	// 	path: navPaths.HABIT_BUDDIES.INDEX,
+	// 	icon: Buddies_24,
+	// 	activeIcon: Buddies_24_Active
+	// },
 	{
 		label: "Settings",
 		path: navPaths.SETTINGS.INDEX,
@@ -84,6 +84,18 @@ export const habits: Habit[] = [
 		},
 		id: "ksdflafo2ioiewjwef",
 		description: "I want to workout everymorning. Workout include 500 reps of jump rope"
+	},
+	{
+		title: "Review learning materials on 'Duck side stream' ",
+		isCompleted: false,
+		stats: {
+			numberOfHabitDays: 10,
+			numberOfFulfilledHabitDays: 2,
+			numberOfMissedDays: 2,
+			numberOfRemainingDays: 6
+		},
+		id: "kaksidfnasdf2223kjsd",
+		description: "Review the learning materials I own for the Duck side stream that is about to take place in a few days time. The essence is to get myself as ready as I can be for this. This is important"
 	},
 ]
 
