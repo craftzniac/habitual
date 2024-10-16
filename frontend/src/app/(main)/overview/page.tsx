@@ -3,8 +3,9 @@ import {
     Day_32 as Day, Night_32 as Night
 } from "@/app/assets/illustrations"
 import StatsCard from "./components/StatsCard";
-import { completedHabits, habits } from "@/app/data";
+import { completedHabits, habits as habitsDummyData } from "@/app/data";
 import FeaturedHabitsList from "./components/FeaturedHabitsList";
+import { Habit } from "@/app/types";
 
 
 function Overview() {
@@ -12,6 +13,7 @@ function Overview() {
     const greeting = "Good Afternoon";
     const todayDate = "Sunday, 8 June 2024";
     const isDay = true;
+    const habits = habitsDummyData as Habit[];
 
     return (
         <section className="w-full h-full flex flex-col gap-12 overflow-y-auto">
@@ -41,7 +43,7 @@ function Overview() {
             {/* in progress habits */}
             <FeaturedHabitsList title="Ongoing Habits" viewAllLink="/habits?in-progress" habits={habits} />
             {/* completed habits */}
-            <FeaturedHabitsList title="Completed Habits" viewAllLink="/habits?completed" habits={completedHabits} />
+            <FeaturedHabitsList title="Completed Habits" viewAllLink="/habits?completed" habits={completedHabits as Habit[]} />
         </section>
     )
 }

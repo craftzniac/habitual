@@ -4,11 +4,13 @@ import SwitchButton from "@/app/(main)/components/SwitchButton"
 import { Edit_Pencil_16, X_16_Red } from "@/app/assets/icons"
 import { Profile_Image } from "@/app/assets/illustrations"
 import Button from "@/app/components/form/Button"
-import { habitBuddies, habits } from "@/app/data"
+import { habitBuddies, habits as habitsDummyData } from "@/app/data"
+import { Habit } from "@/app/types"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 export default function BuddySettings() {
+    const habits = habitsDummyData as Habit[];
     const router = useRouter();
     const habitBuddy = habitBuddies[1]
     return (

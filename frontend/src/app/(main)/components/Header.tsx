@@ -6,14 +6,16 @@ import { usePathname, useParams } from "next/navigation"
 import AddHabitBtn from "../habits/components/AddHabitBtn"
 import BackButton from "./BackButton"
 import OverflowButton from "../habits/[id]/components/OverflowButton"
-import { habits } from "@/app/data"
+import { habits as habitsDummyData } from "@/app/data"
 import { Compass_24, Edit_Pencil_16, Edit_Pencil_24, Settings_24, Stats_24 } from "@/app/assets/icons"
+import { Habit } from "@/app/types"
 
 type Params = {
     id: string
 }
 
 export default function Header() {
+    const habits = habitsDummyData as Habit[];
     const path = usePathname()
     const params = useParams() as Params
 

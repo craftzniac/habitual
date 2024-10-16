@@ -1,8 +1,9 @@
 import { habits } from "@/app/data"
 import HabitCard from "../../components/HabitCard"
+import { Habit } from "@/app/types";
 
 async function fetchHabits() {
-    return habits
+    return habits as Habit[];
 }
 
 export default async function HabitList({ filter }: { filter: string }) {

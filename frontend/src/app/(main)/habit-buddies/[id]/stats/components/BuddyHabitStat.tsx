@@ -1,12 +1,12 @@
 import CircularProgressBar from "@/app/(main)/components/CircularProgressBar";
 import HabitStats from "@/app/(main)/components/HabitStats";
 import { habitDays, habits } from "@/app/data";
-import { Day } from "@/app/types";
+import { Day, Habit } from "@/app/types";
 import getDatePartsFromIntlDate from "@/app/utils/getDatePartsFromIntlDate";
 import getWrapperDivStyleBasedOnVariant from "@/app/utils/getWrapperDivStyleBasedOnHabitDayVariant";
 
 export default function BuddyHabitStat() {
-    const habit = habits[1]
+    const habit = (habits as Habit[])[1];
     return (
         <div className="w-full h-full flex flex-col gap-2">
             <div className="flex w-full items-start gap-2">
@@ -18,7 +18,7 @@ export default function BuddyHabitStat() {
             </div>
             <HabitStats variant="secondary" stats={habit.stats} isHabitCompleted={habit.isCompleted} />
             <ul className="flex flex-wrap gap-1">
-                {habitDays.map(day => {
+                {(habitDays as Day[]).map(day => {
                     return (
                         <li key={day.id}>
                             <BuddyHabitDay day={day} />

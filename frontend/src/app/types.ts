@@ -1,9 +1,19 @@
+import { reminderTimeOptions } from "./data";
+
+export type User = {
+	id: string,
+	email: string,
+	createdAt: string,
+}
+
 export type HabitReminder = {
 	id: string,
 	habitId: string,
-	timestamp: string,
+	timestamp: ReminderTime,
 	timezone: string
 }
+
+export type ReminderTime = typeof reminderTimeOptions[number];
 
 export type HabitStats = {
 	numberOfHabitDays: number,
