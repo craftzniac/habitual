@@ -23,8 +23,8 @@ export const habits = [
     description: "Read Cal Newport's Deep Work, for 30minutes after work",
     startDate: new Date('2024-09-16T00:00:00Z'),
     durationInDays: 5,
-    createdAt: '2024-10-16T00:00:00Z',
-    updatedAt: '2024-10-16T00:00:00Z',
+    createdAt: new Date('2024-10-16T00:00:00Z'),
+    updatedAt: new Date('2024-10-16T00:00:00Z'),
   },
   {
     id: 'ksdflafo2ioiewjwef',
@@ -34,8 +34,8 @@ export const habits = [
       'I want to workout everymorning. Workout include 500 reps of jump rope',
     startDate: new Date('2024-10-01T00:00:00Z'),
     durationInDays: 10,
-    createdAt: '2024-10-16T00:00:00Z',
-    updatedAt: '2024-10-16T00:00:00Z',
+    createdAt: new Date('2024-10-16T00:00:00Z'),
+    updatedAt: new Date('2024-10-16T00:00:00Z'),
   },
   {
     id: '00ajsldkfajsijwe',
@@ -45,8 +45,8 @@ export const habits = [
       'Review the learning materials I own for the Duck side stream that is about to take place in a few days time. The essence is to get myself as ready as I can be for this. This is important',
     startDate: new Date('2024-10-03T00:00:00Z'),
     durationInDays: 3,
-    createdAt: '2024-10-16T00:00:00Z',
-    updatedAt: '2024-10-16T00:00:00Z',
+    createdAt: new Date('2024-10-16T00:00:00Z'),
+    updatedAt: new Date('2024-10-16T00:00:00Z'),
   },
 
   {
@@ -56,8 +56,8 @@ export const habits = [
     description: 'practice speaking english with my language buddies',
     startDate: new Date('2024-10-03T00:00:00Z'),
     durationInDays: 7,
-    createdAt: '2024-10-16T00:00:00Z',
-    updatedAt: '2024-10-16T00:00:00Z',
+    createdAt: new Date('2024-10-16T00:00:00Z'),
+    updatedAt: new Date('2024-10-16T00:00:00Z'),
   },
 ];
 

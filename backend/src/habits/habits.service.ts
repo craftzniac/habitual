@@ -1,52 +1,59 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-// import { Habit } from 'src/types';
-import { habits } from 'src/mockData';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateHabitDto } from './dto/create-habit.dto';
-import { generateId } from 'src/utils';
-import { Habit } from 'src/types';
 import { UpdateHabitDto } from './dto/update-habit.dto';
+import { Repository } from 'typeorm';
+import { Habit } from './entity/habit.entity';
 
 @Injectable()
 export class HabitsService {
-  habits = habits;
+  constructor(
+    @InjectRepository(Habit)
+    private habitsRepository: Repository<Habit>,
+  ) { }
 
-  getUserHabits(userId: string) {
-    return habits.filter((habit) => habit.userId === userId);
+  /**
+   * Finds all habits for a specific user
+   * */
+  async getUserHabits(userId: string): Promise<Habit[]> {
+    const habits = await this.habitsRepository.find({ where: { userId } });
+    return habits;
   }
 
-  create(createHabitDto: CreateHabitDto): Habit {
-    const id = generateId();
-    const createdAt = new Date().toISOString();
-    const newHabit = {
-      id,
-      userId: createHabitDto.userId,
+  async create(createHabitDto: CreateHabitDto): Promise<Habit> {
+    const habitEntity = this.habitsRepository.create({
       name: createHabitDto.name,
-      description: createHabitDto.description ?? '',
       startDate: createHabitDto.startDate,
       durationInDays: createHabitDto.durationInDays,
-      createdAt,
-      updatedAt: createdAt,
-    };
-    this.habits.push(newHabit);
-    return newHabit;
-  }
-
-  update(updateHabitDto: UpdateHabitDto): Habit {
-    const habit = this.habits.find((habit) => habit.id === updateHabitDto.id);
-    if (!habit) {
-      throw new NotFoundException('Habit not found', {
-        description: 'Requested Habit does not exist',
-      });
-    }
-    habit.durationInDays = updateHabitDto.durationInDays;
-    habit.startDate = updateHabitDto.startDate;
-    habit.description = updateHabitDto.description ?? '';
-    habit.name = updateHabitDto.name;
+      description: createHabitDto.description ?? '',
+      userId: createHabitDto.userId,
+    });
+    const habit = await this.habitsRepository.save(habitEntity);
     return habit;
   }
 
-  delete(habitId: string): { isDeleted: boolean; habitId: string } {
-    this.habits = this.habits.filter((habit) => habit.id !== habitId);
-    return { isDeleted: true, habitId };
+  async update(id: string, updateHabitDto: UpdateHabitDto): Promise<Habit> {
+    await this.habitsRepository.update(
+      { id },
+      {
+        description: updateHabitDto.description,
+        userId: updateHabitDto.userId,
+        durationInDays: updateHabitDto.durationInDays,
+        startDate: updateHabitDto.startDate,
+        name: updateHabitDto.name,
+      },
+    );
+    const updatedHabit = await this.habitsRepository.findOneBy({ id });
+    if (!updatedHabit) {
+      throw new InternalServerErrorException('Something went wrong', {
+        description: 'Could not find the habit',
+      });
+    }
+    return updatedHabit;
+  }
+
+  async delete(habitId: string): Promise<{ id: string }> {
+    await this.habitsRepository.softDelete({ id: habitId });
+    return { id: habitId };
   }
 }
