@@ -23,10 +23,10 @@ export default function Login() {
                     <form className="w-full flex flex-col gap-4" onSubmit={handleSubmit}>
                         <TextField label="Email" name="email" />
                         <TextField label="Password" name="password" />
-                        <Button label="Login" isSubmit={true} />
+                        <Button label="Login" isSubmit={true} stretch={true} />
                     </form>
                     <p className="text-[0.81rem] font-bold text-gray-75">Or Continue with</p>
-                    <Button variant="gray" label="Google">
+                    <Button variant="gray" label="Google" stretch>
                         <Image src={GoogleLogo} alt="google logo" />
                     </Button>
 

@@ -9,11 +9,12 @@ type Props = {
     labelClassName?: string,
     stretch?: boolean,
     onClick?: (e: MouseEvent<HTMLButtonElement>) => void
+    disabled?: boolean
 }
 
 type ButtonVariant = "primary" | "text-btn" | "gray" | "delete"
 
-export default function Button({ label, labelClassName, isSubmit = true, variant = "primary", children, stretch = false, onClick }: Props) {
+export default function Button({ label, labelClassName, isSubmit = true, variant = "primary", children, stretch = false, onClick, disabled = false }: Props) {
     const variantStyle = getVariantSpecificStyle(variant)
 
     function handleOnClick(e: MouseEvent<HTMLButtonElement>) {
@@ -24,9 +25,10 @@ export default function Button({ label, labelClassName, isSubmit = true, variant
     }
     return (
         <button
+            disabled={disabled}
             onClick={handleOnClick}
             type={isSubmit === true ? "submit" : "button"}
-            className={`rounded-full min-w-fit text-sm py-2 px-4 font-bold flex items-center justify-center gap-1  ${variantStyle} ${stretch ? "w-full" : "w-fit"}`}>
+            className={`rounded-full min-w-fit text-sm py-3 px-6 font-bold flex items-center justify-center gap-1  ${variantStyle} ${stretch ? "w-full" : "w-fit"} ${disabled ? "opacity-50" : "opacity-100"}`}>
             <span className="flex">
                 {children}
             </span>

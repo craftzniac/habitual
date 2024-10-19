@@ -35,3 +35,9 @@ export type Habit = {
 	isCompleted: boolean,
 	stats: HabitStats
 }
+
+export type SignupFormInputs = {
+	email: string;
+	username: string;
+	password: string
+}
