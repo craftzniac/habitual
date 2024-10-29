@@ -1,18 +1,43 @@
 "use client"
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 import Image from "next/image";
 import Logo from "@/app/assets/logo.svg"
 import Link from "next/link"
 import TextField from "@/app/components/form/TextField";
 import Button from "@/app/components/form/Button";
 import { GoogleLogo } from "@/app/assets/icons";
-import { ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { LoginFormInputs } from "@/app/types";
+import PasswordField from "../components/PasswordField";
 
 export default function Login() {
-    const router = useRouter()
-    function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        router.push("/overview")
+    const [isSubmittingForm, setIsSubmittingForm] = useState(false);
+    const { register, formState: { errors }, handleSubmit, reset } = useForm({
+        defaultValues: {
+            email: "", password: "",
+        }
+    });
+    const router = useRouter();
+    const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
+        setIsSubmittingForm(true);
+        const result = await signIn("credentials", {
+            email: data.email, password: data.password, redirect: false
+        })
+        setIsSubmittingForm(false);
+        if (!result) {
+            alert("Couldn't complete signin");
+            return;
+        }
+
+        if (result.status === 200) {
+            alert("Signin successful!");
+            reset();
+            router.push("/overview")
+        } else {
+            alert(result.error);
+        }
     }
     return (
         <div className="w-full h-full flex p-4">
@@ -20,13 +45,27 @@ export default function Login() {
                 <Image src={Logo} alt="logo" />
                 <div className="flex flex-col w-full h-full items-center gap-4">
                     <h1 className="font-bold text-lg">Welcome Back!</h1>
-                    <form className="w-full flex flex-col gap-4" onSubmit={handleSubmit}>
-                        <TextField label="Email" name="email" />
-                        <TextField label="Password" name="password" />
-                        <Button label="Login" isSubmit={true} stretch={true} />
+                    <form className="w-full flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+
+                        <TextField
+                            register={register("email", {
+                                required: "Email must not be empty",
+                                pattern: {
+                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                    message: "Email address is not valid"
+                                }
+                            })}
+                            label="Email"
+                            name="email"
+                            infoText={errors.email?.message}
+                        />
+
+                        <PasswordField register={register} errorMsg={errors.password?.message} />
+
+                        <Button label={isSubmittingForm ? "loading..." : "Login"} isSubmit={true} stretch={true} disabled={isSubmittingForm} />
                     </form>
                     <p className="text-[0.81rem] font-bold text-gray-75">Or Continue with</p>
-                    <Button variant="gray" label="Google" stretch>
+                    <Button variant="gray" label="Google" isSubmit={true} stretch disabled={isSubmittingForm}>
                         <Image src={GoogleLogo} alt="google logo" />
                     </Button>
 

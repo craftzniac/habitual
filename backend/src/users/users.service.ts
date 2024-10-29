@@ -20,12 +20,18 @@ export class UsersService {
    */
   async getUserByEmail(email: string): Promise<User> {
     const user = await this.usersRepository.findOneBy({ email });
+    if (!user) {
+      return null;
+    }
     delete user.deletedAt;
     return user;
   }
 
   async getUserById(id: string): Promise<User> {
     const user = await this.usersRepository.findOneBy({ id });
+    if (!user) {
+      return null;
+    }
     delete user.deletedAt;
     return user;
   }

@@ -1,3 +1,4 @@
+import { FieldValues, UseFormRegister } from "react-hook-form";
 import { reminderTimeOptions } from "./data";
 
 export type User = {
@@ -40,4 +41,11 @@ export type SignupFormInputs = {
 	email: string;
 	username: string;
 	password: string
+}
+
+export type LoginFormInputs = Omit<SignupFormInputs, "username">
+
+export type LoginPageProps = {
+	register: UseFormRegister<SignupFormInputs | LoginFormInputs>,
+	errorMsg?: string
 }

@@ -2,7 +2,8 @@ import { ReactNode } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import BottomNavigation from "./components/BottomNavigation";
-export default function Layout({ children }: { children: ReactNode }) {
+
+export default async function Layout({ children }: { children: ReactNode }) {
     return (
         <div className="flex w-full h-full">
             <Sidebar />

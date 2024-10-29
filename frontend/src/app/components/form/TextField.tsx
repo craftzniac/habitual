@@ -1,5 +1,5 @@
 import { SignupFormInputs } from "@/app/types"
-import { Path, RegisterOptions, UseFormRegister, UseFormRegisterReturn } from "react-hook-form"
+import { Path, UseFormRegisterReturn } from "react-hook-form"
 
 type Props = {
     label: string,
