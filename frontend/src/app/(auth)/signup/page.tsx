@@ -36,7 +36,7 @@ export default function Signup() {
   }
 
   return (
-    <div className="w-full h-full flex p-4">
+    <div className="w-full h-fit flex p-4 max-w-[28rem]">
       <main className="w-full h-full flex flex-col items-center gap-4">
         <Image src={Logo} alt="logo" />
         <div className="flex flex-col w-full h-full items-center gap-4">
