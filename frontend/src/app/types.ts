@@ -29,13 +29,27 @@ export type Day = {
 	status: "fulfilled" | "missed" | "remaining"
 }
 
+// ;;Old;;
+// export type Habit = {
+// 	id: string,
+// 	title: string,
+// 	description: string,
+// 	isCompleted: boolean,
+// 	stats: HabitStats
+// }
+
 export type Habit = {
-	id: string,
-	title: string,
-	description: string,
-	isCompleted: boolean,
-	stats: HabitStats
-}
+	id: string;
+	userId: string;
+	name: string;
+	description: string;
+	startDate: Date;
+	durationInDays: number;
+	createdAt: string;
+	updatedAt: string;
+};
+
+
 
 export type SignupFormInputs = {
 	email: string;

@@ -18,6 +18,8 @@ export const authOptions: NextAuthOptions = {
                 try {
                     const { data: user } = await api.post("/auth/login", { email: credentials.email, password: credentials.password })
 
+                    console.log("accesstoken:", user.accessToken);
+
                     return { id: user.userId, accessToken: user.accessToken };
                 } catch (err) {
                     const error = err as AxiosError;
@@ -46,9 +48,10 @@ export const authOptions: NextAuthOptions = {
 
             return token;
         },
-        // session({ session, token }) {
-        //     return session;
-        // }
+        session({ session, token }) {
+            session.user.accessToken = (token.accessToken) as string;
+            return session;
+        }
     },
     jwt: {
         maxAge: 2 * 24 * 60 * 60  // 2 days

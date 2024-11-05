@@ -1,37 +1,26 @@
-import { habitSegBtns } from "@/app/data"
-import SegmentBtn from "./components/SegmentBtn";
-import HabitList from "./components/HabitList";
-import { redirect } from "next/navigation";
+import HabitCard from "../components/HabitCard";
+import { getHabits } from "@/app/server-actions/habits";
+import ErrorPage from "./error-page";
 
-export default function Habits({ searchParams }: {
-    searchParams: {
-        filter: string
+export default async function Habits() {
+    const res = await getHabits();
+    console.log("res:", res);
+    if (res.success === false) {
+        console.log("error just occured:", res.message);
+        return <ErrorPage errorMsg={res.message} />
     }
-}) {
-    if (!searchParams.filter) {
-        searchParams.filter = "today"
-        redirect(`/habits?filter=${searchParams.filter}`)
-    }
-
     return (
         <section className="w-full h-fit flex flex-col gap-4 px-4">
-            {/* segmented buttons menu */}
-            <ul className="flex gap-2 w-full overflow-x-auto thin-scrollbar">
+            <ul className="flex flex-col gap-4 w-full h-full">
                 {
-                    habitSegBtns.map(
-                        segBtn => (
-                            <li key={segBtn.text} className="">
-                                {
-                                    <SegmentBtn segBtn={segBtn} currentFilter={searchParams.filter} />
-                                }
-                            </li>
-                        )
-                    )
+                    res.data.map(habit => (
+                        <HabitCard
+                            key={habit.id}
+                            habit={habit}
+                        />
+                    ))
                 }
             </ul>
-
-            {/* habit list */}
-            <HabitList filter={searchParams.filter} />
         </section>
     )
 }

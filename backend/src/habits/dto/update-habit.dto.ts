@@ -12,10 +12,6 @@ export class UpdateHabitDto {
   @IsString({ message: 'Provide a valid habit id' })
   id: string;
 
-  @IsNotEmpty({ message: 'User Id should not be empty' })
-  @IsString({ message: 'Provide a valid user id' })
-  userId: string;
-
   @IsNotEmpty()
   @IsString({ message: 'Provide a valid name' })
   name: string;

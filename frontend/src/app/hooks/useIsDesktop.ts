@@ -3,13 +3,14 @@ import { useEffect, useState } from "react"
 
 export function useIsDesktop() {
 	const mdScreen = 768;
-	const [isDesktop, setIsDesktop] = useState(() => {
-		if (window) {
-			return window.innerWidth >= mdScreen
-		}
-		return false;
-	})
+	const [isDesktop, setIsDesktop] = useState<boolean | undefined>();
 	useEffect(() => {
+		if (window) {
+			setIsDesktop(
+				window.innerWidth >= mdScreen
+			);
+		}
+
 		function handleResize() {
 			setIsDesktop(window.innerWidth >= mdScreen)
 		}

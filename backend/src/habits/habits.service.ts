@@ -20,24 +20,28 @@ export class HabitsService {
     return habits;
   }
 
-  async create(createHabitDto: CreateHabitDto): Promise<Habit> {
+  async create(userId: string, createHabitDto: CreateHabitDto): Promise<Habit> {
     const habitEntity = this.habitsRepository.create({
       name: createHabitDto.name,
       startDate: createHabitDto.startDate,
       durationInDays: createHabitDto.durationInDays,
       description: createHabitDto.description ?? '',
-      userId: createHabitDto.userId,
+      userId,
     });
     const habit = await this.habitsRepository.save(habitEntity);
     return habit;
   }
 
-  async update(id: string, updateHabitDto: UpdateHabitDto): Promise<Habit> {
+  async update(
+    userId: string,
+    id: string,
+    updateHabitDto: UpdateHabitDto,
+  ): Promise<Habit> {
     await this.habitsRepository.update(
       { id },
       {
         description: updateHabitDto.description,
-        userId: updateHabitDto.userId,
+        userId,
         durationInDays: updateHabitDto.durationInDays,
         startDate: updateHabitDto.startDate,
         name: updateHabitDto.name,
