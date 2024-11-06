@@ -10,8 +10,10 @@ import { GoogleLogo } from "@/app/assets/icons";
 import { SignupFormInputs } from "@/app/types";
 import { signup } from "@/app/server-actions/signup";
 import { useState } from "react";
+import { useToast } from "@/app/components/toast/ToastProvider";
 
 export default function Signup() {
+  const { toast } = useToast();
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
@@ -27,11 +29,12 @@ export default function Signup() {
     setIsSubmittingForm(true);
     const res = await signup(fields);
     setIsSubmittingForm(false);
-    console.log("res:", res);
     if (res.success === true) {
+      toast("Account created successfully!");
       reset();
-      console.log("Account created successfully!");
-      // router.push("/overview");
+      router.push("/overview");
+    } else {
+      toast(res.message, { type: "error" });
     }
   }
 

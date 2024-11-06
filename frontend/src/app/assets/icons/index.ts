@@ -34,6 +34,8 @@ import Hook from "./hook.svg"
 import Paper_Plane_24 from "./paper_plane_24.svg"
 import X_16_Red from "./x _16_red.svg"
 import Angle_Down from "./angle_down_16.svg"
+import GreenCircleCheck from "./green-circle-check.svg"
+import RedCircleError from "./red-circle-error.svg"
 
 export {
     GoogleLogo,
@@ -71,5 +73,7 @@ export {
     Hook,
     Paper_Plane_24,
     X_16_Red,
-    Angle_Down
+    Angle_Down,
+    GreenCircleCheck,
+    RedCircleError
 }

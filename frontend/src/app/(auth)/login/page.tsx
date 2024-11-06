@@ -11,8 +11,10 @@ import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginFormInputs } from "@/app/types";
 import PasswordField from "../components/PasswordField";
+import { useToast } from "@/app/components/toast";
 
 export default function Login() {
+    const { toast } = useToast();
     const [isSubmittingForm, setIsSubmittingForm] = useState(false);
     const { register, formState: { errors }, handleSubmit, reset } = useForm({
         defaultValues: {
@@ -27,16 +29,16 @@ export default function Login() {
         })
         setIsSubmittingForm(false);
         if (!result) {
-            alert("Couldn't complete signin");
+            toast("Couldn't complete signin", { type: "error" });
             return;
         }
 
         if (result.status === 200) {
-            alert("Signin successful!");
+            toast("Signin successful!");
             reset();
             router.push("/overview")
         } else {
-            alert(result.error);
+            toast(result.error || "Something went wrong", { type: "error" });
         }
     }
     return (
