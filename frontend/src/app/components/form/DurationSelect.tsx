@@ -1,4 +1,3 @@
-"use client";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
 import { Angle_Down } from "@/app/assets/icons";

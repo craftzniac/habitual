@@ -1,29 +1,29 @@
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import { reminderTimeOptions } from "./data";
 
-export type User = {
+export type TUser = {
 	id: string,
 	email: string,
 	createdAt: string,
 }
 
-export type HabitReminder = {
+export type THabitReminder = {
 	id: string,
 	habitId: string,
-	timestamp: ReminderTime,
+	timestamp: TReminderTime,
 	timezone: string
 }
 
-export type ReminderTime = typeof reminderTimeOptions[number];
+export type TReminderTime = typeof reminderTimeOptions[number];
 
-export type HabitStats = {
+export type THabitStats = {
 	numberOfHabitDays: number,
 	numberOfFulfilledHabitDays: number,
 	numberOfMissedDays: number,
 	numberOfRemainingDays: number
 }
 
-export type Day = {
+export type TDay = {
 	id: string,
 	date: string,
 	status: "fulfilled" | "missed" | "remaining"
@@ -38,7 +38,7 @@ export type Day = {
 // 	stats: HabitStats
 // }
 
-export type Habit = {
+export type THabit = {
 	id: string;
 	userId: string;
 	name: string;
@@ -51,15 +51,15 @@ export type Habit = {
 
 
 
-export type SignupFormInputs = {
+export type TSignupFormInputs = {
 	email: string;
 	username: string;
 	password: string
 }
 
-export type LoginFormInputs = Omit<SignupFormInputs, "username">
+export type TLoginFormInputs = Omit<TSignupFormInputs, "username">
 
-export type LoginPageProps = {
-	register: UseFormRegister<SignupFormInputs | LoginFormInputs>,
+export type TLoginPageProps = {
+	register: UseFormRegister<TSignupFormInputs | TLoginFormInputs>,
 	errorMsg?: string
 }

@@ -1,4 +1,3 @@
-"use client"
 import { MouseEvent, ReactNode } from "react"
 
 type Props = {
