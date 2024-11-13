@@ -2,8 +2,11 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   Post,
   Req,
+  Request,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -12,6 +15,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
 import { AuthGuard } from './auth.guard';
+import { RefreshTokenDto } from './dto/refreshToken.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -44,5 +48,16 @@ export class AuthController {
   getMe(@Req() req: any) {
     const userId = req['user'].sub;
     return this.authService.getCurrentUser(userId);
+  }
+
+  @UsePipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+    }),
+  )
+  @Post('refresh-token')
+  refreshAccessToken(@Body() refreshTokenDto: RefreshTokenDto) {
+    return this.authService.refreshAccessToken(refreshTokenDto.refreshToken);
   }
 }

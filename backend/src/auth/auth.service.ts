@@ -25,11 +25,16 @@ export class AuthService {
       throw new UnauthorizedException('Email or Password is invalid');
     }
 
-    const payload = { sub: user.id, email: user.email };
     // sign jwt
-    const accessToken = await this.jwtService.signAsync(payload);
-
-    return { accessToken, userId: user.id };
+    const { accessToken, accessTokenExpiresIn } = await this.signAccessToken({
+      sub: user.id,
+      email: user.email,
+    });
+    const refreshToken = await this.signRefreshToken({
+      sub: user.id,
+      email: user.email,
+    });
+    return { accessToken, refreshToken, accessTokenExpiresIn, userId: user.id };
   }
 
   async signup(signupDto: SignupDto) {
@@ -41,14 +46,40 @@ export class AuthService {
 
     // create user in db
     const newUser = await this.usersService.createUser(signupDto);
-    const payload = { sub: newUser.id, email: newUser.email };
 
     // sign jwt
-    const accessToken = await this.jwtService.signAsync(payload);
+    const { accessToken, accessTokenExpiresIn } = await this.signAccessToken({
+      sub: newUser.id,
+      email: newUser.email,
+    });
+    const refreshToken = await this.signRefreshToken({
+      sub: newUser.id,
+      email: newUser.email,
+    });
 
     return {
       user: newUser,
       accessToken,
+      accessTokenExpiresIn,
+      refreshToken,
+    };
+  }
+
+  async signRefreshToken(payload: { sub: string; email: string }) {
+    return await this.jwtService.signAsync(payload, { expiresIn: '30m' });
+  }
+
+  async signAccessToken(payload: { sub: string; email: string }) {
+    const accessToken = await this.jwtService.signAsync(payload);
+    const decoded = await this.jwtService.decode(accessToken);
+
+    const accessTokenExpiresIn = new Date(
+      decoded.exp * 1000, // convert to milliseconds
+    ).toISOString();
+
+    return {
+      accessToken,
+      accessTokenExpiresIn,
     };
   }
 
@@ -56,5 +87,27 @@ export class AuthService {
     const user = await this.usersService.getUserById(id);
     delete user.password;
     return user;
+  }
+
+  async refreshAccessToken(refreshToken: string) {
+    try {
+      // make sure refreshToken is still valid.
+      const decoded = await this.jwtService.verify(refreshToken);
+
+      // sign a new access token if refresh token is still valid.
+      const { accessToken, accessTokenExpiresIn } = await this.signAccessToken({
+        sub: decoded.sub,
+        email: decoded.email,
+      });
+
+      return {
+        userId: decoded.sub,
+        accessToken,
+        accessTokenExpiresIn,
+        refreshToken,
+      };
+    } catch (err) {
+      throw new UnauthorizedException('Invalid refreshtoken');
+    }
   }
 }
