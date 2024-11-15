@@ -12,19 +12,19 @@ export default function BottomNavigation() {
         }
     }
     return (
-        <nav className="flex w-full px-6 py-2 bg-gray-2">
-            <ul className="flex items-center w-full justify-between">
+        <nav className="flex w-full px-4 py-2 bg-gray-2 lg:hidden">
+            <ul className="flex items-center w-full justify-between gap-1">
                 {navItems.map(item => (
-                    <li key={item.path} className="flex justify-center items-center">
-                        <Link href={item.path} className="text-[0.68rem] flex flex-col justify-center items-center">
+                    <li key={item.path}>
+                        <Link href={item.path} className="text-xs flex flex-col justify-center items-center">
                             {
                                 currentPath.startsWith(item.path) ? (
                                     <>
-                                        <Image src={item.activeIcon} alt={`${item.label} page icon`} />
+                                        <Image src={item.iconPurple} alt={`${item.label} icon`} />
                                         <span className="text-primary-500">{item.label}</span>
                                     </>
                                 ) : (
-                                    <Image src={item.icon} alt={`${item.label} page icon`} />
+                                    <Image src={item.iconGray} alt={`${item.label} icon`} />
                                 )
                             }
                         </Link>

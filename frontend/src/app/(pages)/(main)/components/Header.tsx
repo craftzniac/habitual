@@ -7,7 +7,7 @@ import AddHabitBtn from "../habits/components/AddHabitBtn"
 import BackButton from "./BackButton"
 import OverflowButton from "../habits/[id]/components/OverflowButton"
 import { habits as habitsDummyData } from "@/app/data"
-import { Compass_24, Edit_Pencil_24, Settings_24, Stats_24 } from "@/app/assets/icons"
+import { Compass_24, Edit_Pencil_24, Settings_24_Black, Stats_24 } from "@/app/assets/icons"
 import { THabit } from "@/app/types"
 
 type Params = {
@@ -106,7 +106,7 @@ export default function Header() {
                         <Image src={Stats_24} alt="" className="w-6 h-6 min-w-6" />
                     </Link>
                     <Link href={`/habit-buddies/${habitBuddy.id}/settings`}>
-                        <Image src={Settings_24} alt="" className="w-6 h-6 min-w-6" />
+                        <Image src={Settings_24_Black} alt="" className="w-6 h-6 min-w-6" />
                     </Link>
                 </div>
             </header>
