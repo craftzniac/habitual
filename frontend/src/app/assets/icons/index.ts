@@ -1,13 +1,13 @@
 import GoogleLogo from "./google_logo.svg"
-import Habits_24 from "./habits_24.svg"
-import Habits_24_Active from "./habits_24_active.svg"
-import House_24 from "./house_24.svg"
-import House_24_Active from "./house_24_active.svg"
+import Habits_24_Purple from "./habits_24_purple.svg"
+import Habits_24_Gray from "./habits_24_gray.svg"
+import House_24_Gray from "./house_24_gray.svg"
+import House_24_Purple from "./house_24_purple.svg"
 import Settings_24 from "./settings_24.svg"
 import Settings_24_Gray from "./settings_24_gray.svg"
-import Settings_24_Active from "./settings_24_active.svg"
-import Buddies_24 from "./buddies_24.svg"
-import Buddies_24_Active from "./buddies_24_active.svg"
+import Settings_24_Purple from "./settings_24_purple.svg"
+import Buddies_24_Gray from "./buddies_24_gray.svg"
+import Buddies_24_Purple from "./buddies_24_purple.svg"
 import Angle_Right_16 from "./angle_right_16.svg"
 import Plus_16_White from "./plus_16_white.svg"
 import Plus_16_Purple from "./plus_16_purple.svg"
@@ -39,15 +39,15 @@ import RedCircleError from "./red-circle-error.svg"
 
 export {
     GoogleLogo,
-    Habits_24,
-    Habits_24_Active,
-    House_24,
-    House_24_Active,
+    Habits_24_Gray,
+    Habits_24_Purple,
+    House_24_Gray,
+    House_24_Purple,
     Settings_24,
     Settings_24_Gray,
-    Settings_24_Active,
-    Buddies_24,
-    Buddies_24_Active,
+    Settings_24_Purple,
+    Buddies_24_Gray,
+    Buddies_24_Purple,
     Angle_Right_16,
     Plus_16_White,
     Plus_16_Purple,

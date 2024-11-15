@@ -1,12 +1,7 @@
 import {
-	House_24_Active,
-	House_24,
-	Habits_24_Active,
-	Habits_24,
-	Buddies_24_Active,
-	Buddies_24,
-	Settings_24_Active,
-	Settings_24
+	House_24_Purple, House_24_Gray, Settings_24_Purple, Settings_24_Gray, Habits_24_Purple, Habits_24_Gray,
+	Buddies_24_Gray,
+	Buddies_24_Purple,
 } from "@/app/assets/icons"
 import { User1, User2, User3 } from "./assets/images"
 
@@ -36,26 +31,26 @@ export const navItems = [
 	{
 		label: "Overview",
 		path: navPaths.OVERVIEW,
-		icon: House_24,
-		activeIcon: House_24_Active
+		icon: House_24_Gray,
+		activeIcon: House_24_Purple
 	},
 	{
 		label: "Habits",
 		path: navPaths.HABITS.INDEX,
-		icon: Habits_24,
-		activeIcon: Habits_24_Active
+		icon: Habits_24_Gray,
+		activeIcon: Habits_24_Purple
 	},
 	// {
 	// 	label: "Habit Buddies",
 	// 	path: navPaths.HABIT_BUDDIES.INDEX,
-	// 	icon: Buddies_24,
-	// 	activeIcon: Buddies_24_Active
+	// 	icon: Buddies_24_Gray,
+	// 	activeIcon: Buddies_24_Purple
 	// },
 	{
 		label: "Settings",
 		path: navPaths.SETTINGS.INDEX,
-		icon: Settings_24,
-		activeIcon: Settings_24_Active
+		icon: Settings_24_Gray,
+		activeIcon: Settings_24_Purple
 	},
 ]
 
