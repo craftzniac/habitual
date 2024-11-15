@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authenticate } from "./app/middlewares/authenticate";
 import { baseUrl } from "./app/constants";
 
 export async function middleware(request: NextRequest) {
@@ -17,5 +16,16 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", baseUrl));
     }
   }
+}
 
+
+/**
+ * Check that this request was sent with a valid authentication cookie 
+ * */
+async function authenticate(request: NextRequest): Promise<boolean> {
+  // hit an api ednpoint that calls getServerSession on the request
+  const res = await (await fetch(`${baseUrl}/api/check-session`, {
+    headers: request.headers,
+  })).json();
+  return res.isAuthenticated;
 }

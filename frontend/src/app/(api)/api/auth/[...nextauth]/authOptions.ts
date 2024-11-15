@@ -1,7 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { AxiosError } from "axios";
-import { refreshAccessToken } from "@/app/(api)/server-actions/auth";
 import api from "@/app/services/api/axios.config";
 
 export const authOptions: NextAuthOptions = {
@@ -19,7 +18,7 @@ export const authOptions: NextAuthOptions = {
                 try {
                     const { data: user } = await api.post("/auth/login", { email: credentials.email, password: credentials.password })
 
-                    return { id: user.userId, accessToken: user.accessToken, accessTokenExpiresIn: user.accessTokenExpiresIn, refreshToken: user.refreshToken };
+                    return { id: user.userId, accessToken: user.accessToken, accessTokenExpiresIn: user.accessTokenExpiresIn };
                 } catch (err) {
                     const error = err as AxiosError;
 
@@ -37,14 +36,11 @@ export const authOptions: NextAuthOptions = {
         signIn: "/login",
     },
     callbacks: {
-        // signIn: ({ user, credentials }) => {
-        //     return true;
-        // },
         async jwt({ user, token }) {
             if (user) {
                 token.accessToken = (user as any).accessToken as string;
                 token.accessTokenExpiresIn = (user as any).accessTokenExpiresIn as string;
-                token.refreshToken = (user as any).refreshToken as string
+                token.error = undefined;
                 return token;
             }
 
@@ -52,34 +48,22 @@ export const authOptions: NextAuthOptions = {
             const currentAccessTokenExpireDate = new Date((token as any).accessTokenExpiresIn);
 
             console.log("now:", now, "   tokenexpireat:", currentAccessTokenExpireDate);
-            // Return previous token if the access token has not expired yet
+            // Return previous token if the access token has not yet expired
             if (now < currentAccessTokenExpireDate) {
-                return token
-            }
-            console.log("access token expired. get new one");
-            // Access token has expired, try to update it
-            const res = await refreshAccessToken((token as any).refreshToken);
-            if (!res.success) {
                 return {
                     ...token,
-                    error: res.error
-                };
+                    error: undefined
+                }
             }
-            const { accessToken, accessTokenExpiresIn, refreshToken } = res.data;
             return {
                 ...token,
-                accessToken,
-                accessTokenExpiresIn,
-                refreshToken
+                error: "token_expired"
             }
         },
 
-        session({ session, token }) {
-            if (token) {
-                session.user.accessToken = (token.accessToken) as string;
-                session.error = (token.error) as string;
-            }
-
+        async session({ session, token }) {
+            session.user.accessToken = (token.accessToken) as string;
+            session.error = (token.error) as string;
             return session;
         }
     },
