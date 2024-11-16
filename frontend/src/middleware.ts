@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { baseUrl } from "./app/constants";
+import { baseUrl } from "./app/utils/constants";
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;

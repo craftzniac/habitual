@@ -1,10 +1,10 @@
 "use client"
+import { useRouter } from "next/navigation";
 import { Paper_Plane_16 } from "@/app/assets/icons";
 import { Verify_Email } from "@/app/assets/illustrations";
-import Button from "@/app/components/form/Button";
-import { navPaths } from "@/app/data";
+import Button from "@/app/components/presentation/form/Button";
+import { navPaths } from "@/app/utils/constants";
 import Image from "next/image"
-import { useRouter } from "next/navigation";
 
 export default function VerifyEmail() {
     const router = useRouter()

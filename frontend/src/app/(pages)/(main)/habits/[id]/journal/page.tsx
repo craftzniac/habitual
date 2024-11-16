@@ -1,9 +1,9 @@
 "use client"
-import { habitDays } from "@/app/data";
-import { JournalDays } from "./components/JournalDays";
-import { JournalNote } from "./components/JournalNote";
 import { useState } from "react";
-import { TDay } from "@/app/types";
+import { habitDays } from "@/app/utils/testData";
+import { JournalDays } from "./components/presentation/JournalDays";
+import { JournalNote } from "./components/presentation/JournalNote";
+import { TDay } from "@/app/utils/types";
 
 export default function HabitJournal() {
     const [selectedDay, setSelectedDay] = useState((habitDays as TDay[])[0])

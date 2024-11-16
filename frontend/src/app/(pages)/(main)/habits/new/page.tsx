@@ -1,4 +1,4 @@
-import HabitForm from "../components/HabitForm"
+import HabitForm from "../components/logic/HabitForm"
 
 export default function NewHabit() {
     return (

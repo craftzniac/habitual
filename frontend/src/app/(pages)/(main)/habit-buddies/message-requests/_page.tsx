@@ -1,7 +1,7 @@
 import Image from "next/image"
-import { messageRequests } from "@/app/data"
+import { messageRequests } from "@/app/utils/testData"
 import { Check_16_White, X_16_White } from "@/app/assets/icons"
-import HabitCard from "../../components/HabitCard"
+import HabitCard from "../../components/presentation/HabitCard"
 
 export default function MessageRequests() {
     return (

@@ -1,6 +1,6 @@
 import HabitDays from "./components/HabitDays"
-import HabitStats from "../../components/HabitStats"
-import { habits } from "@/app/data"
+import HabitStats from "../../components/presentation/HabitStats"
+import { habits } from "@/app/utils/testData"
 
 type Props = {
     params: {

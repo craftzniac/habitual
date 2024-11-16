@@ -1,5 +1,5 @@
 "use client"
-import { habitBuddies } from "@/app/data"
+import { habitBuddies } from "@/app/utils/testData"
 import { User2 } from "@/app/assets/images"
 import Image from "next/image"
 import { Hook, Paper_Plane_24 } from "@/app/assets/icons"

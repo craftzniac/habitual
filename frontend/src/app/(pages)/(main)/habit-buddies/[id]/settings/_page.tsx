@@ -1,16 +1,16 @@
 "use client"
 
-import SwitchButton from "@/app/(main)/components/SwitchButton"
+import SwitchButton from "../../../components/presentation/SwitchButton"
 import { Edit_Pencil_16, X_16_Red } from "@/app/assets/icons"
 import { Profile_Image } from "@/app/assets/illustrations"
-import Button from "@/app/components/form/Button"
-import { habitBuddies, habits as habitsDummyData } from "@/app/data"
-import { Habit } from "@/app/types"
+import Button from "@/app/components/presentation/form/Button"
+import { habitBuddies, habits as habitsDummyData } from "@/app/utils/testData"
+import { THabit } from "@/app/utils/types"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 export default function BuddySettings() {
-    const habits = habitsDummyData as Habit[];
+    const habits = habitsDummyData as THabit[];
     const router = useRouter();
     const habitBuddy = habitBuddies[1]
     return (

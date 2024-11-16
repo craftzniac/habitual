@@ -2,10 +2,10 @@ import Image from "next/image";
 import {
     Day_32 as Day, Night_32 as Night
 } from "@/app/assets/illustrations"
-import StatsCard from "./components/StatsCard";
-import { completedHabits, habits as habitsDummyData } from "@/app/data";
-import FeaturedHabitsList from "./components/FeaturedHabitsList";
-import { THabit } from "@/app/types";
+import StatsCard from "./components/presentation/StatsCard";
+import { completedHabits, habits as habitsDummyData } from "@/app/utils/testData";
+import FeaturedHabitsList from "./components/presentation/FeaturedHabitsList";
+import { THabit } from "@/app/utils/types";
 
 
 async function Overview() {

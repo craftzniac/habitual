@@ -1,9 +1,9 @@
 "use client"
-import Button from "@/app/components/form/Button"
-import TextField from "@/app/components/form/TextField"
-import { navPaths } from "@/app/data"
 import { useRouter } from "next/navigation"
 import { FormEvent } from "react"
+import Button from "@/app/components/presentation/form/Button"
+import TextField from "@/app/components/presentation/form/TextField"
+import { navPaths } from "@/app/utils/constants"
 
 export default function NewEmail() {
     const router = useRouter()

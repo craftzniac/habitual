@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
-import BottomNavigation from "./components/BottomNavigation";
-import { getSessionOrSignout } from "@/app/(api)/api/auth/[...nextauth]/getSessionOrSignout";
+import Header from "./components/presentation/Header";
+import Sidebar from "./components/presentation/Sidebar";
+import BottomNavigation from "./components/presentation/BottomNavigation";
+import { getSessionOrSignout } from "@/app/api/auth/[...nextauth]/getSessionOrSignout";
 import { User1 } from "@/app/assets/images";
 
 export default async function Layout({ children }: { children: ReactNode }) {

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import sansFont from "../font";
-import { authOptions } from "../(api)/api/auth/[...nextauth]/authOptions";
+import sansFont from "../utils/font";
+import { authOptions } from "../api/auth/[...nextauth]/authOptions";
 import { getServerSession } from "next-auth";
 import SessionProvider from "../contexts/SessionProvider";
-import { ToastProvider } from "../components/toast";
+import { ToastProvider } from "../components/logic/toast";
 
 export const metadata: Metadata = {
   title: "Habitual",

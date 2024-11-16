@@ -2,10 +2,11 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import MessageRequestsButton from "./components/MessageRequestsButton"
-import { habitBuddies, navPaths } from "@/app/data"
+import MessageRequestsButton from "./components/presentation/MessageRequestsButton"
+import { navPaths } from "@/app/utils/constants"
+import { habitBuddies } from "@/app/utils/testData"
 import { No_Buddies } from "@/app/assets/illustrations"
-import Button from "@/app/components/form/Button"
+import Button from "@/app/components/presentation/form/Button"
 import { Compass_16_White, Compass_24 } from "@/app/assets/icons"
 export default function HabitBuddies() {
     const [isClient, setIsClient] = useState(false)
