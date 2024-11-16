@@ -1,4 +1,4 @@
-import HabitCard from "../../components/presentation/HabitCard";
+import HabitCard from "../../../components/presentation/HabitCard";
 import Image from "next/image";
 import { THabit } from "@/app/utils/types";
 import Link from "next/link"

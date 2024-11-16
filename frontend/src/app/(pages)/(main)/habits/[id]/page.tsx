@@ -1,4 +1,4 @@
-import HabitDays from "./components/HabitDays"
+import HabitDays from "./components/presentation/HabitDays"
 import HabitStats from "../../components/presentation/HabitStats"
 import { habits } from "@/app/utils/testData"
 

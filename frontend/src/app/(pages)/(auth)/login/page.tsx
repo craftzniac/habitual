@@ -4,14 +4,14 @@ import { useState } from "react";
 import Image from "next/image";
 import Logo from "@/app/assets/logo.svg"
 import Link from "next/link"
-import TextField from "@/app/components/form/TextField";
-import Button from "@/app/components/form/Button";
+import TextField from "@/app/components/presentation/form/TextField";
+import Button from "@/app/components/presentation/form/Button";
 import { GoogleLogo } from "@/app/assets/icons";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { TLoginFormInputs } from "@/app/types";
-import PasswordField from "../components/PasswordField";
-import { useToast } from "@/app/components/toast";
+import { TLoginFormInputs } from "@/app/utils/types";
+import PasswordField from "../components/presentation/PasswordField";
+import { useToast } from "@/app/components/logic/toast";
 
 export default function Login() {
     const { toast } = useToast();

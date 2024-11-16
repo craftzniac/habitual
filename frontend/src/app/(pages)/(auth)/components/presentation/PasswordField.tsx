@@ -1,5 +1,5 @@
-import TextField from "@/app/components/form/TextField";
-import { TLoginPageProps } from "@/app/types";
+import TextField from "@/app/components/presentation/form/TextField";
+import { TLoginPageProps } from "@/app/utils/types";
 
 export default function PasswordField({ register, errorMsg }: TLoginPageProps) {
   return (

@@ -4,13 +4,13 @@ import Image from "next/image";
 import Link from "next/link"
 import { useRouter } from "next/navigation";
 import Logo from "@/app/assets/logo.svg"
-import TextField from "@/app/components/form/TextField";
-import Button from "@/app/components/form/Button";
+import TextField from "@/app/components/presentation/form/TextField";
+import Button from "@/app/components/presentation/form/Button";
 import { GoogleLogo } from "@/app/assets/icons";
-import { TSignupFormInputs } from "@/app/types";
-import { signup } from "@/app/(api)/server-actions/auth";
+import { TSignupFormInputs } from "@/app/utils/types";
+import { signupAction } from "@/app/server-actions/signupAction";
 import { useState } from "react";
-import { useToast } from "@/app/components/toast/ToastProvider";
+import { useToast } from "@/app/components/logic/toast";
 
 export default function Signup() {
   const { toast } = useToast();
@@ -27,7 +27,7 @@ export default function Signup() {
 
   const onSubmit: SubmitHandler<TSignupFormInputs> = async (fields) => {
     setIsSubmittingForm(true);
-    const res = await signup(fields);
+    const res = await signupAction(fields);
     setIsSubmittingForm(false);
     if (res.success === true) {
       toast("Account created successfully!");
