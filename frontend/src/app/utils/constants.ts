@@ -79,15 +79,11 @@ export const habitSegBtns = [
 		filter: "today"
 	},
 	{
-		text: "In-Progress",
-		filter: "in-progress"
+		text: "On-going",
+		filter: "on-going"
 	},
 	{
 		text: "Completed",
 		filter: "completed"
 	},
-	{
-		text: "All",
-		filter: "all"
-	},
-]
+] as const

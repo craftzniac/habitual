@@ -1,4 +1,4 @@
-import { FieldValues, UseFormRegister } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 import { reminderTimeOptions } from "./testData";
 
 export type TUser = {
@@ -63,3 +63,6 @@ export type TLoginPageProps = {
 	register: UseFormRegister<TSignupFormInputs | TLoginFormInputs>,
 	errorMsg?: string
 }
+
+
+export type THabitFilter = "today" | "on-going" | "completed"
