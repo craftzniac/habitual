@@ -10,20 +10,22 @@ import {
   ValidationPipe,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { HabitsService } from './habits.service';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { HabitFilter } from 'src/types';
 
 @Controller('habits')
 @UseGuards(AuthGuard)
 export class HabitsController {
   constructor(private habitsService: HabitsService) { }
   @Get()
-  getAll(@Req() request: any) {
+  getAll(@Req() request: any, @Query('filter') filter: HabitFilter) {
     const userId = request.user.sub;
-    return this.habitsService.getUserHabits(userId);
+    return this.habitsService.getUserHabits({ userId, filter });
   }
 
   @HttpCode(201)
