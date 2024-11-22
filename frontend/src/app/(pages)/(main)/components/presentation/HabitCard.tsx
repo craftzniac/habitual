@@ -1,15 +1,15 @@
 import Image from "next/image";
 import Link from "next/link"
 import { Check_16_Purple, X_16_Red } from "@/app/assets/icons";
-import { THabit } from "@/app/utils/types"
+import { THabit, THabitFilter } from "@/app/utils/types"
+import CircularProgress from "./CircularProgress";
 
 type Prop = {
     habit: THabit,
 }
 
 export default function HabitCard({ habit }: Prop) {
-    const status = "on-going";
-    // let status: "completed" | "on-going" = "completed"
+    const status: THabitFilter = "on-going";
     return (
         <Link href={`/habits/${habit.id}`}
             className="rounded-lg bg-white border-2 border-primary-50 hover:bg-primary-50 hover:border-primary-100 transition-colors duration-200 p-3 flex flex-col gap-2 w-full"
@@ -28,7 +28,13 @@ export default function HabitCard({ habit }: Prop) {
                 <div className="flex gap-2">
                     {
                         status === "on-going" ? (
-                            <span className="w-full text-start text-sm text-primary-900/60 font-bold">Day {10} of {habit.durationInDays}</span>
+                            <span className="w-full flex items-center text-start text-sm text-primary-900/60 font-bold gap-2">
+                                <span className="w-full">day {10} of {habit.durationInDays}</span>
+                                <span className="flex gap-1 items-center">
+                                    <span className="font-bold">consistency</span>
+                                    <CircularProgress value={30} fontSize="0.9rem" strokeWidth={4} width={50} foregroundStroke="#923DE7" backgroundStroke="#F8E6F8" />
+                                </span>
+                            </span>
                         ) : (
                             <span className="flex items-center gap-2 text-xs">
                                 <span className="flex items-center w-full text-start text-primary-900/60 font-bold">
@@ -47,6 +53,3 @@ export default function HabitCard({ habit }: Prop) {
         </Link>
     )
 }
-
-
-

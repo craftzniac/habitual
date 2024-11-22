@@ -90,3 +90,4 @@ export type HabitDayJournal = {
   habitDayId: string;
   note: string;
 };
+export type HabitFilter = 'today' | 'on-going' | 'completed';
