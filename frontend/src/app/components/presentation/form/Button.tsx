@@ -12,7 +12,7 @@ type Props = {
     disabled?: boolean
 }
 
-type ButtonVariant = "primary" | "text-btn" | "gray" | "delete"
+type ButtonVariant = "primary" | "text-btn" | "gray" | "delete" | "secondary"
 
 export default function Button({ label, labelClassName, isSubmit = true, variant = "primary", children, stretch = false, onClick, disabled = false }: Props) {
     const variantStyle = getVariantSpecificStyle(variant)
@@ -28,7 +28,7 @@ export default function Button({ label, labelClassName, isSubmit = true, variant
             disabled={disabled}
             onClick={handleOnClick}
             type={isSubmit === true ? "submit" : "button"}
-            className={`rounded-full min-w-fit text-sm py-3 px-6 font-bold flex items-center justify-center gap-1  ${variantStyle} ${stretch ? "w-full" : "w-fit"} ${disabled ? "opacity-50" : "opacity-100"}`}>
+            className={`rounded-full min-w-fit text-sm py-3 px-6 transition-colors duration-200 font-bold flex items-center justify-center gap-1  ${variantStyle} ${stretch ? "w-full" : "w-fit"} ${disabled ? "opacity-50" : "opacity-100"}`}>
             <span className="flex">
                 {children}
             </span>
@@ -42,6 +42,9 @@ export default function Button({ label, labelClassName, isSubmit = true, variant
 function getVariantSpecificStyle(variant: ButtonVariant): string {
     if (variant === "primary") {
         return "text-white bg-primary-500"
+    }
+    if (variant === "secondary") {
+        return "border-primary-500 border-[1px] text-primary-500 bg-white hover:bg-primary-50"
     }
     if (variant === "delete") {
         return "text-white bg-red"

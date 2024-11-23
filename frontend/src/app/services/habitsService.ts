@@ -2,7 +2,12 @@ import { THabit, THabitFilter } from "../utils/types";
 import { AxiosError } from "axios";
 import api from "./axios.config";
 
-export async function getHabits({ accessToken, filter }: { accessToken: string, filter: THabitFilter }): Promise<{ success: true, data: THabit[] } | { success: false, message: string }> {
+export async function getHabits({ accessToken, filter }: { accessToken: string, filter: THabitFilter }): Promise<{
+	success: true, data: {
+		habits: THabit[],
+		filter: THabitFilter
+	}
+} | { success: false, message: string }> {
 	try {
 		const res = await api.get(`/habits`, {
 			params: {
