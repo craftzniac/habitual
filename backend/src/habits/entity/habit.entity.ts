@@ -1,3 +1,4 @@
+import { DayOfWeek } from 'src/types';
 import {
   Column,
   CreateDateColumn,
@@ -23,6 +24,12 @@ export class Habit {
 
   @Column({ type: 'date', nullable: false })
   startDate: Date;
+
+  @Column({ nullable: false, default: 'on-going' })
+  status: 'completed' | 'on-going';
+
+  @Column('varchar', { array: true, default: [] })
+  excludedDays: DayOfWeek[];
 
   @Column({ type: 'int', nullable: false })
   durationInDays: number;

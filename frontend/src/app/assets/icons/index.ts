@@ -44,6 +44,7 @@ import Angle_Down from "./angle_down_16.svg"
 import GreenCircleCheck from "./green-circle-check.svg"
 import RedCircleError from "./red-circle-error.svg"
 import Exit_16 from "./exit_16.svg"
+import Check_16_Purple from "./check_16_purple.svg"
 
 export {
     GoogleLogo,
@@ -91,5 +92,6 @@ export {
     Angle_Down,
     GreenCircleCheck,
     RedCircleError,
-    Exit_16
+    Exit_16,
+    Check_16_Purple
 }

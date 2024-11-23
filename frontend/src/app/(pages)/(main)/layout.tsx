@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import Header from "./components/presentation/Header";
 import Sidebar from "./components/presentation/Sidebar";
 import BottomNavigation from "./components/presentation/BottomNavigation";
 import { getSessionOrSignout } from "@/app/api/auth/[...nextauth]/getSessionOrSignout";
@@ -11,13 +10,12 @@ export default async function Layout({ children }: { children: ReactNode }) {
     return (
         <div className="flex w-full h-full">
             <Sidebar user={user} />
-            <section className="flex flex-col w-full h-full">
-                <Header />
-                <main className="flex w-full h-full overflow-hidden">
+            <div className="flex flex-col w-full h-full">
+                <div className="flex h-full w-full">
                     {children}
-                </main>
+                </div>
                 <BottomNavigation />
-            </section>
+            </div>
         </div>
     )
 }
