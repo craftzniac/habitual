@@ -3,22 +3,62 @@ import {
     Day_32 as Day, Night_32 as Night
 } from "@/app/assets/illustrations"
 import StatsCard from "./components/presentation/StatsCard";
-import { completedHabits, habits as habitsDummyData } from "@/app/utils/testData";
-import FeaturedHabitsList from "./components/presentation/FeaturedHabitsList";
-import { THabit } from "@/app/utils/types";
+import Habits from "../habits/components/presentation/Habits";
+import { Suspense } from "react";
+import Loading from "@/app/components/presentation/Loading";
 
 
 async function Overview() {
-    const username = "victor123";
+    return (
+        <div className="h-full w-full flex flex-col overflow-hidden">
+            <header className="flex items-center px-4 py-2 gap-1 w-full">
+                <h1 className="text-lg font-bold w-full">Overview</h1>
+            </header>
+            <main className="w-full h-full flex flex-col gap-12 overflow-y-auto">
+                <GreetingAndStats />
+
+                {/* today habits */}
+
+                <section className="flex flex-col gap-8 w-full p-4">
+                    <h3 className="font-bold text-lg w-full">Today&apos;s Habits</h3>
+                    <Suspense fallback={<Loading />}>
+                        <Habits filter="today" />
+                    </Suspense>
+                </section>
+
+
+                {/* in progress habits */}
+
+                <section className="flex flex-col gap-8 w-full p-4">
+                    <h3 className="font-bold text-lg w-full">On-going Habits</h3>
+                    <Suspense fallback={<Loading />}>
+                        <Habits filter="on-going" />
+                    </Suspense>
+                </section>
+
+
+                {/*completed habits*/}
+                <section className="flex flex-col gap-8 w-full p-4">
+                    <h3 className="font-bold text-lg w-full">Completed Habits</h3>
+                    <Suspense fallback={<Loading />}>
+                        <Habits filter="completed" />
+                    </Suspense>
+                </section>
+            </main>
+        </div>
+    )
+}
+
+function GreetingAndStats() {
+    const username = "craftzniac";
     const greeting = "Good Afternoon";
     const todayDate = "Sunday, 8 June 2024";
     const isDay = true;
-    const habits = habitsDummyData as THabit[];
 
     return (
-        <section className="w-full h-full flex flex-col gap-12 overflow-y-auto">
+        <>
             {/* greeting */}
-            <section className="w-full flex items-center p-4 gap-4">
+            < section className="w-full flex items-center p-4 gap-4" >
                 <div className="flex flex-col w-full items-start gap-2">
                     <span className="text-lg font-bold text-gray-75 capitalize">{greeting}</span>
                     <h2 className="font-bold text-[1.69rem]">{username}</h2>
@@ -29,23 +69,19 @@ async function Overview() {
                         isDay ? Day : Night
                     } alt="" />
                 </div>
-            </section>
+            </section >
             {/* stats */}
-            <section className="flex flex-col w-full gap-4 p-4">
+            < section className="flex flex-col w-full gap-4 p-4 h-fit" >
                 <div className="grid grid-cols-2 gap-4 w-full">
                     <StatsCard title="Habits completed today" val="3" otherVal="of 5" />
                     <StatsCard title="Completed today" val="5" />
                 </div>
                 <StatsCard title="Habits in-progress" val="4" />
-            </section>
-            {/* today habits */}
-            <FeaturedHabitsList title="Today&apos;s Habits" habits={habits} />
-            {/* in progress habits */}
-            <FeaturedHabitsList title="Ongoing Habits" viewAllLink="/habits?in-progress" habits={habits} />
-            {/* completed habits */}
-            <FeaturedHabitsList title="Completed Habits" viewAllLink="/habits?completed" habits={completedHabits as THabit[]} />
-        </section>
+            </section >
+
+        </>
     )
+
 }
 
 export default Overview

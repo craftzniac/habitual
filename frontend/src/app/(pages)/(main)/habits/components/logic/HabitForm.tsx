@@ -1,3 +1,4 @@
+"use client"
 import DateField from "@/app/components/presentation/form/DateField";
 import DurationSelect from "@/app/components/presentation/form/DurationSelect";
 import TextArea from "@/app/components/presentation/form/TextArea";

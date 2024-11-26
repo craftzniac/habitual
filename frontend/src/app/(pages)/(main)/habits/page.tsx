@@ -1,10 +1,8 @@
-import { Plus_16_White } from "@/app/assets/icons";
-import Button from "@/app/components/presentation/form/Button";
-import Image from "next/image";
 import SegmentBtns from "./components/presentation/SegmentBtns";
 import { THabitFilter } from "@/app/utils/types";
 import { redirect } from "next/navigation";
-import Habits from "./components/logic/Habits";
+import Habits from "./components/presentation/Habits";
+import AddHabitBtn from "./components/presentation/AddHabitBtn";
 
 export default async function HabitsPage({ searchParams }: { searchParams: { filter?: string } }) {
     let filter: THabitFilter;
@@ -14,20 +12,19 @@ export default async function HabitsPage({ searchParams }: { searchParams: { fil
         filter = "today"
         redirect(`/habits?filter=${filter}`)
     }
-
     return (
-        <div className="h-full w-full flex flex-col">
+        <div className="h-full w-full flex flex-col overflow-hidden">
             <header className="flex items-center px-4 py-2 gap-1 w-full">
                 <h1 className="text-lg font-bold w-full">Habits</h1>
-                <Button label="Add Habit">
-                    <Image src={Plus_16_White} alt="plus icon" />
-                </Button>
+                <AddHabitBtn />
             </header>
             <main className="flex flex-col w-full h-full">
                 <div className="px-4">
                     <SegmentBtns filter={filter} />
                 </div>
-                <Habits filter={filter} />
+                <div className="p-4 flex w-full h-full overflow-y-auto">
+                    <Habits filter={filter} />
+                </div>
             </main>
         </div>
     )
