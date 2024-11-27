@@ -1,9 +1,9 @@
-import { TSignupFormInputs } from "@/app/utils/types"
-import { Path, UseFormRegisterReturn } from "react-hook-form"
+import { UseFormRegisterReturn } from "react-hook-form"
 
 type Props = {
     label: string,
-    name: Path<TSignupFormInputs>,
+    // name: Path<TSignupFormInputs>,
+    name: any,
     type?: "password" | "text",
     infoText?: string,
     infoTextType?: "error" | "info"

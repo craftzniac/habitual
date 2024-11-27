@@ -1,7 +1,7 @@
 "use client";
 import { Dispatch, ReactNode, SetStateAction, createContext, useCallback, useContext, useState } from "react";
 import { Toast, type ToastMessage } from "./Toast";
-import { generateId } from "@/app/utils/helpers/generateId";
+import { generateId } from "@/app/utils/helpers/tinyHelpers";
 
 const ToastContext = createContext<{
   messages: ToastMessage[],
