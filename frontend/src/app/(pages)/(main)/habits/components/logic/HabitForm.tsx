@@ -20,7 +20,7 @@ type Inputs = {
     reminders: Set<TReminderTime>
 }
 
-export default function HabitForm() {
+export default function HabitForm({ mode }: { mode: "edit" | "add" }) {
     const { reset, control, register, handleSubmit, formState: {
         errors
     } } = useForm<Inputs>({
