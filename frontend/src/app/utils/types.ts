@@ -90,9 +90,11 @@ export type THabit = {
 	id: string;
 	userId: string;
 	name: string;
-	description: string;
+	description?: string;
 	startDate: Date;
 	durationInDays: number;
+	frequency?: Set<TDayOfWeek>;
+	reminders?: Set<TReminderTime>;
 	createdAt: string;
 	updatedAt: string;
 };

@@ -13,7 +13,7 @@ export default function NewHabit() {
                 <h1 className="text-lg font-bold w-full">Add new Habit</h1>
             </header>
             <main className="flex h-full w-full overflow-y-auto px-4">
-                <HabitForm />
+                <HabitForm mode="add" />
             </main>
         </div>
     )

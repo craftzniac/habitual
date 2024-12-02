@@ -1,4 +1,5 @@
-import { DayOfWeek } from 'src/types';
+import { daysOfWeek } from 'src/constants';
+import { DayOfWeek, ReminderTime } from 'src/types';
 import {
   Column,
   CreateDateColumn,
@@ -28,8 +29,11 @@ export class Habit {
   @Column({ nullable: false, default: 'on-going' })
   status: 'completed' | 'on-going';
 
-  @Column('varchar', { array: true, default: [] })
-  excludedDays: DayOfWeek[];
+  @Column('varchar', { array: true, default: [...daysOfWeek], nullable: false })
+  freqency: DayOfWeek[];
+
+  @Column('varchar', { array: true, default: [], nullable: false })
+  reminders: ReminderTime[];
 
   @Column({ type: 'int', nullable: false })
   durationInDays: number;

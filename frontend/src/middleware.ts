@@ -1,31 +1,22 @@
-import { NextRequest, NextResponse } from "next/server";
-import { baseUrl } from "./app/utils/constants";
+import withAuth from "next-auth/middleware";
 
-export async function middleware(request: NextRequest) {
-  const path = request.nextUrl.pathname;
-
-  if (
-    path.startsWith("/overview")
-    || path.startsWith("/habits")
-    || path.startsWith("/settings")
-  ) {
-    const isAuthenticated = await authenticate(request);
-    if (isAuthenticated) {
-      return NextResponse.next();
-    } else {
-      return NextResponse.redirect(new URL("/login", baseUrl));
+export default withAuth(
+  function middleware(req) {
+    // console.log(req.nextauth.token?.accessToken);
+  },
+  {
+    callbacks: {
+      // middleware() is called if this callback function returns true
+      authorized: ({ token }) => {
+        const accessToken = token?.accessToken;
+        return !!accessToken;
+      }
     }
   }
-}
+);
 
-
-/**
- * Check that this request was sent with a valid authentication cookie 
- * */
-async function authenticate(request: NextRequest): Promise<boolean> {
-  // hit an api ednpoint that calls getServerSession on the request
-  const res = await (await fetch(`${baseUrl}/api/check-session`, {
-    headers: request.headers,
-  })).json();
-  return res.isAuthenticated;
+export const config = {
+  matcher: [
+    "/overview", "/habits/:path*", "/settings"
+  ]
 }

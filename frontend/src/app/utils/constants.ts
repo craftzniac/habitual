@@ -36,7 +36,7 @@ export const navPaths = {
 			}
 		}
 	},
-}
+} as const
 
 export const navItems = [
 	{

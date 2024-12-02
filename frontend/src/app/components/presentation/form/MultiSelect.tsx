@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Angle_Down, Check_16_White } from "@/app/assets/icons";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { TDayOfWeek } from "@/app/utils/types";
 import { daysOfWeekOptions } from "@/app/utils/constants";
 import { capitalizeEachWord } from "@/app/utils/helpers/tinyHelpers";
@@ -80,10 +80,8 @@ export default function MultiSelect({ errMsg, placeholder, name, label, value, o
                             <ul className={`flex flex-col bg-gray-2 border-[1px] border-primary-50 w-full p-2 rounded-lg max-h-[12rem] overflow-y-auto gap-1`}>
                                 {
                                     daysOfWeekOptions.map(day => (
-                                        <>
-                                            <li
-                                                key={day.value}
-                                            >
+                                        <Fragment key={day.value}>
+                                            <li>
                                                 <label
                                                     tabIndex={0}
                                                     className={`cursor-pointer flex  items-center px-2 py-2 gap-2 rounded-lg hover:bg-gray-5 w-full text-sm`}
@@ -110,7 +108,7 @@ export default function MultiSelect({ errMsg, placeholder, name, label, value, o
                                                 //
                                                 // <div className="w-full flex h-5 bg-primary-500 rounded-full last:hidden"></div>
                                             }
-                                        </>
+                                        </Fragment>
                                     ))
                                 }
                             </ul>

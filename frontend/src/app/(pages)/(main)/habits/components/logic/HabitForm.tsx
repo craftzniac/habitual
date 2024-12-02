@@ -10,6 +10,11 @@ import RemindersInput from "../presentation/RemindersInput";
 import MultiSelect from "@/app/components/presentation/form/MultiSelect";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { TDayOfWeek, TReminderTime } from "@/app/utils/types";
+import { createHabitAction } from "@/app/server-actions/habitActions";
+import { useState } from "react";
+import { useToast } from "@/app/components/logic/toast";
+import { useRouter } from "next/navigation";
+import { navPaths } from "@/app/utils/constants";
 
 type Inputs = {
     name: string,
@@ -21,6 +26,9 @@ type Inputs = {
 }
 
 export default function HabitForm({ mode }: { mode: "edit" | "add" }) {
+    const router = useRouter();
+    const { toast } = useToast();
+    const [isSubmittingForm, setIsSubmittingForm] = useState(false);
     const { reset, control, register, handleSubmit, formState: {
         errors
     } } = useForm<Inputs>({
@@ -36,10 +44,22 @@ export default function HabitForm({ mode }: { mode: "edit" | "add" }) {
         }
     });
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log("data:", data);
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        setIsSubmittingForm(true);
 
-        // reset();
+        if (mode === "add") {
+            const error = await createHabitAction({ ...data, startDate: new Date(data.startDate), durationInDays: data.durationInDays as number });
+            if (error) {
+                toast(error, { type: "error" });
+                // alert(error);
+            } else {
+                toast("Habit created successfully!");
+                reset();
+                // go back to  the /habits page
+                router.push('/habits');
+            }
+        }
+        setIsSubmittingForm(false);
     }
 
     return (
@@ -84,7 +104,7 @@ export default function HabitForm({ mode }: { mode: "edit" | "add" }) {
                     <RemindersInput name={name} label="Reminders" onChange={onChange} value={value} onBlur={onBlur} errMsg={errors.reminders?.message} />
                 )}
             />
-            <Button isSubmit label="Add Habit" stretch>
+            <Button isSubmit label="Add Habit" stretch disabled={isSubmittingForm}>
                 <Image src={Plus_16_White} alt="white plus icon" />
             </Button>
         </form>

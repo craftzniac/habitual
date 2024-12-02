@@ -5,7 +5,11 @@ import { UpdateHabitDto } from './dto/update-habit.dto';
 import { Repository } from 'typeorm';
 import { Habit } from './entity/habit.entity';
 import { HabitFilter } from 'src/types';
-import { generateHabitDays, getDateString } from 'src/utils';
+import {
+  generateHabitDays,
+  getDateString,
+  getExcludedDaysFromFrequency,
+} from 'src/utils';
 
 @Injectable()
 export class HabitsService {
@@ -34,7 +38,7 @@ export class HabitsService {
         const habitDays = generateHabitDays({
           startDateString: habit.startDate as any as string, // habit.startDate isn't really a date object hence the conversion
           durationInDays: habit.durationInDays,
-          excludedDays: [],
+          excludedDays: getExcludedDaysFromFrequency(habit.freqency),
         });
 
         const today = new Date();
@@ -71,31 +75,40 @@ export class HabitsService {
     };
   }
 
-  async create(userId: string, createHabitDto: CreateHabitDto): Promise<Habit> {
+  async create(
+    userId: string,
+    createHabitDto: CreateHabitDto,
+  ): Promise<{ habit: Habit }> {
     const habitEntity = this.habitsRepository.create({
       name: createHabitDto.name,
       startDate: createHabitDto.startDate,
       durationInDays: createHabitDto.durationInDays,
       description: createHabitDto.description ?? '',
+      freqency: createHabitDto.frequency,
+      reminders: createHabitDto.reminders,
       userId,
     });
     const habit = await this.habitsRepository.save(habitEntity);
-    return habit;
+    return {
+      habit,
+    };
   }
 
   async update(
     userId: string,
     id: string,
     updateHabitDto: UpdateHabitDto,
-  ): Promise<Habit> {
+  ): Promise<{ habit: Habit }> {
     await this.habitsRepository.update(
       { id },
       {
-        description: updateHabitDto.description,
-        userId,
-        durationInDays: updateHabitDto.durationInDays,
-        startDate: updateHabitDto.startDate,
         name: updateHabitDto.name,
+        startDate: updateHabitDto.startDate,
+        durationInDays: updateHabitDto.durationInDays,
+        description: updateHabitDto.description,
+        freqency: updateHabitDto.frequency,
+        reminders: updateHabitDto.reminders,
+        userId,
       },
     );
     const updatedHabit = await this.habitsRepository.findOneBy({ id });
@@ -104,7 +117,7 @@ export class HabitsService {
         description: 'Could not find the habit',
       });
     }
-    return updatedHabit;
+    return { habit: updatedHabit };
   }
 
   async delete(habitId: string): Promise<{ id: string }> {
