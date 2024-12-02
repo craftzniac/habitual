@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
             const now = new Date();
             const currentAccessTokenExpireDate = new Date((token as any).accessTokenExpiresIn);
 
-            console.log("now:", now, "   tokenexpireat:", currentAccessTokenExpireDate);
+            // console.log("now:", now, "   tokenexpireat:", currentAccessTokenExpireDate);
             // Return previous token if the access token has not yet expired
             if (now < currentAccessTokenExpireDate) {
                 return {

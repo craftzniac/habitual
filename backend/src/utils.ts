@@ -1,3 +1,4 @@
+import { daysOfWeek } from './constants';
 import { DayOfWeek } from './types';
 
 // a function to generate an id
@@ -96,4 +97,51 @@ export function getDateString(isoDate: Date): string {
   const isoDateString = isoDate.toISOString();
   const parts = isoDateString.split('T');
   return parts[0];
+}
+
+/**
+ * gets an array of excluded days of the week from the habit's frequency array
+ * */
+export function getExcludedDaysFromFrequency(frequency: DayOfWeek[]) {
+  const dOfWeek = [...daysOfWeek];
+
+  const excluded = dOfWeek.filter((day) => {
+    // filter out days that also appear in the frequency array
+    const inFreqArray = frequency.find((d) => d === day);
+    if (inFreqArray) {
+      return false;
+    }
+    return true;
+  });
+
+  return excluded;
+}
+
+/**
+ * validate to make sure that userValues is a subset of defaultValues, if userValues is provided at all.
+ * */
+export function validateFiniteStringArray<T extends string>({
+  userValues,
+  defaultValues,
+}: {
+  userValues: string[];
+  defaultValues: T[];
+}) {
+  // allow for empty [] values as frequency or reminders isn't required
+  if (!userValues) {
+    return true;
+  }
+
+  if (Array.isArray(userValues) === false) {
+    return false;
+  }
+
+  for (const val of userValues) {
+    // check if the current value is malformed and therefore isn't in the day of the week array.
+    if (defaultValues.includes(val as T) === false) {
+      return false;
+    }
+  }
+
+  return true;
 }

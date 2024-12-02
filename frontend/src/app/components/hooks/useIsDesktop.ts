@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 
 export function useIsDesktop() {
-	const mdScreen = 768;
+	const mdScreen = 928;
 	const [isDesktop, setIsDesktop] = useState<boolean | undefined>();
 	useEffect(() => {
 		if (window) {

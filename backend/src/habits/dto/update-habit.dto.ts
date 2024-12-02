@@ -5,7 +5,10 @@ import {
   IsNotEmpty,
   IsOptional,
   IsDate,
+  Validate,
 } from 'class-validator';
+import { DayOfWeek, ReminderTime } from 'src/types';
+import { DayOfWeekArray, HabitReminderArray } from './custom-validators';
 
 export class UpdateHabitDto {
   @IsNotEmpty({ message: 'Habit id should not be empty' })
@@ -28,4 +31,14 @@ export class UpdateHabitDto {
   @IsNotEmpty({ message: 'Duration should not be empty' })
   @IsNumber({}, { message: 'Duration must be a valid number' })
   durationInDays: number;
+
+  @Validate(DayOfWeekArray, {
+    message: 'Frequency must only contain days of the week',
+  })
+  frequency?: DayOfWeek[];
+
+  @Validate(HabitReminderArray, {
+    message: 'Reminders must include only valid preset time values',
+  })
+  reminders?: ReminderTime[];
 }

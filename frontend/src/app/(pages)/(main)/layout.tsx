@@ -11,9 +11,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
         <div className="flex w-full h-full">
             <Sidebar user={user} />
             <div className="flex flex-col w-full h-full">
-                <div className="flex h-full w-full">
-                    {children}
-                </div>
+                {children}
                 <BottomNavigation />
             </div>
         </div>

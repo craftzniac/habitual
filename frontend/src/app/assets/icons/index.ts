@@ -45,6 +45,8 @@ import GreenCircleCheck from "./green-circle-check.svg"
 import RedCircleError from "./red-circle-error.svg"
 import Exit_16 from "./exit_16.svg"
 import Check_16_Purple from "./check_16_purple.svg"
+import Arrow_Left_16 from "./arrow_left_16.svg"
+import Plus_16_Gray from "./plus_16_gray.svg"
 
 export {
     GoogleLogo,
@@ -68,6 +70,7 @@ export {
     Plus_16_White,
     Plus_16_Purple,
     Arrow_Left_24,
+    Arrow_Left_16,
     Overflow_24,
     Journal_16,
     Reminder_Clock_16,
@@ -93,5 +96,6 @@ export {
     GreenCircleCheck,
     RedCircleError,
     Exit_16,
-    Check_16_Purple
+    Check_16_Purple,
+    Plus_16_Gray
 }
