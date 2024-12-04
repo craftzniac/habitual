@@ -28,6 +28,12 @@ export class HabitsController {
     return this.habitsService.getUserHabits({ userId, filter });
   }
 
+  @Get(':id')
+  getOne(@Param('id') habitId: string, @Req() request: any) {
+    const userId = request.user.sub;
+    return this.habitsService.getHabit(userId, habitId);
+  }
+
   @HttpCode(201)
   @Post()
   create(

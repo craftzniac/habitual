@@ -1,5 +1,9 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
 import { Repository } from 'typeorm';
@@ -92,6 +96,23 @@ export class HabitsService {
     return {
       habit,
     };
+  }
+
+  async getHabit(userId: string, id: string): Promise<{ habit: Habit }> {
+    try {
+      const habit = await this.habitsRepository.findOneBy({ id, userId });
+      if (!habit) {
+        throw new NotFoundException('Habit does not exist');
+      }
+      return { habit };
+    } catch (err) {
+      const invalidUUID =
+        'QueryFailedError: invalid input syntax for type uuid';
+      if (err.toString().includes(invalidUUID)) {
+        throw new NotFoundException('Habit does not exist');
+      }
+      throw new NotFoundException("Couldn't get habit");
+    }
   }
 
   async update(
