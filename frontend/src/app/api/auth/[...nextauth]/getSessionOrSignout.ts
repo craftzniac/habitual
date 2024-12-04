@@ -2,7 +2,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./authOptions";
 import { redirect } from "next/navigation";
-import { deleteSessionCookie } from "./deleteSessionCookie";
 
 /** 
  * a wrapper for getServerSession which also handles serverside logout. 
@@ -10,12 +9,7 @@ import { deleteSessionCookie } from "./deleteSessionCookie";
  * */
 export async function getSessionOrSignout() {
     const session = await getServerSession(authOptions);
-    if (!session) {
-        redirect("/login")
-    }
-
-    if (session.error) {
-        deleteSessionCookie();
+    if (!session || session.error) {
         redirect("/login")
     }
     return session;

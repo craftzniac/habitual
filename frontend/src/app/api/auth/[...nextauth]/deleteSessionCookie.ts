@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-export function deleteSessionCookie() {
+export async function deleteSessionCookie() {
     const sessionTokenKey = `next-auth.session-token`
     const cookieStore = cookies();
     cookieStore.getAll().map(cookie => console.log("cookie:", cookie))
