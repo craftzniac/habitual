@@ -13,20 +13,22 @@ export default async function HabitsPage({ searchParams }: { searchParams: { fil
         redirect(`/habits?filter=${filter}`)
     }
     return (
-        <div className="h-full w-full flex flex-col overflow-hidden">
-            <header className="flex items-center px-4 py-2 gap-1 w-full">
+        <section className="flex flex-col h-full w-full">
+            <header className="flex items-center px-4 pt-4 pb-2 gap-1 w-full">
                 <h1 className="text-lg font-bold w-full">Habits</h1>
                 <AddHabitBtn />
             </header>
-            <main className="flex flex-col w-full h-full">
-                <div className="px-4">
+            <main className="flex flex-col w-full h-full min-h-0">
+                <div className="px-4 pb-2">
                     <SegmentBtns filter={filter} />
                 </div>
-                <div className="p-4 flex w-full h-full overflow-y-auto">
-                    <Habits filter={filter} />
-                </div>
+                {
+                    <div className="p-4 flex w-full h-full overflow-y-auto">
+                        <Habits filter={filter} />
+                    </div>
+                }
             </main>
-        </div>
+        </section>
     )
 }
 

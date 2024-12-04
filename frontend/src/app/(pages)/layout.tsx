@@ -19,7 +19,7 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
   return (
     <html lang="en">
-      <body className={`w-screen h-screen flex text-primary-900 ${sansFont.className}`}>
+      <body className={`w-screen h-dvh relative flex text-primary-900 ${sansFont.className}`}>
         <SessionProvider session={session}>
           <ToastProvider>
             {children}

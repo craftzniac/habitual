@@ -12,7 +12,7 @@ export default function HabitCard({ habit }: Prop) {
     const status: THabitFilter = "on-going";
     return (
         <Link href={`/habits/${habit.id}`}
-            className="rounded-lg bg-white border-2 border-primary-50 hover:bg-primary-50 hover:border-primary-100 transition-colors duration-200 p-3 flex flex-col gap-2 w-full"
+            className="rounded-lg bg-white border-2 border-primary-50 hover:bg-primary-50 hover:border-primary-100 transition-colors duration-200 p-3 flex flex-col gap-2 w-full h-fit"
         >
             <div className="flex flex-col gap-4 w-full h-full">
                 <div className="flex flex-col gap-0.5 h-full">

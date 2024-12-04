@@ -10,8 +10,8 @@ import Loading from "@/app/components/presentation/Loading";
 
 async function Overview() {
     return (
-        <div className="h-full w-full flex flex-col overflow-hidden">
-            <header className="flex items-center px-4 py-2 gap-1 w-full">
+        <section className="h-full w-full flex flex-col overflow-hidden">
+            <header className="flex items-center px-4 py-4 gap-1 w-full">
                 <h1 className="text-lg font-bold w-full">Overview</h1>
             </header>
             <main className="w-full h-full flex flex-col gap-12 overflow-y-auto">
@@ -45,7 +45,7 @@ async function Overview() {
                     </Suspense>
                 </section>
             </main>
-        </div>
+        </section>
     )
 }
 
