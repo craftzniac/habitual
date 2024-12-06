@@ -14,7 +14,7 @@ export function generateId() {
   return id;
 }
 
-// TODO:  these functions compute date using UTC and not the client's specific timezone!
+// NOTE:  these functions compute date using UTC and not the client's specific timezone!
 
 const dow: DayOfWeek[] = [
   'sun',

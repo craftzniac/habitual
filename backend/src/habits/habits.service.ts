@@ -42,7 +42,7 @@ export class HabitsService {
         const habitDays = generateHabitDays({
           startDateString: habit.startDate as any as string, // habit.startDate isn't really a date object hence the conversion
           durationInDays: habit.durationInDays,
-          excludedDays: getExcludedDaysFromFrequency(habit.freqency),
+          excludedDays: getExcludedDaysFromFrequency(habit.frequency),
         });
 
         const today = new Date();
@@ -88,7 +88,7 @@ export class HabitsService {
       startDate: createHabitDto.startDate,
       durationInDays: createHabitDto.durationInDays,
       description: createHabitDto.description ?? '',
-      freqency: createHabitDto.frequency,
+      frequency: createHabitDto.frequency,
       reminders: createHabitDto.reminders,
       userId,
     });
@@ -127,7 +127,7 @@ export class HabitsService {
         startDate: updateHabitDto.startDate,
         durationInDays: updateHabitDto.durationInDays,
         description: updateHabitDto.description,
-        freqency: updateHabitDto.frequency,
+        frequency: updateHabitDto.frequency,
         reminders: updateHabitDto.reminders,
         userId,
       },

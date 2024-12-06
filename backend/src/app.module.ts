@@ -9,6 +9,7 @@ import { AppService } from './app.service';
 import { HabitsModule } from './habits/habits.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { HabitDaysModule } from './habit-days/habit-days.module';
 
 config();
 
@@ -22,6 +23,7 @@ config();
       database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
+      useUTC: true,
     }),
     HabitsModule,
     AuthModule,
@@ -31,6 +33,7 @@ config();
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
+    HabitDaysModule,
   ],
   controllers: [AppController],
   providers: [AppService],

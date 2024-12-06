@@ -1,10 +1,8 @@
-import Image from "next/image";
 import { THabitFilter } from "@/app/utils/types";
 import ErrorPage from "../presentation/error-page";
 import { getAccessToken } from "@/app/api/auth/[...nextauth]/getAccessToken";
 import { getHabits } from "@/app/services/habitsService";
 import HabitCard from "../../../components/presentation/HabitCard";
-import { No_Habits } from "@/app/assets/illustrations"
 import { NoHabits } from "../presentation/NoHabits";
 
 export default async function Habits({ filter }: { filter: THabitFilter }) {
@@ -15,7 +13,7 @@ export default async function Habits({ filter }: { filter: THabitFilter }) {
             <ErrorPage errorMsg={res.message} />
         )
     }
-    const habits = res.data.habits.slice(0, -1);
+    const habits = res.data.habits;
     return (
         habits.length === 0 ? (
             <section className="h-full w-full flex justify-center items-center">

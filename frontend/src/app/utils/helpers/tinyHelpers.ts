@@ -1,4 +1,4 @@
-import { TDurationSelectOption } from "../types";
+import { TDayOfWeek, TDurationSelectOption, THabit, TReminderTime } from "../types";
 
 /**
  * checks if the entered value for durationInDays is valid. 
@@ -59,3 +59,36 @@ export function createCustomDurationOption(durationInDays: number): TDurationSel
 	}
 }
 
+
+/**
+ * Transform the frequency and reminders array of the habit json object from the response into Sets
+*/
+export function transformHabit(habit: any): THabit {
+	const frequency = new Set<TDayOfWeek>(habit.frequency);
+	const reminders = new Set<TReminderTime>(habit.reminders);
+	return {
+		id: habit.id,
+		userId: habit.userId,
+		name: habit.name,
+		description: habit.description,
+		startDate: habit.startDate,
+		durationInDays: habit.durationInDays,
+		frequency,
+		reminders,
+		createdAt: habit.createdAt,
+		updatedAt: habit.updatedAt
+	}
+}
+
+/**
+ * returns just the date portion in the form yyyy-mm-dd from a locale date string
+ * */
+export function getLocaleDateString(localeDateString: Date): string {
+	const formatter = new Intl.DateTimeFormat(undefined, {
+		year: "numeric",
+		day: "2-digit",
+		month: "2-digit"
+	})
+	const date = formatter.format(localeDateString);
+	return date;
+}
