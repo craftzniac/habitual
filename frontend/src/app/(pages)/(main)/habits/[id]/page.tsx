@@ -10,6 +10,7 @@ import { navPaths } from "@/app/utils/constants";
 import { TDayOfWeek } from "@/app/utils/types";
 import { getHabitDays } from "@/app/services/habitDaysService";
 import OverflowButton from "./components/presentation/OverflowButton";
+import BackButton from "../../components/presentation/BackButton";
 
 type Props = {
     params: {
@@ -38,9 +39,7 @@ export default async function Habit({ params }: Props) {
     return (
         <section className="h-full w-full flex flex-col">
             <header className="flex items-center px-2 py-2 w-full gap-1">
-                <Link href={navPaths.HABITS.INDEX} className="flex p-2 hover:bg-gray-5 rounded-full">
-                    <Image src={Arrow_Left_24} className="w-6 h-6" alt="arrow left" />
-                </Link>
+                <BackButton href={navPaths.HABITS.INDEX} />
                 <h1 className="text-lg font-bold w-full line-clamp-1">{habit.name}</h1>
                 <OverflowButton habitId={habit.id} />
             </header>

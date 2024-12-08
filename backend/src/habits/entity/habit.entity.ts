@@ -29,6 +29,9 @@ export class Habit {
   @Column({ nullable: false, default: 'on-going' })
   status: 'completed' | 'on-going';
 
+  @Column({ nullable: false, default: 0 })
+  consistencyInPercent: number;
+
   @Column('varchar', { array: true, default: [...daysOfWeek], nullable: false })
   frequency: DayOfWeek[];
 

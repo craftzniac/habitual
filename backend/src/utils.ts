@@ -145,3 +145,19 @@ export function validateFiniteStringArray<T extends string>({
 
   return true;
 }
+
+/**
+ * calculates user's consistency on a habit in percentage
+ * @returns consistency value in percentage
+ * */
+export function calculateConsistencyInPercent({
+  completedDays,
+  totalDays,
+  remainingDays,
+}: {
+  completedDays: number;
+  totalDays: number;
+  remainingDays: number;
+}) {
+  return Math.floor(completedDays / (totalDays - remainingDays)) * 100;
+}

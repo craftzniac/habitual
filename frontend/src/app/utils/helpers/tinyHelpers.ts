@@ -75,6 +75,8 @@ export function transformHabit(habit: any): THabit {
 		durationInDays: habit.durationInDays,
 		frequency,
 		reminders,
+		status: habit.status,
+		consistencyInPercent: habit.consistencyInPercent,
 		createdAt: habit.createdAt,
 		updatedAt: habit.updatedAt
 	}
@@ -114,5 +116,4 @@ export function getHabitDaySavedDate(savedHabitDays: TSavedHabitDay[], isoDate: 
 		return hdD === dateD;
 	});
 }
-
 

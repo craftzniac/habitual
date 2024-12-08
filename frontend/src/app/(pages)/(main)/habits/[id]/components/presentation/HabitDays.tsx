@@ -8,10 +8,11 @@ type Props = {
     startDate: string,
     frequency: TDayOfWeek[],
     durationInDays: number,
-    savedHabitDays: TSavedHabitDay[]
+    savedHabitDays: TSavedHabitDay[],
+    variant?: "large-editable" | "small-uneditable"
 }
 
-export default async function HabitDays({ savedHabitDays, habitId, startDate, frequency, durationInDays }: Props) {
+export default async function HabitDays({ variant = "large-editable", savedHabitDays, habitId, startDate, frequency, durationInDays }: Props) {
     const habitDays = generateHabitDays({
         durationInDays, frequency, startDateString: startDate
     });
@@ -57,28 +58,55 @@ export default async function HabitDays({ savedHabitDays, habitId, startDate, fr
     const { pastDays, futureDays } = getPastAndFutureDays(habitDays);
 
     return (
-        <div className="flex flex-col w-full h-fit items-center gap-2">
-            <div className="w-full justify-end flex items-center gap-2">
-                <Box variant="fulfilled" count={getFulfilledDaysCount(savedHabitDays)} />
-                <Box variant="missed" count={getMissedDaysCount(pastDays)} />
-                <Box variant="in-future" count={futureDays.length} />
+        <section className="flex flex-col w-full h-fit items-center gap-2">
+            <div className={`w-full 
+                ${variant === "small-uneditable"
+                    ? "flex gap-2 justify-between mds:justify-start mds:gap-4"
+                    : "flex justify-end items-center gap-2"
+                }`
+            }>
+                {variant === "small-uneditable" ? (
+                    <>
+                        <span className="flex items-center gap-1 text-xs">
+                            <span className="opacity-50">completed:</span>
+                            <span className="font-bold text-primary-500">{getFulfilledDaysCount(savedHabitDays)}days</span>
+                        </span>
+                        <span className="flex items-center gap-1 text-xs">
+                            <span className="opacity-50">missed:</span>
+                            <span className="font-bold text-red">{getMissedDaysCount(pastDays)}days</span>
+                        </span>
+                        <span className="flex items-center gap-1 text-xs">
+                            <span className="opacity-50">remaining:</span>
+                            <span className="font-bold text-gray-75">{futureDays.length}days</span>
+                        </span>
+                    </>
+                ) : (
+                    <>
+                        <Box variant="fulfilled" count={getFulfilledDaysCount(savedHabitDays)} />
+                        <Box variant="missed" count={getMissedDaysCount(pastDays)} />
+                        <Box variant="in-future" count={futureDays.length} />
+                    </>
+                )}
             </div>
-            <ul className="grid grid-cols-4 w-full justify-center gap-2 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-11 
-                xl:gap-4 2xl:grid-cols-[repeat(13,minmax(0,1fr))] 
-                3xl:grid-cols-[repeat(15,minmax(0,1fr))]  4xl:grid-cols-[repeat(20,minmax(0,1fr))]
-                ">
+            <ul className={`${variant == "small-uneditable" ?
+                (
+                    "grid grid-cols-6 w-full justify-center gap-2 sm:grid-cols-10 md:grid-cols-[repeat(13,minmax(0,1fr))]"
+                )
+                : (
+                    `grid grid-cols-4 w-full justify-center gap-2 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-11  xl:gap-4 2xl:grid-cols-[repeat(13,minmax(0,1fr))]  3xl:grid-cols-[repeat(15,minmax(0,1fr))]  4xl:grid-cols-[repeat(20,minmax(0,1fr))]`
+                )}`}>
                 {
                     habitDays.map(date => {
                         const savedData = getHabitDaySavedDate(savedHabitDays, date);
                         return (
                             <li key={date} className="w-full flex justify-center items-center">
-                                <HabitDay date={date} savedData={savedData} />
+                                <HabitDay variant={variant} date={date} savedData={savedData} />
                             </li>
                         )
                     })
                 }
             </ul>
-        </div>
+        </section>
     )
 }
 
@@ -88,6 +116,7 @@ function Box({ variant, count }: {
 }) {
     return (
         <div className="flex items-center gap-1">
+            {/*The box*/}
             <span className={`w-4 h-4 rounded border-[1px] border-primary-500 ${variant === "fulfilled" ? "bg-primary-500" : (
                 variant === "missed" ? "" : (
                     variant === "in-future" ? "opacity-50" : ""

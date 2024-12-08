@@ -92,6 +92,8 @@ export type THabit = {
 	durationInDays: number;
 	frequency?: Set<TDayOfWeek>;
 	reminders?: Set<TReminderTime>;
+	status: "on-going" | "completed",
+	consistencyInPercent: number,
 	createdAt: string;
 	updatedAt: string;
 };
