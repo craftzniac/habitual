@@ -47,6 +47,7 @@ import Exit_16 from "./exit_16.svg"
 import Check_16_Purple from "./check_16_purple.svg"
 import Arrow_Left_16 from "./arrow_left_16.svg"
 import Plus_16_Gray from "./plus_16_gray.svg"
+import Info_16 from "./info_16.svg"
 
 export {
     GoogleLogo,
@@ -97,5 +98,6 @@ export {
     RedCircleError,
     Exit_16,
     Check_16_Purple,
-    Plus_16_Gray
+    Plus_16_Gray,
+    Info_16
 }

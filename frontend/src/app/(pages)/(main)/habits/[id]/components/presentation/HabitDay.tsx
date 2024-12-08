@@ -1,27 +1,26 @@
 "use client"
 import { TSavedHabitDay } from "@/app/utils/types";
 import getDatePartsFromIntlDate from "@/app/utils/helpers/getDatePartsFromIntlDate";
-import { getLocaleDateString } from "@/app/utils/helpers/tinyHelpers";
 import { useState } from "react";
+import { getHabitDayDateStatus } from "@/app/utils/helpers/tinyHelpers";
 
 type Props = {
     date: string,
     savedData?: TSavedHabitDay
 }
 
+
 export default function HabitDay({ date, savedData }: Props) {
     const [isChecked, setIsChecked] = useState(savedData?.isCompleted || false);
     const { month, monthDay } = getDatePartsFromIntlDate(date)
-    console.log("month:", month, "monthDay:", monthDay);
-    // ${getWrapperDivStyleBasedOnVariant(variant)
 
-    const localeTodayDate = getLocaleDateString(new Date());
-    const localeDate = getLocaleDateString(new Date(date));
+    const dateStatus = getHabitDayDateStatus(date);
 
-    const isToday = localeTodayDate === localeDate;
     return (
-        <label className={`w-full max-w-24 min-h-20 flex flex-col items-center justify-center rounded-2xl ${styleIsChecked(isChecked)}`}>
-            <input type="checkbox" className="hidden" checked={isChecked} onChange={(e) => {
+        <label className={`cursor-pointer w-full max-w-24 min-h-20 flex flex-col items-center justify-center rounded-2xl border-primary-500 ${styleIsChecked(isChecked)} ${dateStatus === "today" ? "outline outline-4 outline-primary-500/50" : (
+            dateStatus === "future" ? "opacity-50" : ""
+        )}`}>
+            <input disabled={dateStatus === "future"} type="checkbox" className="hidden" checked={isChecked} onChange={(e) => {
                 console.log("clicked checkbox");
                 const checked = e.target.checked;
                 setIsChecked(checked);
@@ -43,5 +42,4 @@ function styleIsChecked(isChecked: boolean, borderSize: "large" | "small" = "lar
     } else {
         return `${borderSize === "large" ? "border-2" : borderSize === "small" ? "border-[1px]" : ""} border-primary-500 text-primary-500`
     }
-    // return `${borderSize === "large" ? "border-2" : borderSize === "small" ? "border-[1px]" : ""} border-primary-500/40 text-primary-500/40`
 }

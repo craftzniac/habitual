@@ -1,6 +1,9 @@
 import { daysOfWeekArray, daysOfWeekOptions } from "../constants";
 import { TDayOfWeek } from "../types";
 
+/**
+ * @returns {string[]} an array of ISO date strings matching the habit days
+ * */
 export function generateHabitDays({
 	startDateString,
 	durationInDays,
@@ -9,7 +12,7 @@ export function generateHabitDays({
 	startDateString: string;
 	durationInDays: number;
 	frequency: TDayOfWeek[];
-}) {
+}): string[] {
 
 	const excludedDays = getExcludedDaysFromFrequency(frequency);
 

@@ -1,4 +1,4 @@
-import { TDayOfWeek, TDurationSelectOption, THabit, TReminderTime } from "../types";
+import { TDayOfWeek, TDurationSelectOption, THabit, TReminderTime, TSavedHabitDay } from "../types";
 
 /**
  * checks if the entered value for durationInDays is valid. 
@@ -80,15 +80,39 @@ export function transformHabit(habit: any): THabit {
 	}
 }
 
+
 /**
- * returns just the date portion in the form yyyy-mm-dd from a locale date string
+ * compute whether the date is in the "past", "future" or is "today"
  * */
-export function getLocaleDateString(localeDateString: Date): string {
-	const formatter = new Intl.DateTimeFormat(undefined, {
-		year: "numeric",
-		day: "2-digit",
-		month: "2-digit"
-	})
-	const date = formatter.format(localeDateString);
-	return date;
+export function getHabitDayDateStatus(day: string): "past" | "today" | "future" {
+	// create new date object using only the date portion, no time.
+	const todayDate = new Date(new Date().toISOString().split("T")[0]);
+	const dayDate = new Date(new Date(day).toISOString().split("T")[0]);
+
+	if (todayDate.getTime() > dayDate.getTime()) {
+		// in the past
+		return "past";
+	} else if (todayDate.getTime() < dayDate.getTime()) {
+		// day is in the future
+		return "future";
+	} else {
+		// is today
+		return "today";
+	}
+
 }
+
+
+/**
+ * tries to find the habit day data for the current iso date from the list of savedhabitday objects
+ * @returns a habit day object if a match was found, else undefined.
+ * */
+export function getHabitDaySavedDate(savedHabitDays: TSavedHabitDay[], isoDate: string): TSavedHabitDay | undefined {
+	return savedHabitDays.find(hd => {
+		const hdD = hd.date.split("T")[0];
+		const dateD = isoDate.split("T")[0];
+		return hdD === dateD;
+	});
+}
+
+
