@@ -105,3 +105,13 @@ export const daysOfWeekOptions: {
 		{ label: "Friday", value: "fri" },
 		{ label: "Saturday", value: "sat" },
 	]
+
+export const daysOfWeekArray: TDayOfWeek[] = [
+	'sun',
+	'mon',
+	'tue',
+	'wed',
+	'thu',
+	'fri',
+	'sat',
+] as const;

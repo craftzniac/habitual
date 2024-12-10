@@ -23,14 +23,17 @@ export class Habit {
   @Column({ nullable: false })
   description: string;
 
-  @Column({ type: 'date', nullable: false })
+  @Column({ type: 'timestamptz', nullable: false })
   startDate: Date;
 
   @Column({ nullable: false, default: 'on-going' })
   status: 'completed' | 'on-going';
 
+  @Column({ nullable: false, default: 0 })
+  consistencyInPercent: number;
+
   @Column('varchar', { array: true, default: [...daysOfWeek], nullable: false })
-  freqency: DayOfWeek[];
+  frequency: DayOfWeek[];
 
   @Column('varchar', { array: true, default: [], nullable: false })
   reminders: ReminderTime[];
@@ -38,10 +41,10 @@ export class Habit {
   @Column({ type: 'int', nullable: false })
   durationInDays: number;
 
-  @CreateDateColumn({ type: 'date' })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'date' })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @DeleteDateColumn()

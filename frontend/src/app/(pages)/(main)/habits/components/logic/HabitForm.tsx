@@ -48,7 +48,7 @@ export default function HabitForm({ mode }: { mode: "edit" | "add" }) {
         setIsSubmittingForm(true);
 
         if (mode === "add") {
-            const error = await createHabitAction({ ...data, startDate: new Date(data.startDate), durationInDays: data.durationInDays as number });
+            const error = await createHabitAction({ ...data, startDate: new Date(data.startDate).toISOString(), durationInDays: data.durationInDays as number });
             if (error) {
                 toast(error, { type: "error" });
                 // alert(error);

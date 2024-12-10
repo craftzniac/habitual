@@ -1,5 +1,11 @@
 import { UseFormRegister } from "react-hook-form";
 
+export type APIErrorResponse = {
+	success: false,
+	message: string
+}
+
+
 export type TUser = {
 	id: string,
 	email: string,
@@ -77,28 +83,31 @@ export type TDay = {
 	status: "fulfilled" | "missed" | "remaining"
 }
 
-// ;;Old;;
-// export type Habit = {
-// 	id: string,
-// 	title: string,
-// 	description: string,
-// 	isCompleted: boolean,
-// 	stats: HabitStats
-// }
-
 export type THabit = {
 	id: string;
 	userId: string;
 	name: string;
 	description?: string;
-	startDate: Date;
+	startDate: string;
 	durationInDays: number;
 	frequency?: Set<TDayOfWeek>;
 	reminders?: Set<TReminderTime>;
+	status: "on-going" | "completed",
+	consistencyInPercent: number,
 	createdAt: string;
 	updatedAt: string;
 };
 
+
+export type TSavedHabitDay = {
+	id: string;
+	habitId: string;
+	originalStartDate: Date;
+	date: string;
+	isCompleted: boolean;
+	createdAt: string;
+	updatedAt: string;
+};
 
 
 export type TSignupFormInputs = {

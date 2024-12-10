@@ -1,5 +1,5 @@
 export default function getDatePartsFromIntlDate(dateString: string) {
-	const intlDate = new Intl.DateTimeFormat("us-US", {
+	const intlDate = new Intl.DateTimeFormat(undefined, {
 		day: "2-digit",
 		month: "short",
 		weekday: "short",
@@ -19,7 +19,7 @@ export default function getDatePartsFromIntlDate(dateString: string) {
 				monthDay = entry.value
 				break;
 			default:
-				console.log("probably just a literal");
+			// just ignore it. Don't do anything and don't throw an error
 		}
 	}
 	return { monthDay, month, weekday }

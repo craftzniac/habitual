@@ -1,5 +1,9 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
 import { Repository } from 'typeorm';
@@ -38,7 +42,7 @@ export class HabitsService {
         const habitDays = generateHabitDays({
           startDateString: habit.startDate as any as string, // habit.startDate isn't really a date object hence the conversion
           durationInDays: habit.durationInDays,
-          excludedDays: getExcludedDaysFromFrequency(habit.freqency),
+          excludedDays: getExcludedDaysFromFrequency(habit.frequency),
         });
 
         const today = new Date();
@@ -84,7 +88,7 @@ export class HabitsService {
       startDate: createHabitDto.startDate,
       durationInDays: createHabitDto.durationInDays,
       description: createHabitDto.description ?? '',
-      freqency: createHabitDto.frequency,
+      frequency: createHabitDto.frequency,
       reminders: createHabitDto.reminders,
       userId,
     });
@@ -92,6 +96,23 @@ export class HabitsService {
     return {
       habit,
     };
+  }
+
+  async getHabit(userId: string, id: string): Promise<{ habit: Habit }> {
+    try {
+      const habit = await this.habitsRepository.findOneBy({ id, userId });
+      if (!habit) {
+        throw new NotFoundException('Habit does not exist');
+      }
+      return { habit };
+    } catch (err) {
+      const invalidUUID =
+        'QueryFailedError: invalid input syntax for type uuid';
+      if (err.toString().includes(invalidUUID)) {
+        throw new NotFoundException('Habit does not exist');
+      }
+      throw new NotFoundException("Couldn't get habit");
+    }
   }
 
   async update(
@@ -106,7 +127,7 @@ export class HabitsService {
         startDate: updateHabitDto.startDate,
         durationInDays: updateHabitDto.durationInDays,
         description: updateHabitDto.description,
-        freqency: updateHabitDto.frequency,
+        frequency: updateHabitDto.frequency,
         reminders: updateHabitDto.reminders,
         userId,
       },

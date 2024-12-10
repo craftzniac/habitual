@@ -32,7 +32,7 @@ export default function HabitCard({ habit }: Prop) {
                                 <span className="w-full">day {10} of {habit.durationInDays}</span>
                                 <span className="flex gap-1 items-center">
                                     <span className="font-bold">consistency</span>
-                                    <CircularProgress value={30} fontSize="0.9rem" strokeWidth={4} width={50} foregroundStroke="#923DE7" backgroundStroke="#F8E6F8" />
+                                    <CircularProgress value={habit.consistencyInPercent} fontSize="0.8rem" strokeWidth={4} width={45} foregroundStroke="#923DE7" backgroundStroke="#F8E6F8" />
                                 </span>
                             </span>
                         ) : (

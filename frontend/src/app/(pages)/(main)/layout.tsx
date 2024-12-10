@@ -10,9 +10,8 @@ export default async function Layout({ children }: { children: ReactNode }) {
     return (
         <div className="flex w-full h-full">
             <Sidebar user={user} />
-            <div className="flex flex-col w-full h-full justify-end">
-                {/* NOTE: This feels like a weird hack to get the height to behave as expected but it works, so...idk*/}
-                <div className="flex flex-col h-[calc(100%-3.5rem)] lg:h-full w-full">
+            <div className="flex relative flex-col w-full h-full justify-end">
+                <div className="flex flex-col h-full min-h-0 lg:h-full w-full">
                     {children}
                 </div>
                 <BottomNavigation />
