@@ -57,8 +57,15 @@ export default async function HabitDays({ variant = "large-editable", savedHabit
 
     const { pastDays, futureDays } = getPastAndFutureDays(habitDays);
 
+    // (
+    //     "grid grid-cols-6 sm:grid-cols-10 md:grid-cols-[repeat(13,minmax(0,1fr))] w-full justify-center gap-2 "
+    // )
+    // : (
+    //     `grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-11  xl:gap-4 2xl:grid-cols-[repeat(13,minmax(0,1fr))]  3xl:grid-cols-[repeat(15,minmax(0,1fr))]  4xl:grid-cols-[repeat(20,minmax(0,1fr))] w-full justify-center gap-2 `
+    // )
+
     return (
-        <section className="flex flex-col w-full h-fit items-center gap-2">
+        <section className={`habit-days ${variant === "small-uneditable" ? "habit-days--small" : "habit-days--large"}`}>
             <div className={`w-full 
                 ${variant === "small-uneditable"
                     ? "flex gap-2 justify-between mds:justify-start mds:gap-4"
@@ -69,15 +76,15 @@ export default async function HabitDays({ variant = "large-editable", savedHabit
                     <>
                         <span className="flex items-center gap-1 text-xs">
                             <span className="opacity-50">completed:</span>
-                            <span className="font-bold text-primary-500">{getFulfilledDaysCount(savedHabitDays)}days</span>
+                            <span className="font-bold text-primary-500">{getFulfilledDaysCount(savedHabitDays)}d</span>
                         </span>
                         <span className="flex items-center gap-1 text-xs">
                             <span className="opacity-50">missed:</span>
-                            <span className="font-bold text-red">{getMissedDaysCount(pastDays)}days</span>
+                            <span className="font-bold text-red">{getMissedDaysCount(pastDays)}d</span>
                         </span>
                         <span className="flex items-center gap-1 text-xs">
                             <span className="opacity-50">remaining:</span>
-                            <span className="font-bold text-gray-75">{futureDays.length}days</span>
+                            <span className="font-bold text-gray-75">{futureDays.length}d</span>
                         </span>
                     </>
                 ) : (
@@ -88,13 +95,7 @@ export default async function HabitDays({ variant = "large-editable", savedHabit
                     </>
                 )}
             </div>
-            <ul className={`${variant == "small-uneditable" ?
-                (
-                    "grid grid-cols-6 w-full justify-center gap-2 sm:grid-cols-10 md:grid-cols-[repeat(13,minmax(0,1fr))]"
-                )
-                : (
-                    `grid grid-cols-4 w-full justify-center gap-2 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-11  xl:gap-4 2xl:grid-cols-[repeat(13,minmax(0,1fr))]  3xl:grid-cols-[repeat(15,minmax(0,1fr))]  4xl:grid-cols-[repeat(20,minmax(0,1fr))]`
-                )}`}>
+            <ul>
                 {
                     habitDays.map(date => {
                         const savedData = getHabitDaySavedDate(savedHabitDays, date);

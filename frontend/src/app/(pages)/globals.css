@@ -5,3 +5,200 @@
 .thin-scrollbar::-webkit-scrollbar {
     width: 0px;
 }
+
+@layer base {
+    .habit-days {
+        @apply flex flex-col w-full h-fit items-center gap-2 pb-4;
+        container-type: inline-size;
+        container-name: habit-days;
+    }
+
+    .habit-days ul {
+        @apply grid gap-2 w-full;
+    }
+
+    .habit-days.habit-days--small ul {
+        @apply grid-cols-5;
+    }
+
+    .habit-days.habit-days--large ul {
+        @apply grid-cols-3;
+    }
+
+    @container habit-days (min-width: 310px) {
+        .habit-days.habit-days--small ul {
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+
+    @container habit-days (min-width: 410px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(5, 1fr);
+        }
+    }
+
+
+    @container habit-days (min-width: 480px) {
+        .habit-days.habit-days--small ul {
+            grid-template-columns: repeat(10, 1fr);
+        }
+
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 570px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(7, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 630px) {
+        .habit-days.habit-days--small ul {
+            grid-template-columns: repeat(13, 1fr);
+        }
+
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(8, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 740px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(9, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 800px) {
+        .habit-days.habit-days--small ul {
+            grid-template-columns: repeat(15, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 860px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(10, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 900px) {
+        .habit-days.habit-days--small ul {
+            grid-template-columns: repeat(20, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 1000px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(11, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 1100px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(12, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 1300px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(13, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 1500px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(15, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 1700px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(17, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 1800px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(18, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 1900px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(19, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 2200px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(21, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 2400px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(23, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 2600px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(25, 1fr);
+        }
+    }
+
+
+    @container habit-days (min-width: 2800px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(27, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 3000px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(29, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 3200px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(31, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 3400px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(33, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 3600px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(35, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 3800px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(37, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 4000px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(39, 1fr);
+        }
+    }
+
+    @container habit-days (min-width: 4200px) {
+        .habit-days.habit-days--large ul {
+            grid-template-columns: repeat(41, 1fr);
+        }
+    }
+}
