@@ -1,23 +1,51 @@
 "use client"
 import { TSavedHabitDay } from "@/app/utils/types";
 import getDatePartsFromIntlDate from "@/app/utils/helpers/getDatePartsFromIntlDate";
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { getHabitDayDateStatus } from "@/app/utils/helpers/tinyHelpers";
+import { upsertHabitDayStateAction } from "@/app/server-actions/habitDayActions";
+import { useToast } from "@/app/components/logic/toast";
+import { useGlobalContext } from "@/app/(pages)/(main)/contexts/GlobalProvider";
 
 type HabitDayVariant = "large-editable" | "small-uneditable";
 
 type Props = {
     date: string,
     savedData?: TSavedHabitDay,
-    variant?: HabitDayVariant
+    variant?: HabitDayVariant,
+    habitId: string
 }
 
 
-export default function HabitDay({ variant = "large-editable", date, savedData }: Props) {
+export default function HabitDay({ variant = "large-editable", date, savedData, habitId }: Props) {
+    const { refreshHabitDays } = useGlobalContext();
     const [isChecked, setIsChecked] = useState(savedData?.isCompleted || false);
     const { month, monthDay } = getDatePartsFromIntlDate(date)
+    const { toast } = useToast();
 
     const dateStatus = getHabitDayDateStatus(date);
+
+    useEffect(() => {
+        setIsChecked(savedData?.isCompleted || false);
+    }, [savedData?.isCompleted])
+
+    const onHabitDayUpdate = async (e: ChangeEvent<HTMLInputElement>) => {
+        const checked = e.target.checked;
+        const prevValue = isChecked;
+
+        //optimistic update
+        setIsChecked(checked);
+        const data = { date, habitId, isCompleted: checked, id: savedData?.id }
+        const errorRes = await upsertHabitDayStateAction(data);
+        if (errorRes) {
+            // reset the isChecked to it's former value before the most recent call to setIsChecked;
+            setIsChecked(prevValue);
+            toast(errorRes.message, { type: "error" });
+            return;
+        }
+
+        await refreshHabitDays();
+    }
 
     return (
         <label className={`cursor-pointer 
@@ -39,15 +67,7 @@ export default function HabitDay({ variant = "large-editable", date, savedData }
            ${variant === "small-uneditable" ? (dateStatus === "future" ? "opacity-40" : "") : ""} 
         `}
         >
-            <input disabled={dateStatus === "future"} type="checkbox" className="hidden" checked={isChecked} onChange={(e) => {
-                const checked = e.target.checked;
-                setIsChecked(checked);
-
-                // use a server action
-
-                // make api request to update this habitday's isCompleted
-                // once request comes back, use that to set the state
-            }} />
+            <input disabled={dateStatus === "future"} type="checkbox" className="hidden" checked={isChecked} onChange={onHabitDayUpdate} />
             <span className={`font-bold ${variant === "small-uneditable" ? "text-base" : "text-lg"}`}>{monthDay}</span>
             <span className={`capitalize ${variant === "small-uneditable" ? (`
                 text-xs ${isChecked ? "text-white" : "text-gray-75"}

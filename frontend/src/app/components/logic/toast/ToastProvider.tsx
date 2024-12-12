@@ -37,7 +37,7 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
 
   return (
     <ToastContext.Provider value={{ messages, setMessages }}>
-      <div className="fixed top-0 left-0 right-0 w-fit justify-self-center">
+      <div className="fixed top-0 left-0 z-20 right-0 w-fit justify-self-center">
         {
           messages.map(toast => <Toast key={toast.id} removeThisToast={removeToast} toast={toast} />)
         }

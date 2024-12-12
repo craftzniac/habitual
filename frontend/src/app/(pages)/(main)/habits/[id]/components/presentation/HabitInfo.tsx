@@ -1,10 +1,13 @@
+"use client";
 import CircularProgress from "@/app/(pages)/(main)/components/presentation/CircularProgress";
 import HabitDays from "../logic/HabitDays";
-import { TDayOfWeek, THabit, TSavedHabitDay } from "@/app/utils/types";
+import { TDayOfWeek } from "@/app/utils/types";
+import { useGlobalContext } from "@/app/(pages)/(main)/contexts/GlobalProvider";
 
-type Props = { habit: THabit, habitDays: TSavedHabitDay[] }
+type Props = { id: string }
 
-export default function HabitInfo({ habit, habitDays }: Props) {
+export default function HabitInfo() {
+    const { habit } = useGlobalContext();
     return (
         <section className="flex flex-col w-full h-fit gap-8">
             <section className="flex  flex-col w-full gap-4">
@@ -25,7 +28,6 @@ export default function HabitInfo({ habit, habitDays }: Props) {
             </section>
             <HabitDays
                 variant="small-uneditable"
-                savedHabitDays={habitDays}
                 habitId={habit.id}
                 startDate={habit.startDate}
                 frequency={Array.from(habit.frequency as Set<TDayOfWeek>)}

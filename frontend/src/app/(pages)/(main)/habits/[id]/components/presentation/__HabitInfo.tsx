@@ -1,38 +1,12 @@
-import { getAccessToken } from "@/app/api/auth/[...nextauth]/getAccessToken";
-import { getHabit } from "@/app/services/habitsService";
-import { getHabitDaysClosure } from "@/app/services/habitDaysService";
-import ErrorPage from "../../components/presentation/error-page";
-import HabitDays from "../components/logic/HabitDays";
-import { TDayOfWeek } from "@/app/utils/types";
-import CircularProgress from "../../../components/presentation/CircularProgress";
+import CircularProgress from "@/app/(pages)/(main)/components/presentation/CircularProgress";
+import HabitDays from "../logic/HabitDays";
+import { TDayOfWeek, THabit, TSavedHabitDay } from "@/app/utils/types";
 
-type Props = {
-    params: {
-        id: string
-    }
-}
+type Props = { habit: THabit, habitDays: TSavedHabitDay[] }
 
-export default async function HabitInfoPage({ params }: Props) {
-    const id = params.id
-    const accessToken = await getAccessToken();
-
-    const habitRes = await getHabit({ accessToken, id });
-    const getHabitDays = getHabitDaysClosure({ accessToken, habitId: id });
-    const habitDaysRes = await getHabitDays();
-
-    if (habitRes.success === false) {
-        return (
-            <ErrorPage errorMsg={habitRes.message} />
-        )
-    } else if (habitDaysRes.success === false) {
-        return (
-            <ErrorPage errorMsg={habitDaysRes.message} />
-        )
-    }
-    const habit = habitRes.data.habit;
-    const habitDays = habitDaysRes.data.habitDays;
+export default function HabitInfo({ habit, habitDays }: Props) {
     return (
-        <section className="w-full h-full flex flex-col px-4 overflow-y-auto gap-8 pb-2">
+        <section className="flex flex-col w-full h-fit gap-8">
             <section className="flex  flex-col w-full gap-4">
                 <div className="flex justify-between gap-2 items-center">
                     <span className="flex text-sm">
@@ -58,5 +32,6 @@ export default async function HabitInfoPage({ params }: Props) {
                 durationInDays={habit.durationInDays}
             />
         </section>
+
     )
 }

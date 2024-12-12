@@ -5,11 +5,15 @@ import { getHabit } from "@/app/services/habitsService";
 import Header from "./components/logic/Header";
 import HabitInfo from "./components/presentation/HabitInfo";
 import { getHabitDays } from "@/app/services/habitDaysService";
+import GlobalProvider from "../../contexts/GlobalProvider";
 
 export default async function HabitDetailsLayout({ children, params }: { children: ReactNode, params: { id: string } }) {
+    // fetch the data for the first time and save it in context
     const id = params.id
     const accessToken = await getAccessToken();
-    const [habitRes, habitDaysRes] = await Promise.all([getHabit({ accessToken, id }), getHabitDays({ accessToken, habitId: id })])
+    const habitRes = await getHabit({ accessToken, id });
+    const habitDaysRes = await getHabitDays({ accessToken, habitId: id });
+
     if (habitRes.success === false) {
         return (
             <ErrorPage errorMsg={habitRes.message} />
@@ -21,17 +25,22 @@ export default async function HabitDetailsLayout({ children, params }: { childre
     }
     const habit = habitRes.data.habit;
     const habitDays = habitDaysRes.data.habitDays;
+
     return (
-        <section className="h-full w-full flex flex-col">
-            <Header habitId={habit.id} habitName={habit.name} />
-            <main className="w-full h-full min-h-0 flex">
-                <div className="w-full h-full flex">
-                    {children}
-                </div>
-                <section className="hidden 2xl:flex w-full h-full pe-4 ps-1 overflow-y-auto max-w-[25rem]">
-                    <HabitInfo habitDays={habitDays} habit={habit} />
-                </section>
-            </main>
-        </section>
+        <GlobalProvider v={{ habit, habitDays }} habitId={id}>
+            <section className="h-full w-full flex flex-col">
+                <Header habitId={habit.id} habitName={habit.name} />
+                <main className="w-full h-full min-h-0 flex">
+                    <div className="w-full h-full flex">
+                        {children}
+                    </div>
+                    <section className="hidden 2xl:flex w-full h-full pe-4 ps-1 overflow-y-auto max-w-[25rem]">
+                        <div className="h-fit flex w-full">
+                            <HabitInfo />
+                        </div>
+                    </section>
+                </main>
+            </section>
+        </GlobalProvider>
     )
 }

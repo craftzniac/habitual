@@ -1,7 +1,7 @@
 import { APIErrorResponse, TDayOfWeek, THabit, THabitFilter, TReminderTime } from "../utils/types";
 import api from "./axios.config";
 import { transformHabit } from "../utils/helpers/tinyHelpers";
-import { habitsServiceErrorResponse } from "../utils/helpers/habitsServiceErrorResponse";
+import { axiosErrorResponse } from "../utils/helpers/axiosErrorResponse";
 import { getHabitsRequestHeader } from "../utils/helpers/getHabitsRequestHeader";
 
 export async function getHabits({ accessToken, filter }: { accessToken: string, filter: THabitFilter }): Promise<{
@@ -28,7 +28,7 @@ export async function getHabits({ accessToken, filter }: { accessToken: string, 
 			}
 		}
 	} catch (err) {
-		return habitsServiceErrorResponse(err);
+		return axiosErrorResponse(err);
 	}
 }
 
@@ -53,7 +53,7 @@ export async function getHabit({ accessToken, id }: {
 			}
 		}
 	} catch (err) {
-		return habitsServiceErrorResponse(err);
+		return axiosErrorResponse(err);
 	}
 }
 
@@ -78,6 +78,6 @@ export async function createHabit({ accessToken, data }: {
 			data: res.data
 		}
 	} catch (err) {
-		return habitsServiceErrorResponse(err);
+		return axiosErrorResponse(err);
 	}
 }

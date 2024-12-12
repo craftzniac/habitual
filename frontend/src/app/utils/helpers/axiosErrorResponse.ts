@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { APIErrorResponse } from "../types";
 
-export function habitsServiceErrorResponse(err: any): APIErrorResponse {
+export function axiosErrorResponse(err: any): APIErrorResponse {
 	const error = err as AxiosError;
 	if (error.response) {
 		const errorMsg: string = (error.response.data as any).message

@@ -1,6 +1,6 @@
 import { getAccessToken } from "@/app/api/auth/[...nextauth]/getAccessToken";
 import { getHabit } from "@/app/services/habitsService";
-import { getHabitDaysClosure } from "@/app/services/habitDaysService";
+import { getHabitDays } from "@/app/services/habitDaysService";
 import ErrorPage from "../../components/presentation/error-page";
 import HabitDays from "../components/logic/HabitDays";
 import { TDayOfWeek } from "@/app/utils/types";
@@ -15,11 +15,7 @@ type Props = {
 export default async function HabitInfoPage({ params }: Props) {
     const id = params.id
     const accessToken = await getAccessToken();
-
-    const habitRes = await getHabit({ accessToken, id });
-    const getHabitDays = getHabitDaysClosure({ accessToken, habitId: id });
-    const habitDaysRes = await getHabitDays();
-
+    const [habitRes, habitDaysRes] = await Promise.all([getHabit({ accessToken, id }), getHabitDays({ accessToken, habitId: id })])
     if (habitRes.success === false) {
         return (
             <ErrorPage errorMsg={habitRes.message} />

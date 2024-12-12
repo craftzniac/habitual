@@ -18,7 +18,7 @@ import { UpdateHabitDto } from './dto/update-habit.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { HabitFilter } from 'src/types';
 import { HabitDaysService } from 'src/habit-days/habit-days.service';
-import { CreateHabitDayDto } from 'src/habit-days/dto/create-habit-day.dto';
+import { UpsertHabitDayDto } from 'src/habit-days/dto/upsert-habit-day.dto';
 
 @Controller('habits')
 @UseGuards(AuthGuard)
@@ -45,12 +45,12 @@ export class HabitsController {
   }
 
   @HttpCode(201)
-  @Post(':id/habit-days')
-  async createHabitDay(
+  @Put(':id/habit-days')
+  async upsertHabitDay(
     @Param('id') habitId: string,
-    @Body(ValidationPipe) habitDayDto: CreateHabitDayDto,
+    @Body(ValidationPipe) habitDayDto: UpsertHabitDayDto,
   ) {
-    return await this.habitDaysService.create(habitId, habitDayDto);
+    return await this.habitDaysService.upsert(habitId, habitDayDto);
   }
 
   @HttpCode(201)

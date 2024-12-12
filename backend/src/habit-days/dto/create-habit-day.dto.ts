@@ -1,16 +1,6 @@
-import { Type } from 'class-transformer';
-import { IsBoolean, IsNotEmpty, IsOptional } from 'class-validator';
+import { OmitType } from '@nestjs/mapped-types';
+import { UpsertHabitDayDto } from './upsert-habit-day.dto';
 
-export class CreateHabitDayDto {
-  @IsNotEmpty({ message: 'A date must be provided for this habit day' })
-  @Type(() => Date)
-  date: Date;
-
-  // @IsNotEmpty({ message: ' must be provided for this habit day' })
-  // @Type(() => Date)
-  // habitStartDate: Date;
-
-  @IsBoolean({ message: 'isCompleted must be true or false' })
-  @IsOptional()
-  isCompleted?: boolean;
-}
+export class CreateHabitDayDto extends OmitType(UpsertHabitDayDto, [
+  'id',
+] as const) { }
