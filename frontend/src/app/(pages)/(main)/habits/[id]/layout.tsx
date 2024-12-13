@@ -36,7 +36,7 @@ export default async function HabitDetailsLayout({ children, params }: { childre
                     </div>
                     <section className="hidden 2xl:flex w-full h-full pe-4 ps-1 overflow-y-auto max-w-[25rem]">
                         <div className="h-fit flex w-full">
-                            <HabitInfo />
+                            <HabitInfo extraClassName="h-fit" />
                         </div>
                     </section>
                 </main>

@@ -4,12 +4,10 @@ import HabitDays from "../logic/HabitDays";
 import { TDayOfWeek } from "@/app/utils/types";
 import { useGlobalContext } from "@/app/(pages)/(main)/contexts/GlobalProvider";
 
-type Props = { id: string }
-
-export default function HabitInfo() {
+export default function HabitInfo({ extraClassName }: { extraClassName: string }) {
     const { habit } = useGlobalContext();
     return (
-        <section className="flex flex-col w-full h-fit gap-8">
+        <section className={`flex flex-col w-full gap-8 ${extraClassName}`}>
             <section className="flex  flex-col w-full gap-4">
                 <div className="flex justify-between gap-2 items-center">
                     <span className="flex text-sm">
