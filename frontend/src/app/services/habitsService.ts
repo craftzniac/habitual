@@ -81,3 +81,25 @@ export async function createHabit({ accessToken, data }: {
 		return axiosErrorResponse(err);
 	}
 }
+
+
+
+export async function deleteHabit({ accessToken, habitId }: {
+	accessToken: string, habitId: string
+}): Promise<
+	APIErrorResponse | {
+		success: true
+	}
+> {
+	try {
+		await api.delete(`/habits/${habitId}`, {
+			headers: getHabitsRequestHeader(accessToken)
+		});
+
+		return {
+			success: true,
+		}
+	} catch (err) {
+		return axiosErrorResponse(err);
+	}
+}

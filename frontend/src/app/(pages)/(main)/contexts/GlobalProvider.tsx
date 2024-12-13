@@ -7,14 +7,20 @@ import { useToast } from "@/app/components/logic/toast";
 type TGlobalData = {
     habitDays: TSavedHabitDay[],
     habit: THabit,
-    refreshHabitDays: () => Promise<void>
+    refreshHabitDays: () => Promise<void>,
+    closeHabitDeleteDialog: () => void,
+    isHabitDeleteDialogOpen: boolean,
+    openHabitDeleteDialog: () => void,
 }
 
 
 const initialContextValue: TGlobalData = {
     habitDays: [],
     habit: { id: "", name: "", status: "on-going", userId: "", createdAt: "", startDate: "", updatedAt: "", frequency: new Set(), reminders: new Set(), description: "", durationInDays: 0, consistencyInPercent: 0 },
-    refreshHabitDays: async () => { }
+    refreshHabitDays: async () => { },
+    closeHabitDeleteDialog: () => { },
+    isHabitDeleteDialogOpen: false,
+    openHabitDeleteDialog: () => { },
 }
 
 const GlobalContext = React.createContext<TGlobalData>(initialContextValue);
@@ -34,6 +40,7 @@ export default function GlobalProvider({ v, children, habitId }: {
     const [habit, setHabit] = useState(v.habit);
     const [habitDays, setHabitDays] = useState(v.habitDays);
     const { toast } = useToast();
+    const [isHabitDeleteDialogOpen, setIsHabitDeleteDialogOpen] = useState(false);
 
     async function refreshHabitDays() {
         try {
@@ -53,7 +60,10 @@ export default function GlobalProvider({ v, children, habitId }: {
         <GlobalContext.Provider value={{
             refreshHabitDays,
             habit,
-            habitDays
+            habitDays,
+            closeHabitDeleteDialog: () => setIsHabitDeleteDialogOpen(false),
+            openHabitDeleteDialog: () => setIsHabitDeleteDialogOpen(true),
+            isHabitDeleteDialogOpen
         }}>
             {children}
         </GlobalContext.Provider>

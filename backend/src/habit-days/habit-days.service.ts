@@ -71,4 +71,15 @@ export class HabitDaysService {
       habitId: id,
     };
   }
+
+  /**
+   * Delete all habit days associated with a specific habit
+   * */
+  async deleteAll(habitId: string) {
+    const res = await this.habitDaysRepository.delete({ habitId });
+    return {
+      habitId,
+      deleteCount: res.affected,
+    };
+  }
 }

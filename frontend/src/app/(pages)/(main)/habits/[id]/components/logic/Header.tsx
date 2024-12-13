@@ -5,9 +5,11 @@ import BackButton from "@/app/(pages)/(main)/components/presentation/BackButton"
 import OverflowButton from "./OverflowButton";
 import { usePathname } from "next/navigation";
 import { Edit_Pencil_24, Trash_16 } from "@/app/assets/icons";
+import { useGlobalContext } from "@/app/(pages)/(main)/contexts/GlobalProvider";
 
 export default function Header({ habitId, habitName }: { habitId: string, habitName: string }) {
     const path = usePathname();
+    const { openHabitDeleteDialog } = useGlobalContext();
     function determineSelected(): "journal" | "habit-days" | "habit-info" {
         if (path.includes("journal")) {
             return "journal"
@@ -41,7 +43,7 @@ export default function Header({ habitId, habitName }: { habitId: string, habitN
                         <Image src={Edit_Pencil_24} alt="pencil" className="w-5 h-5" />
                         <span>Edit</span>
                     </button>
-                    <button type="button" className="px-6 py-3 flex items-center gap-1 hover:bg-red/5 transition-colors duration-200 justify-center rounded-full">
+                    <button type="button" className="px-6 py-3 flex items-center gap-1 hover:bg-red/5 transition-colors duration-200 justify-center rounded-full" onClick={openHabitDeleteDialog}>
                         <Image src={Trash_16} alt="pencil" className="w-5 h-5" />
                         <span className="text-red">Delete</span>
                     </button>

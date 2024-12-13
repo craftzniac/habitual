@@ -74,7 +74,10 @@ export class HabitsController {
   }
 
   @Delete(':id')
-  delete(@Param('id') habitId: string) {
+  async delete(@Param('id') habitId: string) {
+    // delete all habit days associated with this habit;
+    await this.habitDaysService.deleteAll(habitId);
+    // then delete the actual habit
     return this.habitsService.delete(habitId);
   }
 }
