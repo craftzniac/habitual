@@ -4,6 +4,21 @@ import { getAccessToken } from "../api/auth/[...nextauth]/getAccessToken";
 import { createHabit } from "../services/habitsService";
 import { THabit } from "../utils/types";
 import { navPaths } from "../utils/constants";
+import { deleteHabit } from "../services/habitsService";
+
+/**
+ * deletes a habit. 
+ * @returns an error message if delete failed 
+ * */
+export async function deleteHabitAction(habitId: string): Promise<string | undefined> {
+	const accessToken = await getAccessToken();
+	const res = await deleteHabit({ accessToken, habitId });
+	if (res.success) {
+		revalidatePath(navPaths.HABITS.INDEX);
+	} else {
+		return res.message
+	}
+}
 
 export async function createHabitAction(data: Omit<THabit, "id" | "userId" | "createdAt" | "updatedAt">): Promise<string | undefined> {
 	// transform the Set objects to Array else the axios method from the createHabit() function won't be able to send it as an array

@@ -3,12 +3,10 @@ import { Edit_Pencil_16, Trash_16, Journal_16, Info_16 } from "@/app/assets/icon
 import Link from "next/link"
 import Image from "next/image"
 import { forwardRef, LegacyRef } from "react"
+import { useGlobalContext } from "@/app/(pages)/(main)/contexts/GlobalProvider"
 
-const OverflowMenu = forwardRef(({ habitId, isOpen, close }: { habitId: string, isOpen: boolean, close: () => void }, ref: LegacyRef<HTMLElement>) => {
-    function triggerDelete() {
-        close();
-        alert("Trigger delete of habit")
-    }
+const OverflowMenu = forwardRef(({ habitId, isOpen, close: closeOverflow }: { habitId: string, isOpen: boolean, close: () => void }, ref: LegacyRef<HTMLElement>) => {
+    const { openHabitDeleteDialog } = useGlobalContext();
 
     const menuItems = [
         {
@@ -32,7 +30,7 @@ const OverflowMenu = forwardRef(({ habitId, isOpen, close }: { habitId: string, 
             <ul className="flex flex-col">
                 {
                     menuItems.map(item => (
-                        <li key={item.title} className="" onClick={() => close()}>
+                        <li key={item.title} className="" onClick={() => closeOverflow()}>
                             <Link href={item.link} className="flex items-center border-b-primary-50 border-b-2 p-3 gap-1">
                                 <Image src={item.icon} alt="" />
                                 <span className="capitalize text-sm w-full pr-12">{item.title}</span>
@@ -41,7 +39,10 @@ const OverflowMenu = forwardRef(({ habitId, isOpen, close }: { habitId: string, 
                     ))
                 }
             </ul>
-            <button type="button" className="flex items-center p-3 gap-1" onClick={triggerDelete}>
+            <button type="button" className="flex items-center p-3 gap-1" onClick={() => {
+                closeOverflow();
+                openHabitDeleteDialog();
+            }}>
                 <Image src={Trash_16} alt="" />
                 <span className="capitalize w-full text-start text-sm text-red">delete</span>
             </button>
