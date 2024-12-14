@@ -1,7 +1,7 @@
 "use server"
 import { revalidatePath } from "next/cache";
 import { getAccessToken } from "../api/auth/[...nextauth]/getAccessToken";
-import { createHabit } from "../services/habitsService";
+import { createHabit, editHabit } from "../services/habitsService";
 import { THabit } from "../utils/types";
 import { navPaths } from "../utils/constants";
 import { deleteHabit } from "../services/habitsService";
@@ -20,7 +20,7 @@ export async function deleteHabitAction(habitId: string): Promise<string | undef
 	}
 }
 
-export async function createHabitAction(data: Omit<THabit, "id" | "userId" | "createdAt" | "updatedAt">): Promise<string | undefined> {
+export async function createHabitAction(data: Omit<THabit, "id" | "userId" | "createdAt" | "updatedAt" | "status" | "consistencyInPercent">): Promise<string | undefined> {
 	// transform the Set objects to Array else the axios method from the createHabit() function won't be able to send it as an array
 	const frequencyArray = Array.from(data.frequency || []);
 	const remindersArray = Array.from(data.reminders || []);
@@ -35,6 +35,29 @@ export async function createHabitAction(data: Omit<THabit, "id" | "userId" | "cr
 	});
 	if (res.success) {
 		revalidatePath(navPaths.HABITS.INDEX);
+	} else {
+		return res.message
+	}
+}
+
+
+export async function editHabitAction(data: Omit<THabit, "userId" | "createdAt" | "updatedAt" | "status" | "consistencyInPercent">): Promise<string | undefined> {
+	const frequencyArray = Array.from(data.frequency || []);
+	const remindersArray = Array.from(data.reminders || []);
+	console.log("dataa:", data);
+
+	const accessToken = await getAccessToken();
+	const res = await editHabit({
+		accessToken,
+		data: {
+			...data,
+			frequency: frequencyArray,
+			reminders: remindersArray
+		}
+	});
+	if (res.success) {
+		revalidatePath(navPaths.HABITS.INDEX);
+		revalidatePath(`${navPaths.HABITS.INDEX}/${data.id}`);
 	} else {
 		return res.message
 	}

@@ -25,7 +25,6 @@ import Reminder_Clock_16 from "./reminder_clock_16.svg"
 import Trash_16 from "./trash_16.svg"
 import Edit_Pencil_16 from "./edit_pencil_16.svg"
 import Edit_Pencil_16_White from "./edit_pencil_16_white.svg"
-import Date_16 from "./date_16.svg"
 import X_16 from "./x_16.svg"
 import Reminder_Clock_24 from "./reminder_clock_24.svg"
 import Save_16 from "./save_16.svg"
@@ -48,6 +47,7 @@ import Check_16_Purple from "./check_16_purple.svg"
 import Arrow_Left_16 from "./arrow_left_16.svg"
 import Plus_16_Gray from "./plus_16_gray.svg"
 import Info_16 from "./info_16.svg"
+import Date_Picker from "./date_16.svg"
 
 export {
     GoogleLogo,
@@ -78,7 +78,7 @@ export {
     Edit_Pencil_16,
     Edit_Pencil_16_White,
     Trash_16,
-    Date_16,
+    Date_Picker,
     X_16,
     Reminder_Clock_24,
     Save_16,
@@ -99,5 +99,5 @@ export {
     Exit_16,
     Check_16_Purple,
     Plus_16_Gray,
-    Info_16
+    Info_16,
 }

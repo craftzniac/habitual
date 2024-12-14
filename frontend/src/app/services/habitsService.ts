@@ -59,7 +59,7 @@ export async function getHabit({ accessToken, id }: {
 
 
 export async function createHabit({ accessToken, data }: {
-	accessToken: string, data: Omit<THabit, "id" | "userId" | "createdAt" | "updatedAt" | "reminders" | "frequency"> & {
+	accessToken: string, data: Omit<THabit, "id" | "userId" | "createdAt" | "updatedAt" | "status" | "consistencyInPercent" | "reminders" | "frequency"> & {
 		reminders: TReminderTime[],
 		frequency: TDayOfWeek[]
 	}
@@ -82,6 +82,30 @@ export async function createHabit({ accessToken, data }: {
 	}
 }
 
+
+export async function editHabit({ accessToken, data }: {
+	accessToken: string, data: Omit<THabit, "reminders" | "frequency" | "createdAt" | "updatedAt" | "status" | "consistencyInPercent" | "userId"> & {
+		reminders: TReminderTime[],
+		frequency: TDayOfWeek[]
+	}
+}): Promise<
+	APIErrorResponse | {
+		success: true, data: THabit
+	}
+> {
+	try {
+		const res = await api.put(`/habits/${data.id}`, data, {
+			headers: getHabitsRequestHeader(accessToken)
+		});
+
+		return {
+			success: true,
+			data: res.data
+		}
+	} catch (err) {
+		return axiosErrorResponse(err);
+	}
+}
 
 
 export async function deleteHabit({ accessToken, habitId }: {
