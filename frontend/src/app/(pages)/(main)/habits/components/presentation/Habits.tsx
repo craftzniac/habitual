@@ -20,8 +20,8 @@ export default async function Habits({ filter }: { filter: THabitFilter }) {
                 <NoHabits filter={filter} />
             </section>
         ) : (
-            <section className="w-full h-fit flex flex-col gap-4">
-                <ul className="grid grid-cols-1 mds:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-4 w-full h-fit">
+            <section className="habits">
+                <ul>
                     {
                         habits.map(habit => (
                             <HabitCard

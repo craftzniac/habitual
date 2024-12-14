@@ -9,10 +9,10 @@ type Prop = {
 }
 
 export default function HabitCard({ habit }: Prop) {
-    const status: THabitFilter = "on-going";
+    const status: THabitFilter = habit.status;
     return (
         <Link href={`/habits/${habit.id}`}
-            className="rounded-lg bg-white border-2 border-primary-50 hover:bg-primary-50 hover:border-primary-100 transition-colors duration-200 p-3 flex flex-col gap-2 w-full h-fit"
+            className="rounded-lg bg-primary-50/50 border-2 border-primary-50 hover:bg-primary-50 hover:border-primary-100 transition-colors duration-200 p-3 flex flex-col gap-2 w-full h-[12rem]"
         >
             <div className="flex flex-col gap-4 w-full h-full">
                 <div className="flex flex-col gap-0.5 h-full">
@@ -22,7 +22,13 @@ export default function HabitCard({ habit }: Prop) {
                     </span>
                     <div className="flex flex-col gap-1">
                         <h2 className="text-lg font-bold text-primary-700 line-clamp-1">{habit.name}</h2>
-                        <p className="text-base leading-[150%] text-primary-900/60 line-clamp-2">{habit.description}</p>
+                        {
+                            habit.description ? (
+                                <p className="text-base leading-[150%] text-primary-900/60 line-clamp-2">{habit.description}</p>
+                            ) : (
+                                <p className="text-base leading-[150%] text-primary-900/60 italic">&lt;No description&gt;</p>
+                            )
+                        }
                     </div>
                 </div>
                 <div className="flex gap-2">

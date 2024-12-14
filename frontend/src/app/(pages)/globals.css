@@ -201,4 +201,52 @@
             grid-template-columns: repeat(41, 1fr);
         }
     }
+
+
+    .habits {
+        @apply w-full h-fit flex flex-col;
+        container-type: inline-size;
+        container-name: habits;
+    }
+
+    .habits ul {
+        @apply w-full h-fit gap-4 grid grid-cols-1;
+    }
+
+    @container habits (min-width: 350px) {}
+
+
+    @container habit-days (min-width: 410px) {}
+
+
+    @container habits (min-width: 480px) {
+        .habits ul {
+            @apply grid-cols-2;
+        }
+    }
+
+    @container habits (min-width: 800px) {
+        .habits ul {
+            @apply grid-cols-3;
+        }
+    }
+
+    @container habits (min-width: 1300px) {
+        .habits ul {
+            @apply grid-cols-4;
+        }
+    }
+
+    @container habits (min-width: 1800px) {
+        .habits ul {
+            @apply grid-cols-5;
+        }
+    }
+
+
+    @container habits (min-width: 2500px) {
+        .habits ul {
+            @apply grid-cols-6;
+        }
+    }
 }
