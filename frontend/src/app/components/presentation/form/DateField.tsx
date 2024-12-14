@@ -30,6 +30,7 @@ export default function DateField({ label, name, errMsg, value, onChange }: Prop
         weekday: "short"
     })
 
+    console.log("value: ", value);
     const formattedDate = formatter.format(new Date(value));
     return (
         <div className="w-full flex flex-col gap-1 rounded">

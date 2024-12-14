@@ -36,7 +36,7 @@ export default function HabitForm({ mode }: { mode: "edit" | "add" }) {
         defaultValues: {
             name: initialHabitValue.name || "",
             description: initialHabitValue.description || "",
-            startDate: initialHabitValue.startDate,
+            startDate: initialHabitValue.startDate || new Date().toISOString(),
             frequency: initialHabitValue.frequency || new Set([
                 "sun", "mon", "tue", "wed", "thu", "fri", "sat"
             ]),
