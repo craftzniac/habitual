@@ -111,7 +111,7 @@ export default function DurationSelect({ label, name, errMsg, onChange, value, o
                                         >
                                             <button type="button"
                                                 onClick={() => selectDuration(duration)}
-                                                className={`flex flex-col justify-center p-2  rounded-lg hover:bg-gray-5 w-full text-sm ${selectedDuration?.value === duration.value ? "bg-gray-5" : "bg-transparent"} `}
+                                                className={`flex flex-col justify-center p-2 text-start rounded-lg hover:bg-gray-5 w-full text-sm ${selectedDuration?.value === duration.value ? "bg-gray-5" : "bg-transparent"} `}
                                             >
                                                 {duration.label}
                                             </button>

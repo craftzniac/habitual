@@ -10,11 +10,11 @@ import RemindersInput from "../presentation/RemindersInput";
 import MultiSelect from "@/app/components/presentation/form/MultiSelect";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { TDayOfWeek, TReminderTime } from "@/app/utils/types";
-import { createHabitAction } from "@/app/server-actions/habitActions";
+import { createHabitAction, editHabitAction } from "@/app/server-actions/habitActions";
 import { useState } from "react";
 import { useToast } from "@/app/components/logic/toast";
 import { useRouter } from "next/navigation";
-import { navPaths } from "@/app/utils/constants";
+import { useGlobalContext } from "../../../contexts/GlobalProvider";
 
 type Inputs = {
     name: string,
@@ -26,6 +26,7 @@ type Inputs = {
 }
 
 export default function HabitForm({ mode }: { mode: "edit" | "add" }) {
+    const { habit: initialHabitValue } = useGlobalContext();
     const router = useRouter();
     const { toast } = useToast();
     const [isSubmittingForm, setIsSubmittingForm] = useState(false);
@@ -33,14 +34,14 @@ export default function HabitForm({ mode }: { mode: "edit" | "add" }) {
         errors
     } } = useForm<Inputs>({
         defaultValues: {
-            name: "",
-            description: "",
-            startDate: "",
-            frequency: new Set([
+            name: initialHabitValue.name || "",
+            description: initialHabitValue.description || "",
+            startDate: initialHabitValue.startDate,
+            frequency: initialHabitValue.frequency || new Set([
                 "sun", "mon", "tue", "wed", "thu", "fri", "sat"
             ]),
-            durationInDays: undefined,
-            reminders: new Set(),
+            durationInDays: initialHabitValue.durationInDays || undefined,
+            reminders: initialHabitValue.reminders || new Set(),
         }
     });
 
@@ -58,6 +59,13 @@ export default function HabitForm({ mode }: { mode: "edit" | "add" }) {
                 // go back to  the /habits page
                 router.push('/habits');
             }
+        } else {
+            const error = await editHabitAction({ ...data, startDate: new Date(data.startDate).toISOString(), durationInDays: data.durationInDays as number, id: initialHabitValue.id });
+            if (error) {
+                toast(error, { type: "error" });
+            } else {
+                toast("Habit updated successfully!");
+            }
         }
         setIsSubmittingForm(false);
     }
@@ -66,7 +74,22 @@ export default function HabitForm({ mode }: { mode: "edit" | "add" }) {
         <form className="w-full flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
             <TextField name="name" label="Name" placeholder="reading 'deep work'" register={register("name", { required: "A habit name must be provided" })} infoText={errors?.name?.message} />
             <TextArea name="description" label="Description" placeholder="I will be reading ..." register={register("description", { required: false })} errMsg={errors.description?.message} />
-            <DateField name="startDate" label="Start Date" placeholder="Select a Start Date" register={register("startDate", { required: "A start date is required for this habit" })} errMsg={errors.startDate?.message} />
+
+            <Controller
+                name="startDate"
+                control={control}
+                rules={{
+                    validate: value => {
+                        if (!value) {
+                            return "A start date is required for this habit"
+                        }
+                        return true;
+                    }
+                }}
+                render={({ field: { name, value, onChange } }) => (
+                    <DateField name={name} label="Start Date" onChange={onChange} errMsg={errors.startDate?.message} value={value} />
+                )}
+            />
             <Controller
                 name="frequency"
                 control={control}
