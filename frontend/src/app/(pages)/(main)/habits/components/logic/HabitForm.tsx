@@ -4,7 +4,7 @@ import DateField from "@/app/components/presentation/form/DateField";
 import DurationSelect from "@/app/components/presentation/form/DurationSelect";
 import TextArea from "@/app/components/presentation/form/TextArea";
 import TextField from "@/app/components/presentation/form/TextField";
-import { Plus_16_White } from "@/app/assets/icons";
+import { Edit_Pencil_16_White, Plus_16_White } from "@/app/assets/icons";
 import Button from "@/app/components/presentation/form/Button";
 import RemindersInput from "../presentation/RemindersInput";
 import MultiSelect from "@/app/components/presentation/form/MultiSelect";
@@ -127,8 +127,12 @@ export default function HabitForm({ mode }: { mode: "edit" | "add" }) {
                     <RemindersInput name={name} label="Reminders" onChange={onChange} value={value} onBlur={onBlur} errMsg={errors.reminders?.message} />
                 )}
             />
-            <Button isSubmit label="Add Habit" stretch disabled={isSubmittingForm}>
-                <Image src={Plus_16_White} alt="white plus icon" />
+            <Button isSubmit label={mode === "add" ? "Add Habit" : "Save Changes"} stretch disabled={isSubmittingForm}>
+                {mode === "add" ? (
+                    <Image src={Plus_16_White} alt="white plus icon" />
+                ) : (
+                    <Image src={Edit_Pencil_16_White} alt="white plus icon" />
+                )}
             </Button>
         </form>
     )
