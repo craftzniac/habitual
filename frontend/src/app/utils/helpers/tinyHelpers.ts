@@ -117,3 +117,11 @@ export function getHabitDaySavedDate(savedHabitDays: TSavedHabitDay[], isoDate: 
 	});
 }
 
+/**
+ * returns just the date portion in the form yyyy-mm-dd in UTC
+ * */
+export function getUTCDateString(date: Date): string {
+	const isoDateString = date.toISOString();
+	const parts = isoDateString.split('T');
+	return parts[0];
+}

@@ -1,12 +1,12 @@
-import { Controller, Delete, Param } from '@nestjs/common';
+import { Controller, Patch, UseGuards } from '@nestjs/common';
 import { HabitDaysService } from './habit-days.service';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('habit-days')
+@UseGuards(AuthGuard)
 export class HabitDaysController {
   constructor(private habitDaysService: HabitDaysService) { }
 
-  @Delete(':id')
-  async delete(@Param('id') habitId: string) {
-    return this.habitDaysService.delete(habitId);
-  }
+  @Patch(':id/note')
+  updateHabitDayNote() { }
 }

@@ -93,7 +93,7 @@ function isDayExcluded({
 /**
  * returns just the date portion in the form yyyy-mm-dd from an ISO date string
  * */
-export function getDateString(isoDate: Date): string {
+export function getUTCDateString(isoDate: Date): string {
   const isoDateString = isoDate.toISOString();
   const parts = isoDateString.split('T');
   return parts[0];
@@ -160,4 +160,15 @@ export function calculateConsistencyInPercent({
   remainingDays: number;
 }) {
   return Math.floor(completedDays / (totalDays - remainingDays)) * 100;
+}
+
+/**
+ * Check if the input text can be parsed to a valid date object
+ * */
+export function isValidDateString(text: string): boolean {
+  const d = new Date(text);
+  if (isNaN(d.getTime())) {
+    return false;
+  }
+  return true;
 }

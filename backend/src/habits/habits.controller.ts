@@ -11,6 +11,7 @@ import {
   UseGuards,
   Req,
   Query,
+  BadRequestException,
 } from '@nestjs/common';
 import { HabitsService } from './habits.service';
 import { CreateHabitDto } from './dto/create-habit.dto';
@@ -19,6 +20,12 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { HabitFilter } from 'src/types';
 import { HabitDaysService } from 'src/habit-days/habit-days.service';
 import { UpsertHabitDayDto } from 'src/habit-days/dto/upsert-habit-day.dto';
+import {
+  generateHabitDays,
+  getExcludedDaysFromFrequency,
+  getUTCDateString,
+  isValidDateString,
+} from 'src/utils';
 
 @Controller('habits')
 @UseGuards(AuthGuard)
@@ -42,6 +49,39 @@ export class HabitsController {
   @Get(':id/habit-days')
   getHabitDays(@Param('id') habitId: string) {
     return this.habitDaysService.getAll(habitId);
+  }
+
+  @Get(':id/habit-days/:slug/journal-entry')
+  async getHabitDayJournalEntry(
+    @Param('slug') slug: string,
+    @Req() request: any,
+    @Param('id') habitId: string,
+  ) {
+    if (isValidDateString(slug) === true) {
+      // check to make sure this date represents a day in the habit days
+      const userId = request.user.sub;
+      const habitRes = await this.habitsService.getHabit(userId, habitId);
+      const habit = habitRes.habit;
+
+      // GENERate habit days for this habit and check if this date matches any habit date.
+      const habitDayDates = generateHabitDays({
+        excludedDays: getExcludedDaysFromFrequency(habit.frequency || []),
+        durationInDays: habit.durationInDays,
+        startDateString: habit.startDate,
+      });
+      //2. check that the slug (which is a date string) represents a valid habit day for this habit
+      const isFound = habitDayDates.find((d) => {
+        const dd = getUTCDateString(new Date(d.date));
+        if (dd === getUTCDateString(new Date(slug))) return true;
+        else return false;
+      });
+      if (!isFound) {
+        return new BadRequestException('Habit date is unknown');
+      }
+
+      return await this.habitDaysService.getNoteByDate(slug);
+    }
+    return await this.habitDaysService.getNoteById(slug);
   }
 
   @HttpCode(201)

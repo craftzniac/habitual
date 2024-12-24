@@ -7,12 +7,13 @@ export function axiosErrorResponse(err: any): APIErrorResponse {
 		const errorMsg: string = (error.response.data as any).message
 		return {
 			success: false,
-			message: errorMsg
+			message: errorMsg,
+			status: error.response.status
 		}
 	}
 
 	return {
 		success: false,
-		message: "Couldn't complete request"
+		message: "Couldn't complete request",
 	}
 }

@@ -76,15 +76,15 @@ export type ReminderTime =
   | '23:00'
   | '23:30';
 
-export type HabitDay = {
-  id: string;
-  habitId: string;
-  originalStartDate: Date;
-  date: string;
-  isCompleted: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
+// export type HabitDay = {
+//   id: string;
+//   habitId: string;
+//   originalStartDate: Date;
+//   date: string;
+//   isCompleted: boolean;
+//   createdAt: string;
+//   updatedAt: string;
+// };
 
 export type HabitDayJournal = {
   id: string;

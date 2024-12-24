@@ -30,11 +30,11 @@ export default async function HabitDetailsLayout({ children, params }: { childre
         <GlobalProvider v={{ habit, habitDays }} habitId={id}>
             <section className="h-full w-full flex flex-col">
                 <Header habitId={habit.id} habitName={habit.name} />
-                <main className="w-full h-full min-h-0 flex">
-                    <div className="w-full h-full flex">
+                <main className="w-full h-full min-h-0 flex p-3">
+                    <div className="w-full min-w-0 h-full flex">
                         {children}
                     </div>
-                    <section className="hidden 2xl:flex w-full h-full pe-4 ps-1 overflow-y-auto max-w-[25rem]">
+                    <section className="hidden 2xl:flex w-full h-full pe-4 ps-1 overflow-y-auto min-w-[25rem] max-w-[25rem]">
                         <div className="h-fit flex w-full">
                             <HabitInfo extraClassName="h-fit" />
                         </div>

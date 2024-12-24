@@ -11,7 +11,7 @@ import { Habit } from './entity/habit.entity';
 import { HabitFilter } from 'src/types';
 import {
   generateHabitDays,
-  getDateString,
+  getUTCDateString,
   getExcludedDaysFromFrequency,
 } from 'src/utils';
 
@@ -40,14 +40,14 @@ export class HabitsService {
       // get only habits that have a habit day matching today
       habits = habits.filter((habit) => {
         const habitDays = generateHabitDays({
-          startDateString: habit.startDate as any as string, // habit.startDate isn't really a date object hence the conversion
+          startDateString: habit.startDate,
           durationInDays: habit.durationInDays,
           excludedDays: getExcludedDaysFromFrequency(habit.frequency),
         });
 
         const today = new Date();
         for (const habitDay of habitDays) {
-          if (getDateString(habitDay.date) === getDateString(today)) {
+          if (getUTCDateString(habitDay.date) === getUTCDateString(today)) {
             return true;
           }
         }
@@ -85,7 +85,7 @@ export class HabitsService {
   ): Promise<{ habit: Habit }> {
     const habitEntity = this.habitsRepository.create({
       name: createHabitDto.name,
-      startDate: createHabitDto.startDate,
+      startDate: createHabitDto.startDate.toISOString(),
       durationInDays: createHabitDto.durationInDays,
       description: createHabitDto.description ?? '',
       frequency: createHabitDto.frequency,
@@ -124,7 +124,7 @@ export class HabitsService {
       { id },
       {
         name: updateHabitDto.name,
-        startDate: updateHabitDto.startDate,
+        startDate: updateHabitDto.startDate.toISOString(),
         durationInDays: updateHabitDto.durationInDays,
         description: updateHabitDto.description,
         frequency: updateHabitDto.frequency,

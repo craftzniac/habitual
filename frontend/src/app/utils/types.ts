@@ -2,7 +2,8 @@ import { UseFormRegister } from "react-hook-form";
 
 export type APIErrorResponse = {
 	success: false,
-	message: string
+	message: string,
+	status?: number
 }
 
 

@@ -1,8 +1,9 @@
 "use client"
+import Link from "next/link";
 import { TSavedHabitDay } from "@/app/utils/types";
 import getDatePartsFromIntlDate from "@/app/utils/helpers/getDatePartsFromIntlDate";
 import { ChangeEvent, useEffect, useState } from "react";
-import { getHabitDayDateStatus } from "@/app/utils/helpers/tinyHelpers";
+import { getHabitDayDateStatus, getUTCDateString } from "@/app/utils/helpers/tinyHelpers";
 import { upsertHabitDayStateAction } from "@/app/server-actions/habitDayActions";
 import { useToast } from "@/app/components/logic/toast";
 import { useGlobalContext } from "@/app/(pages)/(main)/contexts/GlobalProvider";
@@ -17,9 +18,10 @@ type Props = {
 }
 
 
-export default function HabitDay({ variant = "large-editable", date, savedData, habitId }: Props) {
+export default function HabitDay({ variant = "large-editable", date: _date, savedData, habitId }: Props) {
     const { refreshHabitDays } = useGlobalContext();
     const [isChecked, setIsChecked] = useState(savedData?.isCompleted || false);
+    const date = getUTCDateString(new Date(_date));
     const { month, monthDay } = getDatePartsFromIntlDate(date)
     const { toast } = useToast();
 
@@ -47,12 +49,10 @@ export default function HabitDay({ variant = "large-editable", date, savedData, 
         await refreshHabitDays();
     }
 
-    return (
+    return variant === "large-editable" ? (
         <label className={`cursor-pointer 
-            ${variant === "small-uneditable"
-                ? "pointer-events-none rounded-lg w-full max-w-12 p-0.5"
-                : "w-full max-w-24 min-h-20 rounded-2xl"
-            }  flex flex-col items-center justify-center 
+            w-full max-w-24 min-h-20 rounded-2xl
+          flex flex-col items-center justify-center 
             ${styleIsChecked(variant, isChecked)} 
             ${variant === "large-editable"
                 ? (
@@ -64,15 +64,25 @@ export default function HabitDay({ variant = "large-editable", date, savedData, 
                 )
                 : ("")
             }
-           ${variant === "small-uneditable" ? (dateStatus === "future" ? "opacity-40" : "") : ""} 
         `}
         >
             <input disabled={dateStatus === "future"} type="checkbox" className="hidden" checked={isChecked} onChange={onHabitDayUpdate} />
+            <span className={`font-bold text-lg`}>{monthDay}</span>
+            <span className={`capitalize text-sm`}>{month}</span>
+        </label>
+    ) : (
+        <Link href={`/habits/${habitId}/journal/${date}`} className={`cursor-pointer 
+            rounded-lg w-full max-w-12 p-0.5 flex flex-col items-center justify-center 
+            ${styleIsChecked(variant, isChecked)} 
+           ${dateStatus === "future" ? "opacity-40" : ""} 
+        `}
+        >
             <span className={`font-bold ${variant === "small-uneditable" ? "text-base" : "text-lg"}`}>{monthDay}</span>
             <span className={`capitalize ${variant === "small-uneditable" ? (`
                 text-xs ${isChecked ? "text-white" : "text-gray-75"}
             `) : "text-sm"}`}>{month}</span>
-        </label>
+        </Link>
+
     )
 }
 
