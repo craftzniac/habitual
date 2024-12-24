@@ -85,7 +85,7 @@ export class HabitsService {
   ): Promise<{ habit: Habit }> {
     const habitEntity = this.habitsRepository.create({
       name: createHabitDto.name,
-      startDate: createHabitDto.startDate.toISOString(),
+      startDate: createHabitDto.startDate as any as string, // createHabitDto.startDate is actually a string not an actual Date object
       durationInDays: createHabitDto.durationInDays,
       description: createHabitDto.description ?? '',
       frequency: createHabitDto.frequency,
@@ -124,7 +124,7 @@ export class HabitsService {
       { id },
       {
         name: updateHabitDto.name,
-        startDate: updateHabitDto.startDate.toISOString(),
+        startDate: updateHabitDto.startDate as any as string, // updateHabitDto.startDate is actually a string not an actual Date object
         durationInDays: updateHabitDto.durationInDays,
         description: updateHabitDto.description,
         frequency: updateHabitDto.frequency,
