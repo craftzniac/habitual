@@ -1,18 +1,9 @@
-import { Type } from 'class-transformer';
-import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class UpsertHabitDayDto {
-  @IsNotEmpty({ message: 'A date must be provided for this habit day' })
-  @Type(() => Date)
-  date: Date;
-
-  @IsOptional()
-  @IsString({ message: 'habit day id must be valid' })
-  id?: string;
-
-  // @IsNotEmpty({ message: ' must be provided for this habit day' })
-  // @Type(() => Date)
-  // habitStartDate: Date;
+  @IsNotEmpty({ message: 'Habit day timestamp must be provided' })
+  @IsNumber({ allowNaN: false }, { message: 'timestamp must be a number' })
+  timestamp: number;
 
   @IsBoolean({ message: 'isCompleted must be true or false' })
   @IsOptional()

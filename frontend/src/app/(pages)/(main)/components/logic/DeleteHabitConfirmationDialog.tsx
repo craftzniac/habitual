@@ -1,3 +1,4 @@
+"use client"
 import Button from "@/app/components/presentation/form/Button"
 import { useGlobalContext } from "../../contexts/GlobalProvider"
 import { useParams, useRouter } from "next/navigation";
@@ -5,7 +6,14 @@ import { useState } from "react";
 import { useToast } from "@/app/components/logic/toast";
 import { deleteHabitAction } from "@/app/server-actions/habitActions";
 
-export default function DeleteHabitConfirmationDialog() {
+export default function DeleteHabitConfirmDialogWrapper() {
+    const { isHabitDeleteDialogOpen } = useGlobalContext();
+    return (
+        isHabitDeleteDialogOpen && <DeleteHabitConfirmDialog />
+    )
+}
+
+function DeleteHabitConfirmDialog() {
     const [isDeleting, setIsDeleting] = useState(false);
     const { closeHabitDeleteDialog: close } = useGlobalContext();
     const params = useParams();
@@ -30,7 +38,7 @@ export default function DeleteHabitConfirmationDialog() {
     }
 
     return (
-        <div className="fixed inset-0 w-full h-full bg-[black]/20 overflow-y-auto flex justify-center items-center p-2 z-20">
+        <div className="fixed inset-0 w-full h-full bg-[black]/20 overflow-y-auto flex justify-center items-center p-2 z-40">
             <div className="rounded-2xl flex flex-col bg-white opacity-100 gap-4 p-4 border-2 border-primary-100">
                 <div className="flex flex-col gap-3">
                     <h2 className="text-xl font-bold line-clamp-2 w-full">Delete Habit?</h2>

@@ -55,7 +55,7 @@ export function generateHabitDays({
     return [];
   }
 
-  const days: { dayOfWeek: DayOfWeek; date: Date }[] = [];
+  const days: { dayOfWeek: DayOfWeek; timestamp: number }[] = [];
   // console.log(startDate.getUTCDay()); // 0: sunday, 1: monday, 2: tuesday, 3: wednesday, 4: thursday, 5: friday, 6: saturday
 
   let count = 0;
@@ -63,7 +63,10 @@ export function generateHabitDays({
     const startDate = new Date(startDateString);
     const day = new Date(startDate.setUTCDate(startDate.getUTCDate() + count));
     if (isDayExcluded({ excludedDays, day }) === false) {
-      days.push({ dayOfWeek: indexToDayOfWeek(day.getUTCDay()), date: day });
+      days.push({
+        dayOfWeek: indexToDayOfWeek(day.getUTCDay()),
+        timestamp: day.getTime(),
+      });
     }
     count++;
   }
@@ -165,10 +168,44 @@ export function calculateConsistencyInPercent({
 /**
  * Check if the input text can be parsed to a valid date object
  * */
-export function isValidDateString(text: string): boolean {
-  const d = new Date(text);
+export function isValidTimestamp(stamp: number | string): boolean {
+  const d = new Date(stamp);
   if (isNaN(d.getTime())) {
     return false;
   }
   return true;
+}
+
+/**
+ * checks whether a timestamp belongs to a habit day in a habit's habit day list.
+ * */
+export async function isValidHabitDayTimestamp({
+  frequency,
+  timestamp,
+  startDate,
+  durationInDays,
+}: {
+  timestamp: number;
+  frequency: DayOfWeek[];
+  startDate: string;
+  durationInDays: number;
+}) {
+  const datestamp = getDatestamp(timestamp);
+  // GENERate habit days for this habit and check if this date matches any habit date.
+  const habitDayTimestamps = generateHabitDays({
+    excludedDays: getExcludedDaysFromFrequency(frequency),
+    durationInDays,
+    startDateString: startDate,
+  });
+  //2. check that the slug (which is a date string) represents a valid habit day for this habit
+  const isFound = habitDayTimestamps.find((d) => {
+    if (d.timestamp === datestamp) return true;
+    else return false;
+  });
+  return isFound;
+}
+
+export function getDatestamp(timestamp: number | string) {
+  const dateString = new Date(timestamp).toISOString().split('T')[0];
+  return new Date(dateString).getTime();
 }

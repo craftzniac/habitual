@@ -22,20 +22,18 @@ export async function getHabitDays({ accessToken, habitId }: {
 	}
 }
 
-export async function upsertHabitDay({ accessToken, habitId, date, isCompleted, id }: {
+export async function upsertHabitDay({ accessToken, habitId, timestamp, isCompleted }: {
 	accessToken: string,
 	habitId: string,
-	date: string,
+	timestamp: number,
 	isCompleted?: boolean,
-	id?: string
 }): Promise<APIErrorResponse | {
 	success: true,
 }> {
 	try {
 		await api.put(`/habits/${habitId}/habit-days`, {
-			date,
+			timestamp,
 			isCompleted,
-			id
 		}, {
 			headers: getHabitsRequestHeader(accessToken)
 		})

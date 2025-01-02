@@ -3,7 +3,7 @@ import Link from "next/link";
 import { TSavedHabitDay } from "@/app/utils/types";
 import getDatePartsFromIntlDate from "@/app/utils/helpers/getDatePartsFromIntlDate";
 import { ChangeEvent, useEffect, useState } from "react";
-import { getHabitDayDateStatus, getUTCDateString } from "@/app/utils/helpers/tinyHelpers";
+import { getHabitDayTimestampStatus } from "@/app/utils/helpers/tinyHelpers";
 import { upsertHabitDayStateAction } from "@/app/server-actions/habitDayActions";
 import { useToast } from "@/app/components/logic/toast";
 import { useGlobalContext } from "@/app/(pages)/(main)/contexts/GlobalProvider";
@@ -11,21 +11,20 @@ import { useGlobalContext } from "@/app/(pages)/(main)/contexts/GlobalProvider";
 type HabitDayVariant = "large-editable" | "small-uneditable";
 
 type Props = {
-    date: string,
+    timestamp: number,
     savedData?: TSavedHabitDay,
     variant?: HabitDayVariant,
     habitId: string
 }
 
 
-export default function HabitDay({ variant = "large-editable", date: _date, savedData, habitId }: Props) {
+export default function HabitDay({ variant = "large-editable", timestamp, savedData, habitId }: Props) {
     const { refreshHabitDays } = useGlobalContext();
     const [isChecked, setIsChecked] = useState(savedData?.isCompleted || false);
-    const date = getUTCDateString(new Date(_date));
-    const { month, monthDay } = getDatePartsFromIntlDate(date)
+    const { month, monthDay } = getDatePartsFromIntlDate(timestamp);
     const { toast } = useToast();
 
-    const dateStatus = getHabitDayDateStatus(date);
+    const dateStatus = getHabitDayTimestampStatus(timestamp);
 
     useEffect(() => {
         setIsChecked(savedData?.isCompleted || false);
@@ -37,7 +36,7 @@ export default function HabitDay({ variant = "large-editable", date: _date, save
 
         //optimistic update
         setIsChecked(checked);
-        const data = { date, habitId, isCompleted: checked, id: savedData?.id }
+        const data = { timestamp, habitId, isCompleted: checked }
         const errorRes = await upsertHabitDayStateAction(data);
         if (errorRes) {
             // reset the isChecked to it's former value before the most recent call to setIsChecked;
@@ -71,7 +70,7 @@ export default function HabitDay({ variant = "large-editable", date: _date, save
             <span className={`capitalize text-sm`}>{month}</span>
         </label>
     ) : (
-        <Link href={`/habits/${habitId}/journal/${date}`} className={`cursor-pointer 
+        <Link href={`/habits/${habitId}/journal/${timestamp}`} className={`cursor-pointer 
             rounded-lg w-full max-w-12 p-0.5 flex flex-col items-center justify-center 
             ${styleIsChecked(variant, isChecked)} 
            ${dateStatus === "future" ? "opacity-40" : ""} 

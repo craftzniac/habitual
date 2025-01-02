@@ -12,20 +12,20 @@ import {
   Req,
   Query,
   BadRequestException,
+  Patch,
 } from '@nestjs/common';
 import { HabitsService } from './habits.service';
-import { CreateHabitDto } from './dto/create-habit.dto';
-import { UpdateHabitDto } from './dto/update-habit.dto';
+import { CreateOrUpdateHabitDto } from './dto/create-or-update-habit.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { HabitFilter } from 'src/types';
 import { HabitDaysService } from 'src/habit-days/habit-days.service';
 import { UpsertHabitDayDto } from 'src/habit-days/dto/upsert-habit-day.dto';
 import {
-  generateHabitDays,
-  getExcludedDaysFromFrequency,
-  getUTCDateString,
-  isValidDateString,
+  getDatestamp,
+  isValidHabitDayTimestamp,
+  isValidTimestamp,
 } from 'src/utils';
+import { UpsertJournalEntryDto } from 'src/habit-days/dto/upsert-journal-entry.dto';
 
 @Controller('habits')
 @UseGuards(AuthGuard)
@@ -57,31 +57,59 @@ export class HabitsController {
     @Req() request: any,
     @Param('id') habitId: string,
   ) {
-    if (isValidDateString(slug) === true) {
-      // check to make sure this date represents a day in the habit days
-      const userId = request.user.sub;
-      const habitRes = await this.habitsService.getHabit(userId, habitId);
-      const habit = habitRes.habit;
-
-      // GENERate habit days for this habit and check if this date matches any habit date.
-      const habitDayDates = generateHabitDays({
-        excludedDays: getExcludedDaysFromFrequency(habit.frequency || []),
-        durationInDays: habit.durationInDays,
-        startDateString: habit.startDate,
-      });
-      //2. check that the slug (which is a date string) represents a valid habit day for this habit
-      const isFound = habitDayDates.find((d) => {
-        const dd = getUTCDateString(new Date(d.date));
-        if (dd === getUTCDateString(new Date(slug))) return true;
-        else return false;
-      });
-      if (!isFound) {
-        return new BadRequestException('Habit date is unknown');
-      }
-
-      return await this.habitDaysService.getNoteByDate(slug);
+    const userId = request.user.sub;
+    const habitRes = await this.habitsService.getHabit(userId, habitId);
+    const habit = habitRes.habit;
+    if (!isValidTimestamp(slug)) {
+      throw new BadRequestException('Invalid Habit Journal date');
     }
-    return await this.habitDaysService.getNoteById(slug);
+    const timestamp = getDatestamp(slug);
+    // check to make sure this timestamp represents a day in the habit days
+    if (
+      !isValidHabitDayTimestamp({
+        timestamp,
+        frequency: habit.frequency || [],
+        durationInDays: habit.durationInDays,
+        startDate: habit.startDate,
+      })
+    ) {
+      return new BadRequestException('Habit date is unknown');
+    }
+
+    return await this.habitDaysService.getNoteByTimestamp(timestamp);
+  }
+
+  @Patch(':id/habit-days/:slug/journal-entry')
+  async updateHabitDayJournalEntry(
+    @Param('slug') slug: string,
+    @Req() request: any,
+    @Param('id') habitId: string,
+    @Body(ValidationPipe) upsertJournalEntryDto: UpsertJournalEntryDto,
+  ) {
+    const userId = request.user.sub;
+    const habitRes = await this.habitsService.getHabit(userId, habitId);
+    const habit = habitRes.habit;
+    if (!isValidTimestamp(slug)) {
+      throw new BadRequestException('Invalid Habit Journal date');
+    }
+    const timestamp = getDatestamp(slug);
+    // check to make sure this timestamp represents a day in the habit days
+    if (
+      !isValidHabitDayTimestamp({
+        timestamp,
+        frequency: habit.frequency || [],
+        durationInDays: habit.durationInDays,
+        startDate: habit.startDate,
+      })
+    ) {
+      return new BadRequestException('Invalid Habit journal date');
+    }
+
+    return await this.habitDaysService.upsertJournalEntry(
+      timestamp,
+      upsertJournalEntryDto.note,
+      habitId,
+    );
   }
 
   @HttpCode(201)
@@ -96,7 +124,7 @@ export class HabitsController {
   @HttpCode(201)
   @Post()
   create(
-    @Body(ValidationPipe) createHabitDto: CreateHabitDto,
+    @Body(ValidationPipe) createHabitDto: CreateOrUpdateHabitDto,
     @Req() request: any,
   ) {
     const userId = request.user.sub;
@@ -105,7 +133,7 @@ export class HabitsController {
 
   @Put(':id')
   update(
-    @Body(ValidationPipe) updateHabitDto: UpdateHabitDto,
+    @Body(ValidationPipe) updateHabitDto: CreateOrUpdateHabitDto,
     @Param('id') habitId: string,
     @Req() request: any,
   ) {

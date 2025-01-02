@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HabitDay } from './entity/habit-day.entity';
-import { Raw, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { UpsertHabitDayDto } from './dto/upsert-habit-day.dto';
-import { CreateHabitDayDto } from './dto/create-habit-day.dto';
+import { getDatestamp } from 'src/utils';
 
 @Injectable()
 export class HabitDaysService {
@@ -18,57 +18,62 @@ export class HabitDaysService {
   async getAll(habitId: string) {
     const habitDays = await this.habitDaysRepository.find({
       where: { habitId },
-      select: [
-        'id',
-        'date',
-        'habitId',
-        'createdAt',
-        'updatedAt',
-        'isCompleted',
-      ],
+      select: ['timestamp', 'habitId', 'isCompleted'],
     });
     return {
-      habitDays,
+      habitDays: habitDays.map((d) => ({
+        ...d,
+        timestamp: parseInt(d.timestamp),
+      })),
       habitId,
     };
   }
 
   /**
-   * get journal entry for habit day matching the id
+   * get journal entry for habit day matching a timestamp
    * */
-  async getNoteById(habitDayId: string) {
+  async getNoteByTimestamp(datestamp: number) {
     const habitDay = await this.habitDaysRepository.findOne({
-      where: { id: habitDayId },
-      select: ['id', 'date', 'note'],
+      where: { timestamp: String(datestamp) },
+      select: ['timestamp', 'note'],
     });
     if (!habitDay) {
-      throw new NotFoundException(
-        'The Habit Note you requested does not exist',
-      );
+      return {
+        timestamp: -1,
+        note: '',
+      };
     }
     return {
-      entry: habitDay,
+      note: habitDay.note,
+      timestamp: parseInt(habitDay.timestamp),
     };
   }
 
   /**
-   * get journal entry for habit day matching a date string
+   * update habit day's journal entry
    * */
-  async getNoteByDate(dateString: string) {
-    const like = Raw(
-      (date) => `to_char(${date}, 'YYYY-MM-DD') LIKE '${dateString}%' `,
-    );
-    const habitDay = await this.habitDaysRepository.findOne({
-      where: { date: like },
-      select: ['id', 'date', 'note'],
+  async upsertJournalEntry(timestamp: number, note: string, habitId: string) {
+    let habitDay = await this.habitDaysRepository.findOne({
+      where: { timestamp: String(timestamp) },
+      select: ['note', 'timestamp'],
     });
+    console.log('habitday:', habitDay);
     if (!habitDay) {
-      throw new NotFoundException(
-        'The Habit Note you requested does not exist',
-      );
+      const createHabitDayDto = new UpsertHabitDayDto();
+      createHabitDayDto.timestamp = timestamp;
+      createHabitDayDto.isCompleted = false;
+      const newHabitDay = (await this.create(habitId, createHabitDayDto))
+        .habitDay;
+      habitDay = { ...newHabitDay, timestamp: String(newHabitDay.timestamp) };
     }
+
+    habitDay.note = note;
+    await this.habitDaysRepository.save(habitDay);
     return {
-      entry: habitDay,
+      entry: {
+        note: habitDay.note,
+        timestamp: parseInt(habitDay.timestamp),
+      },
     };
   }
 
@@ -76,24 +81,21 @@ export class HabitDaysService {
    * update habit day if it already exist, else create a new one
    * */
   async upsert(habitId: string, habitDayDto: UpsertHabitDayDto) {
-    // create a new habit day
-    if (!habitDayDto.id) {
-      return await this.create(habitId, habitDayDto);
-    }
-    // find the already existing habit day and update it
-    let habitDay = await this.habitDaysRepository.findOneBy({
-      id: habitDayDto.id,
+    const datestamp = getDatestamp(habitDayDto.timestamp);
+    // find a record matching the timestamp. If such record does not exist, create it.
+    let habitDay = await this.habitDaysRepository.findOne({
+      where: { timestamp: String(datestamp) },
     });
+
     if (!habitDay) {
       return await this.create(habitId, habitDayDto);
     }
-
     habitDay.isCompleted = habitDayDto.isCompleted;
     habitDay = await this.habitDaysRepository.save(habitDay);
     delete habitDay.note;
     delete habitDay.deletedAt;
     return {
-      habitDay,
+      habitDay: { ...habitDay, timestamp: parseInt(habitDay.timestamp) },
       operation: 'update',
     };
   }
@@ -101,9 +103,10 @@ export class HabitDaysService {
   /**
    * create a new habit day that is associated to a habit via a habitId
    * */
-  async create(habitId: string, createDayDto: CreateHabitDayDto) {
+  async create(habitId: string, createDayDto: UpsertHabitDayDto) {
+    const dateTimestamp = getDatestamp(createDayDto.timestamp);
     const habitDayEntity = this.habitDaysRepository.create({
-      date: createDayDto.date.toISOString(),
+      timestamp: String(dateTimestamp),
       isCompleted: createDayDto.isCompleted,
       habitId,
     });
@@ -111,15 +114,16 @@ export class HabitDaysService {
     delete habitDay.note;
     delete habitDay.deletedAt;
     return {
-      habitDay,
+      habitDay: { ...habitDay, timestamp: parseInt(habitDay.timestamp) },
       operation: 'create',
     };
   }
 
-  async delete(id: string) {
-    await this.habitDaysRepository.delete({ id });
+  async delete(timestamp: number) {
+    const dateStamp = getDatestamp(timestamp);
+    await this.habitDaysRepository.delete({ timestamp: String(dateStamp) });
     return {
-      habitId: id,
+      timestamp,
     };
   }
 

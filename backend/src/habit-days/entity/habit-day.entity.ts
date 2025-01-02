@@ -3,23 +3,17 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
 export class HabitDay {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryColumn({ nullable: false, type: 'bigint' })
+  timestamp: string;
 
   @Column({ nullable: false })
   habitId: string;
-
-  // @Column({ nullable: false, type: 'timestamptz' })
-  // habitStartDate: Date;
-
-  @Column({ nullable: false, type: 'timestamptz' })
-  date: string;
 
   @Column({ nullable: false, type: 'boolean', default: false })
   isCompleted: boolean;

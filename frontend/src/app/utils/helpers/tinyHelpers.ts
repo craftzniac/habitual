@@ -84,17 +84,23 @@ export function transformHabit(habit: any): THabit {
 
 
 /**
- * compute whether the date is in the "past", "future" or is "today"
+ * return a timestamp using the date-only portion of a Date object.
  * */
-export function getHabitDayDateStatus(day: string): "past" | "today" | "future" {
-	// create new date object using only the date portion, no time.
-	const todayDate = new Date(new Date().toISOString().split("T")[0]);
-	const dayDate = new Date(new Date(day).toISOString().split("T")[0]);
+export function getDateOnlyTimestamp(date: Date) {
+	return new Date(date.toISOString().split("T")[0]).getTime();
+}
 
-	if (todayDate.getTime() > dayDate.getTime()) {
+/**
+ * compute whether the timestamp represents date that is in the "past", "future" or is "today"
+ * */
+export function getHabitDayTimestampStatus(dayTimestamp: number): "past" | "today" | "future" {
+	// get the timestamp of today's date, using only the date portion
+	const todayDateTimestamp = getDateOnlyTimestamp(new Date());
+
+	if (todayDateTimestamp > dayTimestamp) {
 		// in the past
 		return "past";
-	} else if (todayDate.getTime() < dayDate.getTime()) {
+	} else if (todayDateTimestamp < dayTimestamp) {
 		// day is in the future
 		return "future";
 	} else {
@@ -106,14 +112,11 @@ export function getHabitDayDateStatus(day: string): "past" | "today" | "future" 
 
 
 /**
- * tries to find the habit day data for the current iso date from the list of savedhabitday objects
- * @returns a habit day object if a match was found, else undefined.
+ * @returns a habit day object whose timestamp match the provided timestamp, else undefined.
  * */
-export function getHabitDaySavedDate(savedHabitDays: TSavedHabitDay[], isoDate: string): TSavedHabitDay | undefined {
-	return savedHabitDays.find(hd => {
-		const hdD = hd.date.split("T")[0];
-		const dateD = isoDate.split("T")[0];
-		return hdD === dateD;
+export function getHabitDaySavedDate(savedHabitDaysTimestamps: TSavedHabitDay[], timestamp: number): TSavedHabitDay | undefined {
+	return savedHabitDaysTimestamps.find(hd => {
+		return hd.timestamp === timestamp;
 	});
 }
 

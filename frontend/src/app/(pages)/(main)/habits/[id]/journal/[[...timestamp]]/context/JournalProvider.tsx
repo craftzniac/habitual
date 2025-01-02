@@ -1,18 +1,17 @@
 "use client"
-import { ReactNode, useState, createContext, useContext } from "react";
+import { ReactNode, useState, createContext, useContext, Dispatch, SetStateAction } from "react";
 
 type TJournal = {
-    id?: string,
     note: string,
-    date: string
+    timestamp: number
 }
 
 const initialData: { journal: TJournal, habitDaysDates: string[] } = {
-    journal: { id: "", note: "", date: "" },
+    journal: { note: "", timestamp: 0 },
     habitDaysDates: [],
 }
 
-const JournalContext = createContext<typeof initialData>(initialData);
+const JournalContext = createContext<typeof initialData & { setJournal: Dispatch<SetStateAction<typeof initialData["journal"]>> }>({ ...initialData, setJournal: () => { } });
 
 export function useJournalContext() {
     return useContext(JournalContext);
@@ -21,7 +20,6 @@ export function useJournalContext() {
 export default function JournalProvider({ children, journalData, habitDaysDates }: { children: ReactNode, journalData: TJournal, habitDaysDates: string[] }) {
     const [journal, setJournal] = useState<typeof initialData["journal"]>(journalData);
     return (
-        <JournalContext.Provider value={{ journal, habitDaysDates }}>{children}</JournalContext.Provider>
+        <JournalContext.Provider value={{ journal, habitDaysDates, setJournal }}>{children}</JournalContext.Provider>
     )
-
 }

@@ -2,7 +2,7 @@
 import { TDayOfWeek, TSavedHabitDay } from "@/app/utils/types"
 import { generateHabitDays } from "@/app/utils/helpers/generateHabitDays"
 import HabitDay from "./HabitDay"
-import { getHabitDayDateStatus, getHabitDaySavedDate } from "@/app/utils/helpers/tinyHelpers"
+import { getHabitDayTimestampStatus, getHabitDaySavedDate } from "@/app/utils/helpers/tinyHelpers"
 import { useGlobalContext } from "@/app/(pages)/(main)/contexts/GlobalProvider"
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
 
 export default function HabitDays({ variant = "large-editable", habitId, startDate, frequency, durationInDays }: Props) {
     const { habitDays: savedHabitDays } = useGlobalContext();
-    const habitDays = generateHabitDays({
+    const generatedHabitDaysTimestamp = generateHabitDays({
         durationInDays, frequency, startDateString: startDate
     });
 
@@ -23,30 +23,30 @@ export default function HabitDays({ variant = "large-editable", habitId, startDa
         return habits.filter(habit => habit.isCompleted).length
     }
 
-    // using the generatedHabitDays, find those habit days that match today or past. Exclude those that have isCompleted set to true. Count the rest
-    function getPastAndFutureDays(generatedHabitDays: string[]): { pastDays: string[], futureDays: string[] } {
-        let today;
-        const pastDays: string[] = []
-        const futureDays: string[] = []
-        generatedHabitDays.forEach(date => {
-            const dateStatus = getHabitDayDateStatus(date);
+    // using the generatedHabitDaysTimestamp, find those habit days that have timestamps matching today or a time in the past, then exclude those that have isCompleted set to true and Count the rest
+    function getPastAndFutureDays(generatedHabitDaysTimestamp: number[]): { pastDaysTimestamps: number[], futureDaysTimestamps: number[] } {
+        let todayTimestamp;
+        const pastDaysTimestamps: number[] = []
+        const futureDaysTimestamps: number[] = []
+        generatedHabitDaysTimestamp.forEach(timestamp => {
+            const dateStatus = getHabitDayTimestampStatus(timestamp);
             switch (dateStatus) {
                 case "future":
-                    futureDays.push(date); break;
+                    futureDaysTimestamps.push(timestamp); break;
                 case "past":
-                    pastDays.push(date); break;
+                    pastDaysTimestamps.push(timestamp); break;
                 default:
                     // has to be today
-                    today = date
+                    todayTimestamp = timestamp
             }
         })
-        return { pastDays, futureDays };
+        return { pastDaysTimestamps, futureDaysTimestamps };
     }
 
-    function getMissedDaysCount(pastDays: string[]): number {
+    function getMissedDaysCount(pastDaysTimestamps: number[]): number {
         // remove all the habit days that have isCompleted set to true and count the rest.
-        const missedPastDays = pastDays.filter(date => {
-            const savedData = getHabitDaySavedDate(savedHabitDays, date);
+        const missedPastDays = pastDaysTimestamps.filter(timestamp => {
+            const savedData = getHabitDaySavedDate(savedHabitDays, timestamp);
             if (savedData && savedData.isCompleted) {
                 return false;
             }
@@ -57,11 +57,11 @@ export default function HabitDays({ variant = "large-editable", habitId, startDa
         return [...missedPastDays].length;
     }
 
-    const { pastDays, futureDays } = getPastAndFutureDays(habitDays);
+    const { pastDaysTimestamps, futureDaysTimestamps } = getPastAndFutureDays(generatedHabitDaysTimestamp);
 
     const fulfilledDaysCount = getFulfilledDaysCount(savedHabitDays);
-    const missedDaysCount = getMissedDaysCount(pastDays);
-    const futureDaysCount = futureDays.length;
+    const missedDaysCount = getMissedDaysCount(pastDaysTimestamps);
+    const futureDaysCount = futureDaysTimestamps.length;
 
     return (
         <section className={`habit-days ${variant === "small-uneditable" ? "habit-days--small" : "habit-days--large"}`}>
@@ -96,11 +96,11 @@ export default function HabitDays({ variant = "large-editable", habitId, startDa
             </div>
             <ul>
                 {
-                    habitDays.map(date => {
-                        const savedData = getHabitDaySavedDate(savedHabitDays, date);
+                    generatedHabitDaysTimestamp.map(timestamp => {
+                        const savedData = getHabitDaySavedDate(savedHabitDays, timestamp);
                         return (
-                            <li key={date} className="w-full flex justify-center items-center">
-                                <HabitDay variant={variant} date={date} savedData={savedData} habitId={habitId} />
+                            <li key={timestamp} className="w-full flex justify-center items-center">
+                                <HabitDay variant={variant} timestamp={timestamp} savedData={savedData} habitId={habitId} />
                             </li>
                         )
                     })

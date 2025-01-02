@@ -6,6 +6,7 @@ import Header from "./components/logic/Header";
 import HabitInfo from "./components/presentation/HabitInfo";
 import { getHabitDays } from "@/app/services/habitDaysService";
 import GlobalProvider from "../../contexts/GlobalProvider";
+import DeleteHabitConfirmDialog from "../../components/logic/DeleteHabitConfirmationDialog";
 
 export default async function HabitDetailsLayout({ children, params }: { children: ReactNode, params: { id: string } }) {
     // fetch the data for the first time and save it in context
@@ -28,6 +29,7 @@ export default async function HabitDetailsLayout({ children, params }: { childre
 
     return (
         <GlobalProvider v={{ habit, habitDays }} habitId={id}>
+            <DeleteHabitConfirmDialog />
             <section className="h-full w-full flex flex-col">
                 <Header habitId={habit.id} habitName={habit.name} />
                 <main className="w-full h-full min-h-0 flex">

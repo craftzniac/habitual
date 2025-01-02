@@ -101,10 +101,10 @@ export type THabit = {
 
 
 export type TSavedHabitDay = {
-	id: string;
+	// id: string;
 	habitId: string;
-	originalStartDate: Date;
-	date: string;
+	// originalStartDate: Date;
+	timestamp: number;
 	isCompleted: boolean;
 	createdAt: string;
 	updatedAt: string;
