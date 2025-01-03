@@ -53,7 +53,7 @@ export async function updateHabitDayJournalEntry({ accessToken, date, habitId, n
 	}
 }> {
 	try {
-		const res = await api.patch(`/habits/${habitId}/habit-days/${date}/journal-entry`, {
+		const res = await api.patch(`/habits/${habitId}/habit-days/${date}/journal-entry`, { note }, {
 			headers: getHabitsRequestHeader(accessToken)
 		});
 		return {

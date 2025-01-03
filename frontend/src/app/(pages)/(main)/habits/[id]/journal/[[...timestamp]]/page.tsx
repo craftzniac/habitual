@@ -9,19 +9,6 @@ import { generateHabitDays } from "@/app/utils/helpers/generateHabitDays";
 import { getDateOnlyTimestamp, getUTCDateString } from "@/app/utils/helpers/tinyHelpers";
 import JournalProvider from "./context/JournalProvider";
 
-/**
- * Check if the number can be parsed to a valid date object
- * */
-function isValidTimestamp(timestamp: number): boolean {
-    const d = new Date(timestamp);
-    let isValid = false;
-    if (isNaN(d.getTime())) {
-        isValid = false;
-    } else { isValid = true }
-    console.log("isValid: ", isValid);
-    return isValid;
-}
-
 export default async function HabitJournalPage({ params }: { params: { id: string, timestamp: [string] } }) {
     const habitId = params.id;
     const accessToken = await getAccessToken();
@@ -32,17 +19,8 @@ export default async function HabitJournalPage({ params }: { params: { id: strin
     const habit = habitRes.data.habit;
     const habitDayDates = generateHabitDays({ frequency: Array.from(habit.frequency || []), durationInDays: habit.durationInDays, startDateString: habit.startDate });
 
-    // let timestamp = params.timestamp ? (
-    //     typeof params.timestamp[0] === "number" ? (
-    //         isValidTimestamp(params.timestamp[0]) ? (
-    //             getDateOnlyTimestamp(new Date(params.timestamp[0]))
-    //         ) : undefined
-    //     ) : undefined
-    // ) : undefined;
-
     let timestamp = undefined;
 
-    // TODO: validate timestamp properly see commented out code
     if (params.timestamp && params.timestamp[0]) {
         timestamp = parseInt(params.timestamp[0])
     }

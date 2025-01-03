@@ -13,7 +13,6 @@ export function JournalNote() {
     const { toast } = useToast();
     const { habit } = useGlobalContext();
     const { journal, setJournal } = useJournalContext();
-    console.log("journal: ", journal);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [journalEntry, setJournalEntry] = useState(journal.note);
     const date = new Intl.DateTimeFormat(undefined, {
@@ -33,8 +32,6 @@ export function JournalNote() {
             setJournal(res.data.entry);
         } else {
             toast("Journal Entry couldn't be updated", { type: "error" });
-            // TODO: does this even work to reset the journal???
-            setJournal(prev => prev);
         }
         setIsSubmitting(false);
     }
@@ -49,7 +46,8 @@ export function JournalNote() {
                         className="resize-none h-full text-base rounded-lg p-3 text-primary-900/80 outline  
                         outline-2 outline-gray-75/50 focus:outline-primary-300 w-full"
                         placeholder={"Type your note here ..."}
-                        defaultValue={journalEntry}
+                        value={journalEntry}
+                        onChange={(e) => setJournalEntry(e.target.value)}
                     >
                     </textarea>
                 </div>

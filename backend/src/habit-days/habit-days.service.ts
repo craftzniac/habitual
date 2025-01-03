@@ -10,7 +10,7 @@ export class HabitDaysService {
   constructor(
     @InjectRepository(HabitDay)
     private habitDaysRepository: Repository<HabitDay>,
-  ) { }
+  ) {}
 
   /**
    * get all habit days for a particular user habit
@@ -39,7 +39,7 @@ export class HabitDaysService {
     });
     if (!habitDay) {
       return {
-        timestamp: -1,
+        timestamp: datestamp,
         note: '',
       };
     }
