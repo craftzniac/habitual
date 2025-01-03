@@ -22,10 +22,22 @@ export default function Header({ habitId, habitName }: { habitId: string, habitN
     }
     const selected = determineSelected();
     console.log("selected: ", selected);
+
+    function renderBackButton() {
+        switch (selected) {
+            case "journal":
+                return <BackButton href={`/habits/${habitId}`} />
+            case "habit-days":
+                return <BackButton href={`/habits`} />
+            default:
+                return <BackButton />
+        }
+    }
+
     return (
         <div className="flex flex-col">
             <header className="flex items-center p-2 w-full gap-1">
-                <BackButton />
+                {renderBackButton()}
                 <h1 className="text-lg font-bold w-full line-clamp-1">{habitName}</h1>
                 {selected === "habit-days" && <OverflowButton habitId={habitId} />}
             </header>
