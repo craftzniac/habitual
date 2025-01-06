@@ -26,6 +26,7 @@ export default async function HabitDetailsLayout({ children, params }: { childre
     }
     const habit = habitRes.data.habit;
     const habitDays = habitDaysRes.data.habitDays;
+    console.log("habitDays:", habitDaysRes);
 
     return (
         <GlobalProvider v={{ habit, habitDays }} habitId={id}>

@@ -21,7 +21,6 @@ export default function Header({ habitId, habitName }: { habitId: string, habitN
         return "habit-days"
     }
     const selected = determineSelected();
-    console.log("selected: ", selected);
 
     function renderBackButton() {
         switch (selected) {

@@ -150,19 +150,73 @@ export function validateFiniteStringArray<T extends string>({
 }
 
 /**
+ * return a timestamp using the date-only portion of a Date object.
+ * */
+export function getDateOnlyTimestamp(date: Date) {
+  return new Date(date.toISOString().split('T')[0]).getTime();
+}
+
+/**
+ * compute whether the timestamp represents date that is in the "past", "future" or is "today"
+ * */
+export function getHabitDayTimestampStatus(
+  dayTimestamp: number,
+): 'past' | 'today' | 'future' {
+  // get the timestamp of today's date, using only the date portion
+  const todayDateTimestamp = getDateOnlyTimestamp(new Date());
+
+  if (todayDateTimestamp > dayTimestamp) {
+    // in the past
+    return 'past';
+  } else if (todayDateTimestamp < dayTimestamp) {
+    // day is in the future
+    return 'future';
+  } else {
+    // is today
+    return 'today';
+  }
+}
+
+// using the generatedHabitDaysTimestamp, find those habit days that have timestamps matching today or a time in the past, then exclude those that have isCompleted set to true and Count the rest
+export function getRemainingDaysTimestamps(
+  generatedHabitDaysTimestamp: number[],
+): {
+  remainingDaysTimestamps: number[];
+} {
+  // const pastDaysTimestamps: number[] = [];
+  const remainingDaysTimestamps: number[] = [];
+  generatedHabitDaysTimestamp.forEach((timestamp) => {
+    const dateStatus = getHabitDayTimestampStatus(timestamp);
+    switch (dateStatus) {
+      case 'future':
+        remainingDaysTimestamps.push(timestamp);
+        break;
+      case 'past':
+        // pastDaysTimestamps.push(timestamp);
+        break;
+      default:
+      // this timestamp represents today
+    }
+  });
+  return { remainingDaysTimestamps };
+}
+
+/**
  * calculates user's consistency on a habit in percentage
  * @returns consistency value in percentage
  * */
 export function calculateConsistencyInPercent({
-  completedDays,
-  totalDays,
-  remainingDays,
+  completedDaysCount,
+  totalDaysCount,
+  remainingDaysCount,
 }: {
-  completedDays: number;
-  totalDays: number;
-  remainingDays: number;
+  completedDaysCount: number;
+  totalDaysCount: number;
+  remainingDaysCount: number;
 }) {
-  return Math.floor(completedDays / (totalDays - remainingDays)) * 100;
+  return Math.floor(
+    (completedDaysCount / (totalDaysCount - remainingDaysCount)) * 100,
+  );
 }
 
 /**

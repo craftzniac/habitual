@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link"
 import { Check_16_Purple, X_16_Red } from "@/app/assets/icons";
 import { THabit, THabitFilter } from "@/app/utils/types"
-import CircularProgress from "./CircularProgress";
+import HabitConsistencyPercent from "../../habits/components/logic/HabitConsistencyPercent";
 
 type Prop = {
     habit: THabit,
@@ -36,10 +36,7 @@ export default function HabitCard({ habit }: Prop) {
                         status === "on-going" ? (
                             <span className="w-full flex items-center text-start text-sm text-primary-900/60 font-bold gap-2">
                                 <span className="w-full">day {10} of {habit.durationInDays}</span>
-                                <span className="flex gap-1 items-center">
-                                    <span className="font-bold">consistency</span>
-                                    <CircularProgress value={habit.consistencyInPercent} fontSize="0.8rem" strokeWidth={4} width={45} foregroundStroke="#923DE7" backgroundStroke="#F8E6F8" />
-                                </span>
+                                <HabitConsistencyPercent percent={habit.consistencyInPercent} />
                             </span>
                         ) : (
                             <span className="flex items-center gap-2 text-xs">

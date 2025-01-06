@@ -45,6 +45,7 @@ export default function GlobalProvider({ v, children, habitId }: {
     async function refreshHabitDays() {
         try {
             const { data } = await axios.get(`/api/habit-days/${habitId}`);
+            setHabit(prev => ({ ...prev, consistencyInPercent: data.data.consistencyInPercent }))
             setHabitDays(data.data.habitDays);
         } catch (err) {
             const error = err as AxiosError;

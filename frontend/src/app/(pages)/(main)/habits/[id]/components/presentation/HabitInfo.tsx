@@ -1,8 +1,8 @@
 "use client";
-import CircularProgress from "@/app/(pages)/(main)/components/presentation/CircularProgress";
 import HabitDays from "../logic/HabitDays";
 import { TDayOfWeek } from "@/app/utils/types";
 import { useGlobalContext } from "@/app/(pages)/(main)/contexts/GlobalProvider";
+import HabitConsistencyPercent from "../../../components/logic/HabitConsistencyPercent";
 
 export default function HabitInfo({ extraClassName }: { extraClassName: string }) {
     const { habit } = useGlobalContext();
@@ -14,10 +14,7 @@ export default function HabitInfo({ extraClassName }: { extraClassName: string }
                         <span className="text-primary-900/50">status:</span>
                         <strong className={` ${habit.status === "on-going" ? "text-primary-500" : "text-primary-900/50"}`}>{habit.status}</strong>
                     </span>
-                    <span className="flex gap-1 items-center text-sm">
-                        <span className="text-primary-900/50">consistency</span>
-                        <CircularProgress value={habit.consistencyInPercent} fontSize="0.8rem" strokeWidth={4} width={45} foregroundStroke="#923DE7" backgroundStroke="#F8E6F8" />
-                    </span>
+                    <HabitConsistencyPercent percent={habit.consistencyInPercent} />
                 </div>
                 <div className="flex flex-col gap-2">
                     <h2 className="text-2xl font-bold">{habit.name}</h2>

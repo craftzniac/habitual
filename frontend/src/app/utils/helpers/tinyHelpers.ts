@@ -115,6 +115,7 @@ export function getHabitDayTimestampStatus(dayTimestamp: number): "past" | "toda
  * @returns a habit day object whose timestamp match the provided timestamp, else undefined.
  * */
 export function getHabitDaySavedDate(savedHabitDaysTimestamps: TSavedHabitDay[], timestamp: number): TSavedHabitDay | undefined {
+	console.log("saved:", savedHabitDaysTimestamps);
 	return savedHabitDaysTimestamps.find(hd => {
 		return hd.timestamp === timestamp;
 	});

@@ -3,7 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { HabitDay } from './entity/habit-day.entity';
 import { Repository } from 'typeorm';
 import { UpsertHabitDayDto } from './dto/upsert-habit-day.dto';
-import { getDatestamp } from 'src/utils';
+import {
+  calculateConsistencyInPercent,
+  generateHabitDays,
+  getDatestamp,
+  getExcludedDaysFromFrequency,
+  getRemainingDaysTimestamps,
+} from 'src/utils';
+import { Habit } from 'src/habits/entity/habit.entity';
 
 @Injectable()
 export class HabitDaysService {
@@ -12,19 +19,69 @@ export class HabitDaysService {
     private habitDaysRepository: Repository<HabitDay>,
   ) {}
 
+  async calculateHabitConsistencyInPercent({
+    habitDays,
+    habit,
+  }: {
+    habitDays: (Omit<HabitDay, 'timestamp'> & { timestamp: number })[];
+    habit: Habit;
+  }): Promise<number> {
+    const generatedDaysTimestamps = generateHabitDays({
+      excludedDays: getExcludedDaysFromFrequency(habit.frequency),
+      durationInDays: habit.durationInDays,
+      startDateString: habit.startDate,
+    }).map((d) => d.timestamp);
+
+    const { remainingDaysTimestamps } = getRemainingDaysTimestamps(
+      generatedDaysTimestamps,
+    );
+
+    const completedDays = habitDays.filter((day) => day.isCompleted === true);
+
+    const completedDaysCount = completedDays.length;
+    const totalDaysCount = habit.durationInDays;
+    const remainingDaysCount = remainingDaysTimestamps.length;
+
+    const consistency = calculateConsistencyInPercent({
+      completedDaysCount,
+      totalDaysCount,
+      remainingDaysCount,
+    });
+    return consistency;
+  }
+
+  // since computing habit consistency requires fetching habit days, might as well lump both functionalities to avoid unnecessary database calls
+  async getHabitDaysAndHabitConsistency(habit: Habit) {
+    const _habitDays = await this.habitDaysRepository.find({
+      where: { habitId: habit.id },
+      select: ['timestamp', 'habitId', 'isCompleted'],
+    });
+    const habitDays = _habitDays.map((d) => ({
+      ...d,
+      timestamp: parseInt(d.timestamp),
+    }));
+    // calculate habit consistency in percent
+    const consistency = await this.calculateHabitConsistencyInPercent({
+      habitDays,
+      habit,
+    });
+
+    return {
+      habitDays,
+      habitId: habit.id,
+      consistencyInPercent: consistency,
+    };
+  }
+
   /**
    * get all habit days for a particular user habit
    * */
-  async getAll(habitId: string) {
-    const habitDays = await this.habitDaysRepository.find({
-      where: { habitId },
-      select: ['timestamp', 'habitId', 'isCompleted'],
-    });
+  async getAll(habit: Habit) {
+    const { consistencyInPercent, habitId, habitDays } =
+      await this.getHabitDaysAndHabitConsistency(habit);
     return {
-      habitDays: habitDays.map((d) => ({
-        ...d,
-        timestamp: parseInt(d.timestamp),
-      })),
+      consistencyInPercent,
+      habitDays,
       habitId,
     };
   }
@@ -57,7 +114,6 @@ export class HabitDaysService {
       where: { timestamp: String(timestamp) },
       select: ['note', 'timestamp'],
     });
-    console.log('habitday:', habitDay);
     if (!habitDay) {
       const createHabitDayDto = new UpsertHabitDayDto();
       createHabitDayDto.timestamp = timestamp;
@@ -84,9 +140,10 @@ export class HabitDaysService {
     const datestamp = getDatestamp(habitDayDto.timestamp);
     // find a record matching the timestamp. If such record does not exist, create it.
     let habitDay = await this.habitDaysRepository.findOne({
-      where: { timestamp: String(datestamp) },
+      where: { timestamp: String(datestamp), habitId },
     });
 
+    console.log('habitDay: ', habitDay);
     if (!habitDay) {
       return await this.create(habitId, habitDayDto);
     }

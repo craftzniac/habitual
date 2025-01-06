@@ -26,6 +26,7 @@ import {
   isValidTimestamp,
 } from 'src/utils';
 import { UpsertJournalEntryDto } from 'src/habit-days/dto/upsert-journal-entry.dto';
+import { Habit } from './entity/habit.entity';
 
 @Controller('habits')
 @UseGuards(AuthGuard)
@@ -33,22 +34,46 @@ export class HabitsController {
   constructor(
     private habitsService: HabitsService,
     private habitDaysService: HabitDaysService,
-  ) { }
+  ) {}
   @Get()
-  getAll(@Req() request: any, @Query('filter') filter: HabitFilter) {
+  async getAll(@Req() request: any, @Query('filter') filter: HabitFilter) {
     const userId = request.user.sub;
-    return this.habitsService.getUserHabits({ userId, filter });
+    const res = await this.habitsService.getUserHabits({ userId, filter });
+
+    const habits = [];
+    for (const habit of res.habits) {
+      delete habit.deletedAt;
+      const { consistencyInPercent } =
+        await this.habitDaysService.getHabitDaysAndHabitConsistency(habit);
+      habits.push({ ...habit, consistencyInPercent });
+    }
+
+    return {
+      ...res,
+      habits,
+    };
   }
 
   @Get(':id')
-  getOne(@Param('id') habitId: string, @Req() request: any) {
+  async getOne(@Param('id') habitId: string, @Req() request: any) {
     const userId = request.user.sub;
-    return this.habitsService.getHabit(userId, habitId);
+    const res = await this.habitsService.getHabit(userId, habitId);
+
+    delete res.habit.deletedAt;
+
+    const { consistencyInPercent } =
+      await this.habitDaysService.getHabitDaysAndHabitConsistency(res.habit);
+
+    return {
+      habit: { ...res.habit, consistencyInPercent },
+    };
   }
 
   @Get(':id/habit-days')
-  getHabitDays(@Param('id') habitId: string) {
-    return this.habitDaysService.getAll(habitId);
+  async getHabitDays(@Param('id') habitId: string, @Req() req: any) {
+    const userId = req.user.sub;
+    const { habit } = await this.habitsService.getHabit(userId, habitId);
+    return this.habitDaysService.getAll(habit);
   }
 
   @Get(':id/habit-days/:slug/journal-entry')
@@ -123,12 +148,20 @@ export class HabitsController {
 
   @HttpCode(201)
   @Post()
-  create(
+  async create(
     @Body(ValidationPipe) createHabitDto: CreateOrUpdateHabitDto,
     @Req() request: any,
   ) {
     const userId = request.user.sub;
-    return this.habitsService.create(userId, createHabitDto);
+    const res = await this.habitsService.create(userId, createHabitDto);
+
+    delete res.habit.deletedAt;
+
+    const { consistencyInPercent } =
+      await this.habitDaysService.getHabitDaysAndHabitConsistency(res.habit);
+    return {
+      habit: { ...res.habit, consistencyInPercent },
+    };
   }
 
   @Put(':id')

@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import Habits from "./components/presentation/Habits";
 import AddHabitBtn from "./components/presentation/AddHabitBtn";
 
+export const dynamic = "force-dynamic";
+
 export default async function HabitsPage({ searchParams }: { searchParams: { filter?: string } }) {
     let filter: THabitFilter;
     if (searchParams?.filter === "today" || searchParams?.filter === "on-going" || searchParams?.filter === "completed") {
