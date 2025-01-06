@@ -10,11 +10,7 @@ import {
 import { DayOfWeek, ReminderTime } from 'src/types';
 import { DayOfWeekArray, HabitReminderArray } from './custom-validators';
 
-export class UpdateHabitDto {
-  @IsNotEmpty({ message: 'Habit id should not be empty' })
-  @IsString({ message: 'Provide a valid habit id' })
-  id: string;
-
+export class CreateOrUpdateHabitDto {
   @IsNotEmpty()
   @IsString({ message: 'Provide a valid name' })
   name: string;

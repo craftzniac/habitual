@@ -4,15 +4,14 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateHabitDto } from './dto/create-habit.dto';
-import { UpdateHabitDto } from './dto/update-habit.dto';
+import { CreateOrUpdateHabitDto } from './dto/create-or-update-habit.dto';
 import { Repository } from 'typeorm';
 import { Habit } from './entity/habit.entity';
 import { HabitFilter } from 'src/types';
 import {
   generateHabitDays,
-  getDateString,
   getExcludedDaysFromFrequency,
+  getDatestamp,
 } from 'src/utils';
 
 @Injectable()
@@ -40,14 +39,14 @@ export class HabitsService {
       // get only habits that have a habit day matching today
       habits = habits.filter((habit) => {
         const habitDays = generateHabitDays({
-          startDateString: habit.startDate as any as string, // habit.startDate isn't really a date object hence the conversion
+          startDateString: habit.startDate,
           durationInDays: habit.durationInDays,
           excludedDays: getExcludedDaysFromFrequency(habit.frequency),
         });
 
-        const today = new Date();
+        const todayDateTimestamp = getDatestamp(new Date().getTime());
         for (const habitDay of habitDays) {
-          if (getDateString(habitDay.date) === getDateString(today)) {
+          if (habitDay.timestamp === todayDateTimestamp) {
             return true;
           }
         }
@@ -81,11 +80,11 @@ export class HabitsService {
 
   async create(
     userId: string,
-    createHabitDto: CreateHabitDto,
+    createHabitDto: CreateOrUpdateHabitDto,
   ): Promise<{ habit: Habit }> {
     const habitEntity = this.habitsRepository.create({
       name: createHabitDto.name,
-      startDate: createHabitDto.startDate,
+      startDate: createHabitDto.startDate as any as string, // createHabitDto.startDate is actually a string not an actual Date object
       durationInDays: createHabitDto.durationInDays,
       description: createHabitDto.description ?? '',
       frequency: createHabitDto.frequency,
@@ -99,32 +98,33 @@ export class HabitsService {
   }
 
   async getHabit(userId: string, id: string): Promise<{ habit: Habit }> {
+    const exceptionMsg = 'Habit does not exist';
     try {
       const habit = await this.habitsRepository.findOneBy({ id, userId });
       if (!habit) {
-        throw new NotFoundException('Habit does not exist');
+        throw new NotFoundException(exceptionMsg);
       }
       return { habit };
     } catch (err) {
       const invalidUUID =
         'QueryFailedError: invalid input syntax for type uuid';
       if (err.toString().includes(invalidUUID)) {
-        throw new NotFoundException('Habit does not exist');
+        throw new NotFoundException(exceptionMsg);
       }
-      throw new NotFoundException("Couldn't get habit");
+      throw new NotFoundException(exceptionMsg);
     }
   }
 
   async update(
     userId: string,
     id: string,
-    updateHabitDto: UpdateHabitDto,
+    updateHabitDto: CreateOrUpdateHabitDto,
   ): Promise<{ habit: Habit }> {
     await this.habitsRepository.update(
       { id },
       {
         name: updateHabitDto.name,
-        startDate: updateHabitDto.startDate,
+        startDate: updateHabitDto.startDate as any as string, // updateHabitDto.startDate is actually a string not an actual Date object
         durationInDays: updateHabitDto.durationInDays,
         description: updateHabitDto.description,
         frequency: updateHabitDto.frequency,

@@ -2,7 +2,8 @@ import { UseFormRegister } from "react-hook-form";
 
 export type APIErrorResponse = {
 	success: false,
-	message: string
+	message: string,
+	status?: number
 }
 
 
@@ -100,10 +101,10 @@ export type THabit = {
 
 
 export type TSavedHabitDay = {
-	id: string;
+	// id: string;
 	habitId: string;
-	originalStartDate: Date;
-	date: string;
+	// originalStartDate: Date;
+	timestamp: number;
 	isCompleted: boolean;
 	createdAt: string;
 	updatedAt: string;

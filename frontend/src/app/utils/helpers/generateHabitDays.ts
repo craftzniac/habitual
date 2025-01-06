@@ -12,7 +12,7 @@ export function generateHabitDays({
 	startDateString: string;
 	durationInDays: number;
 	frequency: TDayOfWeek[];
-}): string[] {
+}): number[] {
 
 	const excludedDays = getExcludedDaysFromFrequency(frequency);
 
@@ -29,7 +29,7 @@ export function generateHabitDays({
 		return [];
 	}
 
-	const days: string[] = [];
+	const days: number[] = [];
 	// console.log(startDate.getUTCDay()); // 0: sunday, 1: monday, 2: tuesday, 3: wednesday, 4: thursday, 5: friday, 6: saturday
 
 	let count = 0;
@@ -37,7 +37,7 @@ export function generateHabitDays({
 		const startDate = new Date(startDateString);
 		const day = new Date(startDate.setUTCDate(startDate.getUTCDate() + count));
 		if (isDayExcluded({ excludedDays, day }) === false) {
-			days.push(day.toISOString());
+			days.push(day.getTime());
 		}
 		count++;
 	}

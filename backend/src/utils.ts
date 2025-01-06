@@ -55,7 +55,7 @@ export function generateHabitDays({
     return [];
   }
 
-  const days: { dayOfWeek: DayOfWeek; date: Date }[] = [];
+  const days: { dayOfWeek: DayOfWeek; timestamp: number }[] = [];
   // console.log(startDate.getUTCDay()); // 0: sunday, 1: monday, 2: tuesday, 3: wednesday, 4: thursday, 5: friday, 6: saturday
 
   let count = 0;
@@ -63,7 +63,10 @@ export function generateHabitDays({
     const startDate = new Date(startDateString);
     const day = new Date(startDate.setUTCDate(startDate.getUTCDate() + count));
     if (isDayExcluded({ excludedDays, day }) === false) {
-      days.push({ dayOfWeek: indexToDayOfWeek(day.getUTCDay()), date: day });
+      days.push({
+        dayOfWeek: indexToDayOfWeek(day.getUTCDay()),
+        timestamp: day.getTime(),
+      });
     }
     count++;
   }
@@ -93,7 +96,7 @@ function isDayExcluded({
 /**
  * returns just the date portion in the form yyyy-mm-dd from an ISO date string
  * */
-export function getDateString(isoDate: Date): string {
+export function getUTCDateString(isoDate: Date): string {
   const isoDateString = isoDate.toISOString();
   const parts = isoDateString.split('T');
   return parts[0];
@@ -147,17 +150,116 @@ export function validateFiniteStringArray<T extends string>({
 }
 
 /**
+ * return a timestamp using the date-only portion of a Date object.
+ * */
+export function getDateOnlyTimestamp(date: Date) {
+  return new Date(date.toISOString().split('T')[0]).getTime();
+}
+
+/**
+ * compute whether the timestamp represents date that is in the "past", "future" or is "today"
+ * */
+export function getHabitDayTimestampStatus(
+  dayTimestamp: number,
+): 'past' | 'today' | 'future' {
+  // get the timestamp of today's date, using only the date portion
+  const todayDateTimestamp = getDateOnlyTimestamp(new Date());
+
+  if (todayDateTimestamp > dayTimestamp) {
+    // in the past
+    return 'past';
+  } else if (todayDateTimestamp < dayTimestamp) {
+    // day is in the future
+    return 'future';
+  } else {
+    // is today
+    return 'today';
+  }
+}
+
+// using the generatedHabitDaysTimestamp, find those habit days that have timestamps matching today or a time in the past, then exclude those that have isCompleted set to true and Count the rest
+export function getRemainingDaysTimestamps(
+  generatedHabitDaysTimestamp: number[],
+): {
+  remainingDaysTimestamps: number[];
+} {
+  // const pastDaysTimestamps: number[] = [];
+  const remainingDaysTimestamps: number[] = [];
+  generatedHabitDaysTimestamp.forEach((timestamp) => {
+    const dateStatus = getHabitDayTimestampStatus(timestamp);
+    switch (dateStatus) {
+      case 'future':
+        remainingDaysTimestamps.push(timestamp);
+        break;
+      case 'past':
+        // pastDaysTimestamps.push(timestamp);
+        break;
+      default:
+      // this timestamp represents today
+    }
+  });
+  return { remainingDaysTimestamps };
+}
+
+/**
  * calculates user's consistency on a habit in percentage
  * @returns consistency value in percentage
  * */
 export function calculateConsistencyInPercent({
-  completedDays,
-  totalDays,
-  remainingDays,
+  completedDaysCount,
+  totalDaysCount,
+  remainingDaysCount,
 }: {
-  completedDays: number;
-  totalDays: number;
-  remainingDays: number;
+  completedDaysCount: number;
+  totalDaysCount: number;
+  remainingDaysCount: number;
 }) {
-  return Math.floor(completedDays / (totalDays - remainingDays)) * 100;
+  return Math.floor(
+    (completedDaysCount / (totalDaysCount - remainingDaysCount)) * 100,
+  );
+}
+
+/**
+ * Check if the input text can be parsed to a valid date object
+ * */
+export function isValidTimestamp(stamp: number | string): boolean {
+  const d = new Date(stamp);
+  if (isNaN(d.getTime())) {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * checks whether a timestamp belongs to a habit day in a habit's habit day list.
+ * */
+export async function isValidHabitDayTimestamp({
+  frequency,
+  timestamp,
+  startDate,
+  durationInDays,
+}: {
+  timestamp: number;
+  frequency: DayOfWeek[];
+  startDate: string;
+  durationInDays: number;
+}) {
+  const datestamp = getDatestamp(timestamp);
+  // GENERate habit days for this habit and check if this date matches any habit date.
+  const habitDayTimestamps = generateHabitDays({
+    excludedDays: getExcludedDaysFromFrequency(frequency),
+    durationInDays,
+    startDateString: startDate,
+  });
+  //2. check that the slug (which is a date string) represents a valid habit day for this habit
+  const isFound = habitDayTimestamps.find((d) => {
+    if (d.timestamp === datestamp) return true;
+    else return false;
+  });
+  return isFound;
+}
+
+export function getDatestamp(timestamp: number | string) {
+  const dateString = new Date(timestamp).toISOString().split('T')[0];
+  return new Date(dateString).getTime();
 }

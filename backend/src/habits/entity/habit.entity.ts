@@ -24,7 +24,7 @@ export class Habit {
   description: string;
 
   @Column({ type: 'timestamptz', nullable: false })
-  startDate: Date;
+  startDate: string;
 
   @Column({ nullable: false, default: 'on-going' })
   status: 'completed' | 'on-going';
