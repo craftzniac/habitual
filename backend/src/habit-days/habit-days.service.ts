@@ -5,10 +5,10 @@ import { Repository } from 'typeorm';
 import { UpsertHabitDayDto } from './dto/upsert-habit-day.dto';
 import {
   calculateConsistencyInPercent,
-  generateHabitDays,
+  generateHabitDaysTimestamps,
   getDatestamp,
   getExcludedDaysFromFrequency,
-  getRemainingDaysTimestamps,
+  getHabitDaysTimestampsInfo,
 } from 'src/utils';
 import { Habit } from 'src/habits/entity/habit.entity';
 
@@ -26,13 +26,13 @@ export class HabitDaysService {
     habitDays: (Omit<HabitDay, 'timestamp'> & { timestamp: number })[];
     habit: Habit;
   }): Promise<number> {
-    const generatedDaysTimestamps = generateHabitDays({
+    const generatedDaysTimestamps = generateHabitDaysTimestamps({
       excludedDays: getExcludedDaysFromFrequency(habit.frequency),
       durationInDays: habit.durationInDays,
       startDateString: habit.startDate,
-    }).map((d) => d.timestamp);
+    });
 
-    const { remainingDaysTimestamps } = getRemainingDaysTimestamps(
+    const { remainingDaysTimestamps } = getHabitDaysTimestampsInfo(
       generatedDaysTimestamps,
     );
 
@@ -143,7 +143,6 @@ export class HabitDaysService {
       where: { timestamp: String(datestamp), habitId },
     });
 
-    console.log('habitDay: ', habitDay);
     if (!habitDay) {
       return await this.create(habitId, habitDayDto);
     }

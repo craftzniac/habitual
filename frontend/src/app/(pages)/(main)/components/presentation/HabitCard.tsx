@@ -1,23 +1,23 @@
-import Image from "next/image";
 import Link from "next/link"
-import { Check_16_Purple, X_16_Red } from "@/app/assets/icons";
-import { THabit, THabitFilter } from "@/app/utils/types"
+import { THabit, THabitFilter, TSavedHabitDay } from "@/app/utils/types"
 import HabitConsistencyPercent from "../../habits/components/logic/HabitConsistencyPercent";
 import { getPastAndFutureDays } from "@/app/utils/helpers/tinyHelpers";
 import { generateHabitDays } from "@/app/utils/helpers/generateHabitDays";
+import CompletedHabitCardStats from "./CompletedHabitCardStats";
 
 type Prop = {
     habit: THabit,
+    savedHabitDays?: TSavedHabitDay[]
 }
 
-export default function HabitCard({ habit }: Prop) {
+export default async function HabitCard({ habit, savedHabitDays }: Prop) {
     const status: THabitFilter = habit.status;
     const generatedHabitDaysTimestmap = generateHabitDays({
         durationInDays: habit.durationInDays,
         frequency: Array.from(habit.frequency || []),
         startDateString: habit.startDate
     });
-    const { futureDaysTimestamps: remainingDaysTimestamp } = getPastAndFutureDays(generatedHabitDaysTimestmap);
+    const { futureDaysTimestamps: remainingDaysTimestamp, pastDaysTimestamps } = getPastAndFutureDays(generatedHabitDaysTimestmap);
     const remainingDaysCount = remainingDaysTimestamp.length;
 
     return (
@@ -26,12 +26,6 @@ export default function HabitCard({ habit }: Prop) {
         >
             <div className="flex flex-col gap-4 w-full h-full">
                 <div className="flex flex-col gap-0.5 h-full">
-                    {
-                        // <span className="flex justify-end text-sm w-full">
-                        //     <span className="text-primary-900/50">status:</span>
-                        //     <strong className={` ${status === "on-going" ? "text-primary-500" : "text-primary-900/50"}`}>{status}</strong>
-                        // </span>
-                    }
                     <div className="flex flex-col gap-1">
                         <h2 className="text-lg font-bold text-primary-700 line-clamp-1">{habit.name}</h2>
                         {
@@ -53,16 +47,9 @@ export default function HabitCard({ habit }: Prop) {
                                 <HabitConsistencyPercent percent={habit.consistencyInPercent} />
                             </span>
                         ) : (
-                            <span className="flex items-center gap-2 text-xs">
-                                <span className="flex items-center w-full text-start text-primary-900/60 font-bold">
-                                    <Image src={Check_16_Purple} alt="x mark" className="w-4 h-4" />
-                                    <span className="text-primary-500">{"5d"}</span>
-                                </span>
-                                <span className="flex items-center w-full text-start text-primary-900/60 font-bold">
-                                    <Image src={X_16_Red} alt="x mark" className="w-4 h-4" />
-                                    <span className="text-red">{"2d"}</span>
-                                </span>
-                            </span>
+                            savedHabitDays && (
+                                <CompletedHabitCardStats habitConsistencyInPercent={habit.consistencyInPercent} pastDaysTimestamps={pastDaysTimestamps} durationInDays={habit.durationInDays} savedHabitDays={savedHabitDays} />
+                            )
                         )
                     }
                 </div>
@@ -70,3 +57,4 @@ export default function HabitCard({ habit }: Prop) {
         </Link>
     )
 }
+

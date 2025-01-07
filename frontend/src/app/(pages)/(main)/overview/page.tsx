@@ -9,6 +9,7 @@ import { getAccessToken } from "@/app/api/auth/[...nextauth]/getAccessToken";
 import ErrorPage from "../habits/components/presentation/error-page";
 import { THabit } from "@/app/utils/types";
 import { NoHabits } from "../habits/components/presentation/NoHabits";
+import CompletedHabits from "../habits/components/presentation/CompletedHabits";
 
 export default async function Overview() {
     const accessToken = await getAccessToken();
@@ -114,7 +115,7 @@ function Main({ todayHabits, ongoingHabits, completedHabits }: {
                             <Image src={Angle_Right_16} className="group-hover:translate-x-1 transition-all duration-200" alt="right angle icon" />
                         </Link>
                     </div>
-                    <Habits habits={completedHabitsShowcaseList} />
+                    <CompletedHabits habits={completedHabitsShowcaseList} />
                 </section>
             </section>
         </main>

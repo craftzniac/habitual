@@ -1,5 +1,6 @@
 import { daysOfWeek } from './constants';
-import { DayOfWeek } from './types';
+import { Habit } from './habits/entity/habit.entity';
+import { DayOfWeek, HabitStatus } from './types';
 
 // a function to generate an id
 export function generateId() {
@@ -33,7 +34,7 @@ function indexToDayOfWeek(index: number): DayOfWeek {
   return dow[index];
 }
 
-export function generateHabitDays({
+export function generateHabitDaysTimestamps({
   startDateString,
   durationInDays,
   excludedDays,
@@ -41,7 +42,7 @@ export function generateHabitDays({
   startDateString: string;
   durationInDays: number;
   excludedDays: DayOfWeek[];
-}) {
+}): number[] {
   // just return empty array if all days of the week are excluded.
   if (
     isDayExcluded({ excludedDays, day: 'sun' }) &&
@@ -55,7 +56,7 @@ export function generateHabitDays({
     return [];
   }
 
-  const days: { dayOfWeek: DayOfWeek; timestamp: number }[] = [];
+  const days: number[] = [];
   // console.log(startDate.getUTCDay()); // 0: sunday, 1: monday, 2: tuesday, 3: wednesday, 4: thursday, 5: friday, 6: saturday
 
   let count = 0;
@@ -63,10 +64,7 @@ export function generateHabitDays({
     const startDate = new Date(startDateString);
     const day = new Date(startDate.setUTCDate(startDate.getUTCDate() + count));
     if (isDayExcluded({ excludedDays, day }) === false) {
-      days.push({
-        dayOfWeek: indexToDayOfWeek(day.getUTCDay()),
-        timestamp: day.getTime(),
-      });
+      days.push(day.getTime());
     }
     count++;
   }
@@ -177,13 +175,17 @@ export function getHabitDayTimestampStatus(
   }
 }
 
-export function getRemainingDaysTimestamps(
+// getRemainingDaysAndPastDaysTimestamps
+export function getHabitDaysTimestampsInfo(
   generatedHabitDaysTimestamp: number[],
 ): {
   remainingDaysTimestamps: number[];
+  pastDaysTimestamps: number[];
+  isTodayHabit: boolean;
 } {
-  // const pastDaysTimestamps: number[] = [];
+  const pastDaysTimestamps: number[] = [];
   const remainingDaysTimestamps: number[] = [];
+  let isTodayHabit = false;
   generatedHabitDaysTimestamp.forEach((timestamp) => {
     const dateStatus = getHabitDayTimestampStatus(timestamp);
     switch (dateStatus) {
@@ -191,13 +193,13 @@ export function getRemainingDaysTimestamps(
         remainingDaysTimestamps.push(timestamp);
         break;
       case 'past':
-        // pastDaysTimestamps.push(timestamp);
+        pastDaysTimestamps.push(timestamp);
         break;
       default:
-      // this timestamp represents today
+        isTodayHabit = true;
     }
   });
-  return { remainingDaysTimestamps };
+  return { remainingDaysTimestamps, pastDaysTimestamps, isTodayHabit };
 }
 
 /**
@@ -245,14 +247,13 @@ export async function isValidHabitDayTimestamp({
 }) {
   const datestamp = getDatestamp(timestamp);
   // GENERate habit days for this habit and check if this date matches any habit date.
-  const habitDayTimestamps = generateHabitDays({
+  const habitDayTimestamps = generateHabitDaysTimestamps({
     excludedDays: getExcludedDaysFromFrequency(frequency),
     durationInDays,
     startDateString: startDate,
   });
-  //2. check that the slug (which is a date string) represents a valid habit day for this habit
-  const isFound = habitDayTimestamps.find((d) => {
-    if (d.timestamp === datestamp) return true;
+  const isFound = habitDayTimestamps.find((dayTimestamp) => {
+    if (dayTimestamp === datestamp) return true;
     else return false;
   });
   return isFound;
@@ -261,4 +262,25 @@ export async function isValidHabitDayTimestamp({
 export function getDatestamp(timestamp: number | string) {
   const dateString = new Date(timestamp).toISOString().split('T')[0];
   return new Date(dateString).getTime();
+}
+
+/**
+ * adds calculated properties such as `status`, and `isToday` to a habit
+ * */
+export function getHabitWithStatus(
+  habit: Habit,
+): Habit & { status: HabitStatus; isToday: boolean } {
+  const habitDaysTimestamps = generateHabitDaysTimestamps({
+    startDateString: habit.startDate,
+    durationInDays: habit.durationInDays,
+    excludedDays: getExcludedDaysFromFrequency(habit.frequency),
+  });
+
+  const { remainingDaysTimestamps, isTodayHabit } =
+    getHabitDaysTimestampsInfo(habitDaysTimestamps);
+
+  if (remainingDaysTimestamps.length === 0 && isTodayHabit === false) {
+    return { ...habit, status: 'completed', isToday: false };
+  }
+  return { ...habit, status: 'on-going', isToday: true };
 }

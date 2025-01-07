@@ -6,6 +6,7 @@ import AddHabitBtn from "./components/presentation/AddHabitBtn";
 import ErrorPage from "./components/presentation/error-page";
 import { getHabits } from "@/app/services/habitsService";
 import { getAccessToken } from "@/app/api/auth/[...nextauth]/getAccessToken";
+import CompletedHabits from "./components/presentation/CompletedHabits";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +37,13 @@ export default async function HabitsPage({ searchParams }: { searchParams: { fil
                         <ErrorPage errorMsg={res.message} />
                     ) : (
                         <div className="p-4 flex w-full h-full overflow-y-auto">
-                            <Habits habits={res.data.habits} />
+                            {
+                                filter === "completed" ? (
+                                    <CompletedHabits habits={res.data.habits} />
+                                ) : (
+                                    <Habits habits={res.data.habits} />
+                                )
+                            }
                         </div>
                     )
                 }
