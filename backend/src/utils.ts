@@ -177,7 +177,6 @@ export function getHabitDayTimestampStatus(
   }
 }
 
-// using the generatedHabitDaysTimestamp, find those habit days that have timestamps matching today or a time in the past, then exclude those that have isCompleted set to true and Count the rest
 export function getRemainingDaysTimestamps(
   generatedHabitDaysTimestamp: number[],
 ): {

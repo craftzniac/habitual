@@ -3,7 +3,7 @@ import { No_Habits } from "@/app/assets/illustrations";
 import type { THabitFilter } from "@/app/utils/types";
 
 export function NoHabits({ filter }: {
-    filter: THabitFilter
+    filter?: THabitFilter
 }) {
     let message = "";
     switch (filter) {
@@ -17,7 +17,7 @@ export function NoHabits({ filter }: {
             message = "You have not completed any habits yet"
             break;
         default:
-            message = "No habits"
+            message = "No habits created yet"
     }
 
     return (

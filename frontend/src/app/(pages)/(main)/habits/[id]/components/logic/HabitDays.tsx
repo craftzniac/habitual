@@ -2,7 +2,7 @@
 import { TDayOfWeek, TSavedHabitDay } from "@/app/utils/types"
 import { generateHabitDays } from "@/app/utils/helpers/generateHabitDays"
 import HabitDay from "./HabitDay"
-import { getHabitDayTimestampStatus, getHabitDaySavedDate } from "@/app/utils/helpers/tinyHelpers"
+import { getHabitDaySavedDate, getPastAndFutureDays } from "@/app/utils/helpers/tinyHelpers"
 import { useGlobalContext } from "@/app/(pages)/(main)/contexts/GlobalProvider"
 
 type Props = {
@@ -21,26 +21,6 @@ export default function HabitDays({ variant = "large-editable", habitId, startDa
 
     function getFulfilledDaysCount(habits: TSavedHabitDay[]) {
         return habits.filter(habit => habit.isCompleted).length
-    }
-
-    // using the generatedHabitDaysTimestamp, find those habit days that have timestamps matching today or a time in the past, then exclude those that have isCompleted set to true and Count the rest
-    function getPastAndFutureDays(generatedHabitDaysTimestamp: number[]): { pastDaysTimestamps: number[], futureDaysTimestamps: number[] } {
-        let todayTimestamp;
-        const pastDaysTimestamps: number[] = []
-        const futureDaysTimestamps: number[] = []
-        generatedHabitDaysTimestamp.forEach(timestamp => {
-            const dateStatus = getHabitDayTimestampStatus(timestamp);
-            switch (dateStatus) {
-                case "future":
-                    futureDaysTimestamps.push(timestamp); break;
-                case "past":
-                    pastDaysTimestamps.push(timestamp); break;
-                default:
-                    // has to be today
-                    todayTimestamp = timestamp
-            }
-        })
-        return { pastDaysTimestamps, futureDaysTimestamps };
     }
 
     function getMissedDaysCount(pastDaysTimestamps: number[]): number {

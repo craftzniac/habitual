@@ -7,6 +7,20 @@
 }
 
 @layer base {
+    .overview-page-stats-grid {
+        display: grid;
+        grid-template-rows: repeat(3, 1fr);
+        grid-template-areas:
+            "card1  card2"
+            "card3  card3"
+    }
+
+    @media(min-width: 928px) {
+        .overview-page-stats-grid {
+            display: flex;
+        }
+    }
+
     .habit-days {
         @apply flex flex-col w-full h-fit items-center gap-2 pb-4;
         container-type: inline-size;

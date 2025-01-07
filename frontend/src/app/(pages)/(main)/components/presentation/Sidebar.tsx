@@ -1,12 +1,13 @@
 "use client"
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navItems, navPaths } from "@/app/utils/constants"
 import Logo from "@/app/assets/logo.svg"
 import LogoutBtn from "./LogoutBtn";
+import UserProfileBtn from "./UserProfileBtn";
 
-export default function Sidebar({ user }: { user: { username: string, profileImage: string | StaticImageData } }) {
+export default function Sidebar() {
     const currentPath = usePathname();
     if (currentPath.startsWith(navPaths.HABIT_BUDDIES.INDEX)) {
         if (currentPath !== navPaths.HABIT_BUDDIES.INDEX) {
@@ -40,10 +41,10 @@ export default function Sidebar({ user }: { user: { username: string, profileIma
                 </nav>
                 <LogoutBtn />
             </div>
-            <div className="flex items-center w-full gap-3 justify-center">
-                <Image src={user.profileImage} className="w-10 h-10 rounded-full border-2 border-gray-25" alt="profile picture" width={200} height={200} />
-                <span className="hidden 3xl:block font-bold text-base w-full">{user.username}</span>
+            <div className="w-full">
+                <UserProfileBtn variant="long" />
             </div>
         </section>
     )
 }
+

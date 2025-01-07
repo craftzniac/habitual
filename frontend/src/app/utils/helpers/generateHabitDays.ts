@@ -1,8 +1,8 @@
-import { daysOfWeekArray, daysOfWeekOptions } from "../constants";
+import { daysOfWeekArray } from "../constants";
 import { TDayOfWeek } from "../types";
 
 /**
- * @returns {string[]} an array of ISO date strings matching the habit days
+ * @returns {string[]} an array of numeric timestamps matching the dates of each habit day
  * */
 export function generateHabitDays({
 	startDateString,
@@ -30,7 +30,6 @@ export function generateHabitDays({
 	}
 
 	const days: number[] = [];
-	// console.log(startDate.getUTCDay()); // 0: sunday, 1: monday, 2: tuesday, 3: wednesday, 4: thursday, 5: friday, 6: saturday
 
 	let count = 0;
 	while (days.length < durationInDays) {

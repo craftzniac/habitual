@@ -34,7 +34,15 @@ export class AuthService {
       sub: user.id,
       email: user.email,
     });
-    return { accessToken, refreshToken, accessTokenExpiresIn, userId: user.id };
+    return {
+      accessToken,
+      refreshToken,
+      accessTokenExpiresIn,
+      userId: user.id,
+      username: user.username,
+      // TODO: will be url to user's public image
+      profileImage: '',
+    };
   }
 
   async signup(signupDto: SignupDto) {

@@ -4,17 +4,15 @@ import { transformHabit } from "../utils/helpers/tinyHelpers";
 import { axiosErrorResponse } from "../utils/helpers/axiosErrorResponse";
 import { getHabitsRequestHeader } from "../utils/helpers/getHabitsRequestHeader";
 
-export async function getHabits({ accessToken, filter }: { accessToken: string, filter: THabitFilter }): Promise<{
+export async function getHabits({ accessToken, filter }: { accessToken: string, filter?: THabitFilter }): Promise<{
 	success: true, data: {
 		habits: THabit[],
 		filter: THabitFilter
 	}
 } | APIErrorResponse> {
 	try {
-		const res = await api.get(`/habits`, {
-			params: {
-				filter
-			},
+		const url = filter ? `/habits?filter=${filter}` : `/habits`;
+		const res = await api.get(url, {
 			headers: getHabitsRequestHeader(accessToken)
 		});
 

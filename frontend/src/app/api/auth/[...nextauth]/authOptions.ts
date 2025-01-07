@@ -18,7 +18,7 @@ export const authOptions: NextAuthOptions = {
                 try {
                     const { data: user } = await api.post("/auth/login", { email: credentials.email, password: credentials.password })
 
-                    return { id: user.userId, accessToken: user.accessToken, accessTokenExpiresIn: user.accessTokenExpiresIn };
+                    return { id: user.userId, accessToken: user.accessToken, accessTokenExpiresIn: user.accessTokenExpiresIn, username: user.username, profileImage: user.profileImage };
                 } catch (err) {
                     const error = err as AxiosError;
 
@@ -40,6 +40,9 @@ export const authOptions: NextAuthOptions = {
             if (user) {
                 token.accessToken = (user as any).accessToken as string;
                 token.accessTokenExpiresIn = (user as any).accessTokenExpiresIn as string;
+                // console.log("user:", user)
+                token.username = (user as any).username
+                token.profileImage = (user as any).profileImage
                 token.error = undefined;
                 return token;
             }
@@ -63,6 +66,8 @@ export const authOptions: NextAuthOptions = {
 
         async session({ session, token }) {
             session.user.accessToken = (token.accessToken) as string;
+            session.user.username = (token.username) as string;
+            session.user.profileImage = token.profileImage as string
             session.error = (token.error) as string;
             return session;
         }

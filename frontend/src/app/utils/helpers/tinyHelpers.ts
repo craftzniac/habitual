@@ -129,3 +129,34 @@ export function getUTCDateString(date: Date): string {
 	const parts = isoDateString.split('T');
 	return parts[0];
 }
+
+
+export function getTimeOfDay(date: Date) {
+	const hour = date.getHours();
+	if (hour >= 0 && hour < 12) {
+		return "morning";
+	} else if (hour >= 12 && hour < 18) {
+		return "afternoon"
+	} else {
+		return "evening"
+	}
+}
+
+
+// using the generatedHabitDaysTimestamp, find those habit days that have timestamps matching today or a time in the past
+export function getPastAndFutureDays(generatedHabitDaysTimestamp: number[]): { pastDaysTimestamps: number[], futureDaysTimestamps: number[] } {
+	const pastDaysTimestamps: number[] = []
+	const futureDaysTimestamps: number[] = []
+	generatedHabitDaysTimestamp.forEach(timestamp => {
+		const dateStatus = getHabitDayTimestampStatus(timestamp);
+		switch (dateStatus) {
+			case "future":
+				futureDaysTimestamps.push(timestamp); break;
+			case "past":
+				pastDaysTimestamps.push(timestamp); break;
+			default:
+			// has to be today
+		}
+	})
+	return { pastDaysTimestamps, futureDaysTimestamps };
+}
