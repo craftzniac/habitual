@@ -2,7 +2,7 @@
 import { TDayOfWeek, TSavedHabitDay } from "@/app/utils/types"
 import { generateHabitDays } from "@/app/utils/helpers/generateHabitDays"
 import HabitDay from "./HabitDay"
-import { getHabitDaySavedDate, getPastAndFutureDays } from "@/app/utils/helpers/tinyHelpers"
+import { getHabitDaySavedDate, getMissedDaysCount, getPastAndFutureDays } from "@/app/utils/helpers/tinyHelpers"
 import { useGlobalContext } from "@/app/(pages)/(main)/contexts/GlobalProvider"
 
 type Props = {
@@ -23,24 +23,10 @@ export default function HabitDays({ variant = "large-editable", habitId, startDa
         return habits.filter(habit => habit.isCompleted).length
     }
 
-    function getMissedDaysCount(pastDaysTimestamps: number[]): number {
-        // remove all the habit days that have isCompleted set to true and count the rest.
-        const missedPastDays = pastDaysTimestamps.filter(timestamp => {
-            const savedData = getHabitDaySavedDate(savedHabitDays, timestamp);
-            if (savedData && savedData.isCompleted) {
-                return false;
-            }
-            return true;
-        })
-
-
-        return [...missedPastDays].length;
-    }
-
     const { pastDaysTimestamps, futureDaysTimestamps } = getPastAndFutureDays(generatedHabitDaysTimestamp);
 
     const fulfilledDaysCount = getFulfilledDaysCount(savedHabitDays);
-    const missedDaysCount = getMissedDaysCount(pastDaysTimestamps);
+    const missedDaysCount = getMissedDaysCount({ pastDaysTimestamps, savedHabitDays });
     const futureDaysCount = futureDaysTimestamps.length;
 
     return (

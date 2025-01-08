@@ -26,8 +26,8 @@ export class Habit {
   @Column({ type: 'timestamptz', nullable: false })
   startDate: string;
 
-  @Column({ nullable: false, default: 'on-going' })
-  status: 'completed' | 'on-going';
+  // @Column({ nullable: false, default: 'on-going' })
+  // status: 'completed' | 'on-going';
 
   @Column({ nullable: false, default: 0 })
   consistencyInPercent: number;

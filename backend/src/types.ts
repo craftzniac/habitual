@@ -1,31 +1,3 @@
-export type User = {
-  id: string;
-  username: string;
-  password: string;
-  email: string;
-  createdAt: string;
-};
-
-export type Habit = {
-  id: string;
-  userId: string;
-  name: string;
-  description: string;
-  startDate: Date;
-  durationInDays: number;
-  frequency: DayOfWeek[];
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type HabitReminder = {
-  id: string;
-  habitId: string;
-  time: ReminderTime;
-  timezone: string;
-  type: 'email' | 'in-app' | 'smart';
-};
-
 export type ReminderTime =
   | '00:00'
   | '00:30'
@@ -76,21 +48,8 @@ export type ReminderTime =
   | '23:00'
   | '23:30';
 
-// export type HabitDay = {
-//   id: string;
-//   habitId: string;
-//   originalStartDate: Date;
-//   date: string;
-//   isCompleted: boolean;
-//   createdAt: string;
-//   updatedAt: string;
-// };
-
-export type HabitDayJournal = {
-  id: string;
-  habitDayId: string;
-  note: string;
-};
 export type HabitFilter = 'today' | 'on-going' | 'completed';
 
 export type DayOfWeek = 'sun' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat';
+
+export type HabitStatus = 'on-going' | 'completed';

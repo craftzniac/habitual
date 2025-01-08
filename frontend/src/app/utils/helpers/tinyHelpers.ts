@@ -115,7 +115,6 @@ export function getHabitDayTimestampStatus(dayTimestamp: number): "past" | "toda
  * @returns a habit day object whose timestamp match the provided timestamp, else undefined.
  * */
 export function getHabitDaySavedDate(savedHabitDaysTimestamps: TSavedHabitDay[], timestamp: number): TSavedHabitDay | undefined {
-	console.log("saved:", savedHabitDaysTimestamps);
 	return savedHabitDaysTimestamps.find(hd => {
 		return hd.timestamp === timestamp;
 	});
@@ -159,4 +158,23 @@ export function getPastAndFutureDays(generatedHabitDaysTimestamp: number[]): { p
 		}
 	})
 	return { pastDaysTimestamps, futureDaysTimestamps };
+}
+
+
+export function getMissedDaysCount({
+	pastDaysTimestamps, savedHabitDays
+}: {
+	pastDaysTimestamps: number[], savedHabitDays: TSavedHabitDay[]
+}): number {
+	// remove all the habit days that have isCompleted set to true and count the rest.
+	const missedPastDays = pastDaysTimestamps.filter(timestamp => {
+		const savedData = getHabitDaySavedDate(savedHabitDays, timestamp);
+		if (savedData && savedData.isCompleted) {
+			return false;
+		}
+		return true;
+	})
+
+
+	return [...missedPastDays].length;
 }

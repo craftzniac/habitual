@@ -7,19 +7,15 @@ import {
 import { CreateOrUpdateHabitDto } from './dto/create-or-update-habit.dto';
 import { Repository } from 'typeorm';
 import { Habit } from './entity/habit.entity';
-import { HabitFilter } from 'src/types';
-import {
-  generateHabitDays,
-  getExcludedDaysFromFrequency,
-  getDatestamp,
-} from 'src/utils';
+import { HabitFilter, HabitStatus } from 'src/types';
+import { getHabitWithStatus } from 'src/utils';
 
 @Injectable()
 export class HabitsService {
   constructor(
     @InjectRepository(Habit)
     private habitsRepository: Repository<Habit>,
-  ) { }
+  ) {}
 
   /**
    * Finds all habits for a specific user
@@ -34,47 +30,26 @@ export class HabitsService {
     habits: Habit[];
     filter?: HabitFilter;
   }> {
-    if (filter === 'today') {
-      let habits = await this.habitsRepository.find({ where: { userId } });
-      // get only habits that have a habit day matching today
-      habits = habits.filter((habit) => {
-        const habitDays = generateHabitDays({
-          startDateString: habit.startDate,
-          durationInDays: habit.durationInDays,
-          excludedDays: getExcludedDaysFromFrequency(habit.frequency),
-        });
+    const _habits = await this.habitsRepository.find({ where: { userId } });
+    let habits = _habits.map((habit) => getHabitWithStatus(habit));
 
-        const todayDateTimestamp = getDatestamp(new Date().getTime());
-        for (const habitDay of habitDays) {
-          if (habitDay.timestamp === todayDateTimestamp) {
-            return true;
-          }
-        }
-
-        return false;
-      });
-      return {
-        habits,
-        filter,
-      };
+    switch (filter) {
+      case 'today':
+        habits = habits.filter((h) => h.isToday);
+        break;
+      case 'on-going':
+        habits = habits.filter((h) => h.status === 'on-going');
+        break;
+      case 'completed':
+        habits = habits.filter((h) => h.status === 'completed');
+        break;
+      default:
+      // basically do nothing
     }
 
-    if (filter === 'completed' || filter === 'on-going') {
-      const habits = await this.habitsRepository.find({
-        where: { userId, status: filter },
-      });
-      return {
-        habits,
-        filter,
-      };
-    }
-
-    // just gets all user's habits
-    const habits = await this.habitsRepository.find({
-      where: { userId },
-    });
     return {
       habits,
+      filter,
     };
   }
 
@@ -93,18 +68,21 @@ export class HabitsService {
     });
     const habit = await this.habitsRepository.save(habitEntity);
     return {
-      habit,
+      habit: getHabitWithStatus(habit),
     };
   }
 
-  async getHabit(userId: string, id: string): Promise<{ habit: Habit }> {
+  async getHabit(
+    userId: string,
+    id: string,
+  ): Promise<{ habit: Habit & { status: HabitStatus; isToday: boolean } }> {
     const exceptionMsg = 'Habit does not exist';
     try {
       const habit = await this.habitsRepository.findOneBy({ id, userId });
       if (!habit) {
         throw new NotFoundException(exceptionMsg);
       }
-      return { habit };
+      return { habit: getHabitWithStatus(habit) };
     } catch (err) {
       const invalidUUID =
         'QueryFailedError: invalid input syntax for type uuid';
@@ -138,7 +116,7 @@ export class HabitsService {
         description: 'Could not find the habit',
       });
     }
-    return { habit: updatedHabit };
+    return { habit: getHabitWithStatus(updatedHabit) };
   }
 
   async delete(habitId: string): Promise<{ id: string }> {

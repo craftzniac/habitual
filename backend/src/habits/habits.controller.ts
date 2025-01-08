@@ -26,7 +26,6 @@ import {
   isValidTimestamp,
 } from 'src/utils';
 import { UpsertJournalEntryDto } from 'src/habit-days/dto/upsert-journal-entry.dto';
-import { Habit } from './entity/habit.entity';
 
 @Controller('habits')
 @UseGuards(AuthGuard)
