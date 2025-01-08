@@ -3,6 +3,7 @@
 import { upsertHabitDay } from "../services/habitDaysService";
 import { getAccessToken } from "../api/auth/[...nextauth]/getAccessToken";
 import { APIErrorResponse } from "../utils/types";
+import { revalidatePath } from "next/cache";
 
 type Args = {
 	habitId: string,
@@ -15,6 +16,8 @@ export async function upsertHabitDayStateAction({ habitId, timestamp, isComplete
 	const res = await upsertHabitDay({ accessToken, habitId, timestamp, isCompleted });
 	if (!res.success) {
 		return res;
+	} else {
+		revalidatePath("/overview");
 	}
 }
 
