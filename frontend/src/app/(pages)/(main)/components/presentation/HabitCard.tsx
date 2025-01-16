@@ -20,6 +20,8 @@ export default async function HabitCard({ habit, savedHabitDays }: Prop) {
     const { futureDaysTimestamps: remainingDaysTimestamp, pastDaysTimestamps } = getPastAndFutureDays(generatedHabitDaysTimestmap);
     const remainingDaysCount = remainingDaysTimestamp.length;
 
+    console.log("habit:", habit);
+
     return (
         <Link href={`/habits/${habit.id}`}
             className="rounded-lg bg-primary-50/50 border-2 border-primary-50 hover:bg-primary-50 hover:border-primary-100 transition-colors duration-200 p-3 flex flex-col gap-2 w-full h-[12rem]"

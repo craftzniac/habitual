@@ -17,7 +17,7 @@ export class HabitDaysService {
   constructor(
     @InjectRepository(HabitDay)
     private habitDaysRepository: Repository<HabitDay>,
-  ) {}
+  ) { }
 
   async calculateHabitConsistencyInPercent({
     habitDays,
@@ -26,6 +26,9 @@ export class HabitDaysService {
     habitDays: (Omit<HabitDay, 'timestamp'> & { timestamp: number })[];
     habit: Habit;
   }): Promise<number> {
+    if (habitDays.length === 0) {
+      return 0;
+    }
     const generatedDaysTimestamps = generateHabitDaysTimestamps({
       excludedDays: getExcludedDaysFromFrequency(habit.frequency),
       durationInDays: habit.durationInDays,
