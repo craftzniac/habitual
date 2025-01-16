@@ -25,7 +25,7 @@ export default function Sidebar() {
                     <ul className="flex flex-col gap-2 w-full h-full">
                         {navItems.map(item => (
                             <li key={item.path} className="flex">
-                                <Link href={item.path} className={`flex items-center justify-center gap-2 w-full hover:bg-primary-900/10 transition-colors duration-200 px-4 py-3 rounded ${currentPath.startsWith(item.path) ? "bg-primary-700" : "bg-white"}`}>
+                                <Link href={item.path} className={`flex items-center justify-center gap-2 w-full hover:text-white hover:bg-primary-700/80 transition-colors duration-200 px-4 py-3 rounded ${currentPath.startsWith(item.path) ? "bg-primary-700" : "bg-white"}`}>
                                     {
                                         currentPath.startsWith(item.path) ? (
                                             <Image src={item.iconWhite} alt={`${item.label} icon`} width={24} height={24} className="w-auto h-auto" />

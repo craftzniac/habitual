@@ -27,7 +27,7 @@ export class UsersService {
     return user;
   }
 
-  async getUserById(id: string): Promise<User> {
+  async getUserById(id: string): Promise<User | null> {
     const user = await this.usersRepository.findOneBy({ id });
     if (!user) {
       return null;
@@ -70,5 +70,9 @@ export class UsersService {
         'Your request could not be processed',
       );
     }
+  }
+
+  async deleteUser(userId: string) {
+    await this.usersRepository.delete({ id: userId });
   }
 }

@@ -4,12 +4,16 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
+// import { HabitsService } from 'src/habits/habits.service';
+import { HabitDaysService } from 'src/habit-days/habit-days.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    // private habitsService: HabitsService,
+    private habitDaysService: HabitDaysService,
   ) { }
 
   async login(loginDto: LoginDto) {
@@ -117,5 +121,15 @@ export class AuthService {
     } catch (err) {
       throw new UnauthorizedException('Invalid refreshtoken');
     }
+  }
+
+  async deleteAccount(userId: string): Promise<{ success: boolean }> {
+    const user = await this.usersService.getUserById(userId);
+    if (!user) {
+      return { success: true };
+    }
+    await this.habitDaysService.deleteAllForUser(userId);
+    await this.usersService.deleteUser(userId);
+    return null;
   }
 }

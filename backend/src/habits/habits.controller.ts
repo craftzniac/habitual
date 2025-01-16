@@ -133,6 +133,7 @@ export class HabitsController {
       timestamp,
       upsertJournalEntryDto.note,
       habitId,
+      userId,
     );
   }
 
@@ -141,8 +142,10 @@ export class HabitsController {
   async upsertHabitDay(
     @Param('id') habitId: string,
     @Body(ValidationPipe) habitDayDto: UpsertHabitDayDto,
+    @Req() req: any,
   ) {
-    return await this.habitDaysService.upsert(habitId, habitDayDto);
+    const userId = req['user'].sub;
+    return await this.habitDaysService.upsert(habitId, habitDayDto, userId);
   }
 
   @HttpCode(201)
@@ -173,10 +176,13 @@ export class HabitsController {
     return this.habitsService.update(userId, habitId, updateHabitDto);
   }
 
+  /**
+   * Delete a habit
+   * */
   @Delete(':id')
   async delete(@Param('id') habitId: string) {
     // delete all habit days associated with this habit;
-    await this.habitDaysService.deleteAll(habitId);
+    await this.habitDaysService.deleteAllForHabit(habitId);
     // then delete the actual habit
     return this.habitsService.delete(habitId);
   }
