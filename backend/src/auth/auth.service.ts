@@ -14,7 +14,7 @@ export class AuthService {
     private jwtService: JwtService,
     // private habitsService: HabitsService,
     private habitDaysService: HabitDaysService,
-  ) { }
+  ) {}
 
   async login(loginDto: LoginDto) {
     // check if user exists in db

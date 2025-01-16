@@ -17,7 +17,7 @@ export class HabitDaysService {
   constructor(
     @InjectRepository(HabitDay)
     private habitDaysRepository: Repository<HabitDay>,
-  ) { }
+  ) {}
 
   async calculateHabitConsistencyInPercent({
     habitDays,

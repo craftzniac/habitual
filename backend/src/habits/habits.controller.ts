@@ -33,7 +33,7 @@ export class HabitsController {
   constructor(
     private habitsService: HabitsService,
     private habitDaysService: HabitDaysService,
-  ) { }
+  ) {}
   @Get()
   async getAll(@Req() request: any, @Query('filter') filter: HabitFilter) {
     const userId = request.user.sub;

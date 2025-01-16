@@ -13,16 +13,25 @@ import { HabitDaysModule } from './habit-days/habit-days.module';
 
 config();
 
+const typeormConfig =
+  process.env.NODE_ENV === 'development'
+    ? {
+        type: 'postgres' as const,
+        username: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        synchronize: true,
+      }
+    : {
+        url: process.env.DB_URL,
+      };
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
+      ...typeormConfig,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      synchronize: true,
       useUTC: true,
     }),
     HabitsModule,
@@ -39,5 +48,5 @@ config();
   providers: [AppService],
 })
 export class AppModule {
-  constructor(private dataSource: DataSource) { }
+  constructor(private dataSource: DataSource) {}
 }

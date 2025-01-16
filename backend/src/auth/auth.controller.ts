@@ -21,7 +21,7 @@ export class AuthController {
   constructor(
     private authService: AuthService,
     private habitsService: HabitsService,
-  ) { }
+  ) {}
 
   @Post('login')
   @UsePipes(

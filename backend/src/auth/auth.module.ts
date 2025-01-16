@@ -11,4 +11,4 @@ import { HabitsModule } from 'src/habits/habits.module';
   providers: [AuthService],
   imports: [UsersModule, ConfigModule.forRoot(), HabitDaysModule, HabitsModule],
 })
-export class AuthModule { }
+export class AuthModule {}

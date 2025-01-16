@@ -15,7 +15,7 @@ export class HabitsService {
   constructor(
     @InjectRepository(Habit)
     private habitsRepository: Repository<Habit>,
-  ) { }
+  ) {}
 
   /**
    * Finds all habits for a specific user

@@ -5,8 +5,8 @@ import { AuthGuard } from 'src/auth/auth.guard';
 @Controller('habit-days')
 @UseGuards(AuthGuard)
 export class HabitDaysController {
-  constructor(private habitDaysService: HabitDaysService) { }
+  constructor(private habitDaysService: HabitDaysService) {}
 
   @Patch(':id/note')
-  updateHabitDayNote() { }
+  updateHabitDayNote() {}
 }
