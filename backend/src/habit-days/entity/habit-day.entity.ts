@@ -15,6 +15,9 @@ export class HabitDay {
   @Column({ nullable: false })
   habitId: string;
 
+  @Column({ nullable: false })
+  userId: string;
+
   @Column({ nullable: false, type: 'boolean', default: false })
   isCompleted: boolean;
 

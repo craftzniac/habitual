@@ -1,6 +1,6 @@
 "use client";
 import { THabit, TSavedHabitDay } from "@/app/utils/types";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { useToast } from "@/app/components/logic/toast";
 
@@ -8,9 +8,13 @@ type TGlobalData = {
     habitDays: TSavedHabitDay[],
     habit: THabit,
     refreshHabitDays: () => Promise<void>,
-    closeHabitDeleteDialog: () => void,
     isHabitDeleteDialogOpen: boolean,
+    closeHabitDeleteDialog: () => void,
     openHabitDeleteDialog: () => void,
+    isAccountDeleteDialogOpen: boolean,
+    closeAccountDeleteDialog: () => void,
+    openAccountDeleteDialog: () => void,
+    setIsAccountDeleteDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 
@@ -18,9 +22,13 @@ const initialContextValue: TGlobalData = {
     habitDays: [],
     habit: { id: "", name: "", status: "on-going", userId: "", createdAt: "", startDate: "", updatedAt: "", frequency: new Set(), reminders: new Set(), description: "", durationInDays: 0, consistencyInPercent: 0 },
     refreshHabitDays: async () => { },
-    closeHabitDeleteDialog: () => { },
     isHabitDeleteDialogOpen: false,
+    closeHabitDeleteDialog: () => { },
     openHabitDeleteDialog: () => { },
+    isAccountDeleteDialogOpen: false,
+    closeAccountDeleteDialog: () => { },
+    openAccountDeleteDialog: () => { },
+    setIsAccountDeleteDialogOpen: () => { }
 }
 
 const GlobalContext = React.createContext<TGlobalData>(initialContextValue);
@@ -64,7 +72,7 @@ export default function GlobalProvider({ v, children, habitId }: {
             habitDays,
             closeHabitDeleteDialog: () => setIsHabitDeleteDialogOpen(false),
             openHabitDeleteDialog: () => setIsHabitDeleteDialogOpen(true),
-            isHabitDeleteDialogOpen
+            isHabitDeleteDialogOpen,
         }}>
             {children}
         </GlobalContext.Provider>

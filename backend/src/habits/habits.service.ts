@@ -15,7 +15,7 @@ export class HabitsService {
   constructor(
     @InjectRepository(Habit)
     private habitsRepository: Repository<Habit>,
-  ) {}
+  ) { }
 
   /**
    * Finds all habits for a specific user
@@ -119,8 +119,14 @@ export class HabitsService {
     return { habit: getHabitWithStatus(updatedHabit) };
   }
 
+  // delete a specific habit
   async delete(habitId: string): Promise<{ id: string }> {
     await this.habitsRepository.softDelete({ id: habitId });
     return { id: habitId };
+  }
+
+  async deleteAllUserHabits(userId: string) {
+    await this.habitsRepository.delete({ userId });
+    return null;
   }
 }

@@ -1,58 +1,60 @@
-"use client"
-import { Edit_Pencil_16, Edit_Pencil_16_White, Save_16 } from "@/app/assets/icons"
-import { Profile_Image } from "@/app/assets/illustrations"
+import { Edit_Pencil_16_White, Save_16, Trash_16_White } from "@/app/assets/icons"
+import Link from "next/link";
 import Button from "@/app/components/presentation/form/Button"
 import TextField from "@/app/components/presentation/form/TextField"
-import { navPaths } from "@/app/utils/constants"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
+import LogoutBtn from "../components/presentation/LogoutBtn"
+import ProfileImage from "./components/presentation/ProfileImage";
+import DeleteAccountConfirmDialogWrapper from "./components/logic/DeleteAccountConfirmnDialog";
+import TriggerAccountDeleteBtn from "./components/logic/TriggerAccountDeleteBtn";
 
 export default function Settings() {
-    const router = useRouter();
     return (
-        <section className="w-full h-full flex flex-col items-center overflow-y-auto p-4 gap-8">
-            <ProfileImage />
-            <section className="flex flex-col gap-4 w-full">
-                <h2 className="font-bold text-lg">Account Info</h2>
-                <div className="flex flex-col gap-3">
-                    <div className="flex w-full items-end gap-1">
-                        <TextField label="Username" name="username" />
-                        <Button label="Save">
-                            <Image src={Save_16} alt="" className="" />
-                        </Button>
+        <section className="w-full h-full flex flex-col items-center">
+            <DeleteAccountConfirmDialogWrapper />
+            <header className="flex items-center px-4 py-2 gap-1 w-full lg:py-4">
+                <h1 className="text-lg font-bold w-full">Settings</h1>
+                <LogoutBtn alwaysShowText={true} />
+            </header>
+            <div className="w-full h-full overflow-y-auto flex justify-center">
+                <section className="h-full w-full  flex flex-col gap-12 px-4 py-4 max-w-[62.5rem] lg:flex-row">
+                    <ProfileImage />
+                    <div className="flex flex-col w-full h-full gap-12">
+                        <section className="flex flex-col gap-4 w-full">
+                            <h2 className="font-bold text-lg">Account Info</h2>
+                            <div className="flex flex-col gap-3">
+                                <div className="flex w-full items-end gap-2">
+                                    <TextField label="Username" name="username" />
+                                    <button type="button" className="bg-primary-500 px-6 py-4 mb-1 rounded-full">
+                                        <Image src={Save_16} alt="" className="min-w-4 min-h-4" />
+                                    </button>
+                                </div>
+                                <div className="flex w-full items-end gap-2">
+                                    <TextField label="Email Address" name="email" />
+                                    <Link href="" type="button" className="bg-primary-500 px-6 py-4 mb-1 rounded-full">
+                                        <Image src={Edit_Pencil_16_White} alt="" className="min-w-4 min-h-4" />
+                                    </Link>
+                                </div>
+                            </div>
+                        </section>
+                        <section className="flex flex-col gap-4 w-full">
+                            <h2 className="font-bold text-lg">Change Password</h2>
+                            <div className="flex flex-col gap-3">
+                                <TextField label="Old Password" name="oldPassword" />
+                                <TextField label="New Password" name="newPassword" />
+                                <Button label="Update Password">
+                                    <Image src={Edit_Pencil_16_White} alt="" />
+                                </Button>
+                            </div>
+                        </section>
+                        <section className="flex flex-col gap-4 w-full">
+                            <h2 className="font-bold text-lg text-red">Danger Zone</h2>
+                            <TriggerAccountDeleteBtn />
+                        </section>
                     </div>
-                    <div className="flex w-full items-end gap-1">
-                        <TextField label="Email Address" name="email" />
-                        <Button label="Change" onClick={() => {
-                            router.push(navPaths.SETTINGS.VERIFY_EMAIL.INDEX)
-                        }}>
-                            <Image src={Edit_Pencil_16_White} alt="" />
-                        </Button>
-                    </div>
-                </div>
-            </section>
-            <section className="flex flex-col gap-4 w-full">
-                <h2 className="font-bold text-lg">Change Password</h2>
-                <div className="flex flex-col gap-3">
-                    <TextField label="Old Password" name="oldPassword" />
-                    <TextField label="New Password" name="newPassword" />
-                    <Button label="Update Password" stretch>
-                        <Image src={Edit_Pencil_16_White} alt="" />
-                    </Button>
-                </div>
-            </section>
-        </section >
+                </section>
+            </div>
+        </section>
     )
 }
 
-function ProfileImage() {
-    return (
-        <div className="w-32 h-32 min-h-32 min-w-32 rounded-full relative overflow-hidden flex justify-center items-center group">
-            <Image src={Profile_Image} alt="user profile image" className="relative z-0 w-full h-full" />
-            <button type="button" className="flex items-center justify-center gap-1 absolute right-0 left-0 bottom-0 w-full bg-primary-50/60 px-2 pt-2 pb-4 z-10 rounded-full translate-y-2 group-hover:translate-y-0 transition-transform">
-                <Image src={Edit_Pencil_16} alt="" className="w-4 h-4" />
-                <span className="text-base">Edit</span>
-            </button>
-        </div>
-    )
-}

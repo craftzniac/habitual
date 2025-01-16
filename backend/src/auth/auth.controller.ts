@@ -1,12 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
-  HttpException,
-  HttpStatus,
   Post,
   Req,
-  Request,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -16,10 +14,14 @@ import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
 import { AuthGuard } from './auth.guard';
 import { RefreshTokenDto } from './dto/refreshToken.dto';
+import { HabitsService } from 'src/habits/habits.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private habitsService: HabitsService,
+  ) { }
 
   @Post('login')
   @UsePipes(
@@ -59,5 +61,13 @@ export class AuthController {
   @Post('refresh-token')
   refreshAccessToken(@Body() refreshTokenDto: RefreshTokenDto) {
     return this.authService.refreshAccessToken(refreshTokenDto.refreshToken);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('account/delete')
+  async deleteAccount(@Req() request: any) {
+    const userId = request['user'].sub;
+    await this.habitsService.deleteAllUserHabits(userId);
+    return await this.authService.deleteAccount(userId);
   }
 }

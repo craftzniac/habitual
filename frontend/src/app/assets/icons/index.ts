@@ -22,7 +22,6 @@ import Arrow_Left_24 from "./arrow_left_24.svg"
 import Overflow_24 from "./overflow_24.svg"
 import Journal_16 from "./journal_16.svg"
 import Reminder_Clock_16 from "./reminder_clock_16.svg"
-import Trash_16 from "./trash_16.svg"
 import Edit_Pencil_16 from "./edit_pencil_16.svg"
 import Edit_Pencil_16_White from "./edit_pencil_16_white.svg"
 import X_16 from "./x_16.svg"
@@ -48,6 +47,8 @@ import Arrow_Left_16 from "./arrow_left_16.svg"
 import Plus_16_Gray from "./plus_16_gray.svg"
 import Info_16 from "./info_16.svg"
 import Date_Picker from "./date_16.svg"
+import Trash_16 from "./trash_16.svg"
+import Trash_16_White from "./trash_16_white.svg"
 
 export {
     GoogleLogo,
@@ -77,7 +78,6 @@ export {
     Reminder_Clock_16,
     Edit_Pencil_16,
     Edit_Pencil_16_White,
-    Trash_16,
     Date_Picker,
     X_16,
     Reminder_Clock_24,
@@ -100,4 +100,6 @@ export {
     Check_16_Purple,
     Plus_16_Gray,
     Info_16,
+    Trash_16,
+    Trash_16_White,
 }
