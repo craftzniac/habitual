@@ -36,7 +36,7 @@ export function generateHabitDays({
 		const startDate = new Date(startDateString);
 		const day = new Date(startDate.setUTCDate(startDate.getUTCDate() + count));
 		if (isDayExcluded({ excludedDays, day }) === false) {
-			days.push(day.getTime());
+			days.push(new Date(day.toISOString().split("T")[0]).getTime());
 		}
 		count++;
 	}

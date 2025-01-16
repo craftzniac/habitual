@@ -215,9 +215,12 @@ export function calculateConsistencyInPercent({
   totalDaysCount: number;
   remainingDaysCount: number;
 }) {
-  return Math.floor(
-    (completedDaysCount / (totalDaysCount - remainingDaysCount)) * 100,
-  );
+  // a count of past days and/or today
+  const nonFutureDaysCount =
+    totalDaysCount === remainingDaysCount
+      ? 1
+      : totalDaysCount - remainingDaysCount;
+  return Math.floor((completedDaysCount / nonFutureDaysCount) * 100);
 }
 
 /**

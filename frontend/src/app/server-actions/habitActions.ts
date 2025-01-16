@@ -44,7 +44,6 @@ export async function createHabitAction(data: Omit<THabit, "id" | "userId" | "cr
 export async function editHabitAction(data: Omit<THabit, "userId" | "createdAt" | "updatedAt" | "status" | "consistencyInPercent">): Promise<string | undefined> {
 	const frequencyArray = Array.from(data.frequency || []);
 	const remindersArray = Array.from(data.reminders || []);
-	console.log("dataa:", data);
 
 	const accessToken = await getAccessToken();
 	const res = await editHabit({
