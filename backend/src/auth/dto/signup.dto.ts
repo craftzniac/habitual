@@ -4,12 +4,16 @@ import {
   Matches,
   Length,
   IsString,
+  IsOptional,
 } from 'class-validator';
 
 export class SignupDto {
   @IsEmail({}, { message: 'Provide a valid email address' })
   @IsNotEmpty({ message: 'Email must not be empty' })
   email: string;
+
+  @IsOptional()
+  profileImage?: string;
 
   @IsNotEmpty({ message: 'Username must not be empty' })
   @IsString({ message: 'Provide a valid Username' })

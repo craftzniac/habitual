@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  NotFoundException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -13,7 +14,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-  ) {}
+  ) { }
 
   /**
    * finds the user with the matching email address
@@ -74,5 +75,24 @@ export class UsersService {
 
   async deleteUser(userId: string) {
     await this.usersRepository.delete({ id: userId });
+  }
+
+  async updateUsername(userId: string, username: string) {
+    try {
+      const user = await this.getUserById(userId);
+      if (!user) {
+        throw new NotFoundException('This user does not exist');
+      }
+      user.username = username;
+      const updatedUser = await this.usersRepository.save(user);
+      console.log(updatedUser);
+      return {
+        user: { id: updatedUser.id, username: updatedUser.username },
+      };
+    } catch (err) {
+      throw new InternalServerErrorException(
+        'Your request could not be processed',
+      );
+    }
   }
 }

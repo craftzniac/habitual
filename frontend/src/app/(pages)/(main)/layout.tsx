@@ -4,12 +4,14 @@ import BottomNavigation from "./components/presentation/BottomNavigation";
 import { getSessionOrSignout } from "@/app/api/auth/[...nextauth]/getSessionOrSignout";
 import UserProvider from "@/app/contexts/UserProvider";
 import AccountDeleteProvider from "@/app/contexts/AccountDeleteProvider";
+import { Auth } from "@/app/services/authService";
 
 export default async function Layout({ children }: { children: ReactNode }) {
     const session = await getSessionOrSignout();
-    const user = session.user;
+    const accessToken = session.user.accessToken;
+    const user = await Auth.getUserData({ accessToken });
     return (
-        <UserProvider value={{ username: user.username, profileImage: user.profileImage }}>
+        <UserProvider value={{ username: user.username, profileImage: user.profileImage, email: user.email }}>
             <AccountDeleteProvider>
                 <div className="flex w-full h-full">
                     <Sidebar />

@@ -1,5 +1,4 @@
 import { Edit_Pencil_16_White, Save_16, Trash_16_White } from "@/app/assets/icons"
-import Link from "next/link";
 import Button from "@/app/components/presentation/form/Button"
 import TextField from "@/app/components/presentation/form/TextField"
 import Image from "next/image"
@@ -7,6 +6,8 @@ import LogoutBtn from "../components/presentation/LogoutBtn"
 import ProfileImage from "./components/presentation/ProfileImage";
 import DeleteAccountConfirmDialogWrapper from "./components/logic/DeleteAccountConfirmnDialog";
 import TriggerAccountDeleteBtn from "./components/logic/TriggerAccountDeleteBtn";
+import UsernameForm from "./components/logic/form/UsernameForm";
+import EmailAddressField from "./components/logic/EmailAddressField"
 
 export default function Settings() {
     return (
@@ -23,20 +24,10 @@ export default function Settings() {
                         <section className="flex flex-col gap-4 w-full">
                             <h2 className="font-bold text-lg">Account Info</h2>
                             <div className="flex flex-col gap-3">
-                                <div className="flex w-full items-end gap-2">
-                                    <TextField label="Username" name="username" />
-                                    <button type="button" className="bg-primary-500 px-6 py-4 mb-1 rounded-full">
-                                        <Image src={Save_16} alt="" className="min-w-4 min-h-4" />
-                                    </button>
-                                </div>
-                                <div className="flex w-full items-end gap-2">
-                                    <TextField label="Email Address" name="email" />
-                                    <Link href="" type="button" className="bg-primary-500 px-6 py-4 mb-1 rounded-full">
-                                        <Image src={Edit_Pencil_16_White} alt="" className="min-w-4 min-h-4" />
-                                    </Link>
-                                </div>
-                            </div>
-                        </section>
+                                <UsernameForm />
+                                <EmailAddressField />
+                            </div >
+                        </section >
                         <section className="flex flex-col gap-4 w-full">
                             <h2 className="font-bold text-lg">Change Password</h2>
                             <div className="flex flex-col gap-3">
@@ -51,10 +42,9 @@ export default function Settings() {
                             <h2 className="font-bold text-lg text-red">Danger Zone</h2>
                             <TriggerAccountDeleteBtn />
                         </section>
-                    </div>
-                </section>
-            </div>
-        </section>
+                    </div >
+                </section >
+            </div >
+        </section >
     )
 }
-

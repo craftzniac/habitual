@@ -5,8 +5,9 @@ declare module "next-auth" {
 		error?: string,
 		user: {
 			accessToken: string;
-			profileImage: string;
-			username: string
+			// profileImage: string;
+			// username: string;
+			// email: string
 		}
 	}
 }

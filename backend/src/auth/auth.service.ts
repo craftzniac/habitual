@@ -14,7 +14,7 @@ export class AuthService {
     private jwtService: JwtService,
     // private habitsService: HabitsService,
     private habitDaysService: HabitDaysService,
-  ) {}
+  ) { }
 
   async login(loginDto: LoginDto) {
     // check if user exists in db
@@ -43,9 +43,10 @@ export class AuthService {
       refreshToken,
       accessTokenExpiresIn,
       userId: user.id,
+      email: user.email,
       username: user.username,
-      // TODO: will be url to user's public image
-      profileImage: '',
+      // TODO: will be url to user's public profile image
+      profileImage: user.profileImage || '',
     };
   }
 
@@ -131,5 +132,9 @@ export class AuthService {
     await this.habitDaysService.deleteAllForUser(userId);
     await this.usersService.deleteUser(userId);
     return null;
+  }
+
+  async updateUsername(userId: string, username: string) {
+    return await this.usersService.updateUsername(userId, username);
   }
 }
