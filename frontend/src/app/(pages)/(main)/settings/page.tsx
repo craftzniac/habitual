@@ -26,8 +26,8 @@ export default function Settings() {
                             <div className="flex flex-col gap-3">
                                 <UsernameForm />
                                 <EmailAddressField />
-                            </div>
-                        </section>
+                            </div >
+                        </section >
                         <section className="flex flex-col gap-4 w-full">
                             <h2 className="font-bold text-lg">Change Password</h2>
                             <div className="flex flex-col gap-3">
@@ -42,9 +42,9 @@ export default function Settings() {
                             <h2 className="font-bold text-lg text-red">Danger Zone</h2>
                             <TriggerAccountDeleteBtn />
                         </section>
-                    </div>
-                </section>
-            </div>
-        </section>
+                    </div >
+                </section >
+            </div >
+        </section >
     )
 }

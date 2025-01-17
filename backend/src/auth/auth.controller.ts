@@ -85,4 +85,5 @@ export class AuthController {
     const userId = request['user'].sub;
     return await this.authService.updateUsername(userId, body.username);
   }
+
 }

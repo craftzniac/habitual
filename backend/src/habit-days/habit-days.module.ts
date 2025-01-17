@@ -10,4 +10,4 @@ import { HabitDaysController } from './habit-days.controller';
   imports: [TypeOrmModule.forFeature([HabitDay])],
   controllers: [HabitDaysController],
 })
-export class HabitDaysModule { }
+export class HabitDaysModule {}

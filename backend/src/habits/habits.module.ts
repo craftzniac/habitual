@@ -11,4 +11,4 @@ import { HabitDaysModule } from 'src/habit-days/habit-days.module';
   providers: [HabitsService],
   imports: [TypeOrmModule.forFeature([Habit]), HabitDaysModule],
 })
-export class HabitsModule { }
+export class HabitsModule {}
