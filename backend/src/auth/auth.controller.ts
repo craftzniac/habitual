@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -15,6 +16,7 @@ import { SignupDto } from './dto/signup.dto';
 import { AuthGuard } from './auth.guard';
 import { RefreshTokenDto } from './dto/refreshToken.dto';
 import { HabitsService } from 'src/habits/habits.service';
+import { UpdateUsernameDto } from './dto/update-username.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -69,5 +71,18 @@ export class AuthController {
     const userId = request['user'].sub;
     await this.habitsService.deleteAllUserHabits(userId);
     return await this.authService.deleteAccount(userId);
+  }
+
+  @UsePipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+    }),
+  )
+  @UseGuards(AuthGuard)
+  @Patch('username')
+  async updateUsername(@Body() body: UpdateUsernameDto, @Req() request: any) {
+    const userId = request['user'].sub;
+    return await this.authService.updateUsername(userId, body.username);
   }
 }
