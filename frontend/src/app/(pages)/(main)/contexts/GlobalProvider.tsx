@@ -11,10 +11,6 @@ type TGlobalData = {
     isHabitDeleteDialogOpen: boolean,
     closeHabitDeleteDialog: () => void,
     openHabitDeleteDialog: () => void,
-    isAccountDeleteDialogOpen: boolean,
-    closeAccountDeleteDialog: () => void,
-    openAccountDeleteDialog: () => void,
-    setIsAccountDeleteDialogOpen: Dispatch<SetStateAction<boolean>>
 }
 
 
@@ -25,10 +21,6 @@ const initialContextValue: TGlobalData = {
     isHabitDeleteDialogOpen: false,
     closeHabitDeleteDialog: () => { },
     openHabitDeleteDialog: () => { },
-    isAccountDeleteDialogOpen: false,
-    closeAccountDeleteDialog: () => { },
-    openAccountDeleteDialog: () => { },
-    setIsAccountDeleteDialogOpen: () => { }
 }
 
 const GlobalContext = React.createContext<TGlobalData>(initialContextValue);

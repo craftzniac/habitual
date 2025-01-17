@@ -1,7 +1,7 @@
-import { Edit_Pencil_16_White, Save_16, Trash_16_White } from "@/app/assets/icons"
-import Button from "@/app/components/presentation/form/Button"
-import TextField from "@/app/components/presentation/form/TextField"
-import Image from "next/image"
+// import { Edit_Pencil_16_White, Save_16, Trash_16_White } from "@/app/assets/icons"
+// import Button from "@/app/components/presentation/form/Button"
+// import TextField from "@/app/components/presentation/form/TextField"
+// import Image from "next/image"
 import LogoutBtn from "../components/presentation/LogoutBtn"
 import ProfileImage from "./components/presentation/ProfileImage";
 import DeleteAccountConfirmDialogWrapper from "./components/logic/DeleteAccountConfirmnDialog";
@@ -28,16 +28,18 @@ export default function Settings() {
                                 <EmailAddressField />
                             </div >
                         </section >
-                        <section className="flex flex-col gap-4 w-full">
-                            <h2 className="font-bold text-lg">Change Password</h2>
-                            <div className="flex flex-col gap-3">
-                                <TextField label="Old Password" name="oldPassword" />
-                                <TextField label="New Password" name="newPassword" />
-                                <Button label="Update Password">
-                                    <Image src={Edit_Pencil_16_White} alt="" />
-                                </Button>
-                            </div>
-                        </section>
+                        {
+                            // <section className="flex flex-col gap-4 w-full">
+                            //     <h2 className="font-bold text-lg">Change Password</h2>
+                            //     <div className="flex flex-col gap-3">
+                            //         <TextField label="Old Password" name="oldPassword" />
+                            //         <TextField label="New Password" name="newPassword" />
+                            //         <Button label="Update Password">
+                            //             <Image src={Edit_Pencil_16_White} alt="" />
+                            //         </Button>
+                            //     </div>
+                            // </section>
+                        }
                         <section className="flex flex-col gap-4 w-full">
                             <h2 className="font-bold text-lg text-red">Danger Zone</h2>
                             <TriggerAccountDeleteBtn />
