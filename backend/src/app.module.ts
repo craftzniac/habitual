@@ -18,11 +18,14 @@ const typeormConfig =
     ? {
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       synchronize: true,
     }
     : {
       url: process.env.DB_URL,
     };
+
+console.log("dbconfig: ", typeormConfig);
 
 @Module({
   imports: [
@@ -30,7 +33,6 @@ const typeormConfig =
     TypeOrmModule.forRoot({
       ...typeormConfig,
       type: 'postgres' as const,
-      database: process.env.DB_NAME,
       autoLoadEntities: true,
       useUTC: true,
     }),
