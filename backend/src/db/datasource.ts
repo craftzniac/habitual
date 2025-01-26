@@ -14,6 +14,7 @@ const typeormConfig: Partial<DataSourceOptions> =
         url: process.env.DB_URL,
       };
 
+console.log('config: ', typeormConfig);
 export const dataSourceOptions: DataSourceOptions = {
   ...typeormConfig,
   type: 'postgres' as const,
