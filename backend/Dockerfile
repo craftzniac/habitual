@@ -15,6 +15,9 @@ WORKDIR  /app/
 # install dependencies
 RUN pnpm install 
 
+# run migrations
+RUN pnpm migration:generate:first 
+RUN pnpm migration:run
 
 # finally start the project
 CMD ["nest", "start"]

@@ -10,32 +10,14 @@ import { HabitsModule } from './habits/habits.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { HabitDaysModule } from './habit-days/habit-days.module';
+import { dataSourceOptions } from './db/datasource';
 
 config();
-
-const typeormConfig =
-  process.env.NODE_ENV === 'development'
-    ? {
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      synchronize: true,
-    }
-    : {
-      url: process.env.DB_URL,
-    };
-
-console.log("dbconfig: ", typeormConfig);
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      ...typeormConfig,
-      type: 'postgres' as const,
-      autoLoadEntities: true,
-      useUTC: true,
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     HabitsModule,
     AuthModule,
     UsersModule,
@@ -50,5 +32,5 @@ console.log("dbconfig: ", typeormConfig);
   providers: [AppService],
 })
 export class AppModule {
-  constructor(private dataSource: DataSource) { }
+  constructor(private dataSource: DataSource) {}
 }
