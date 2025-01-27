@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { JwtModule } from '@nestjs/jwt';
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
@@ -10,6 +10,7 @@ import { HabitsModule } from './habits/habits.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { HabitDaysModule } from './habit-days/habit-days.module';
+import { dataSourceOptions } from './db/datasource';
 
 config();
 
