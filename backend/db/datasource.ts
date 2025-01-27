@@ -6,8 +6,8 @@ export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres' as const,
   useUTC: true,
   url: process.env.DB_URL,
-  entities: ['dist/**/entity/*.js'],
-  migrations: ['dist/db/migrations/*.js'],
+  entities: ['dist/**/entity/*{.js,.ts}'],
+  migrations: ['dist/db/migrations/*{.js,.ts}'],
 };
 
 console.log('datasource opts: ', dataSourceOptions);

@@ -3,6 +3,8 @@
 /node_modules
 /build
 
+/db/migrations/
+
 # Logs
 logs
 *.log
