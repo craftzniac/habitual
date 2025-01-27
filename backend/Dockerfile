@@ -15,9 +15,15 @@ WORKDIR  /app/
 # install dependencies
 RUN pnpm install 
 
-# run migrations
-RUN pnpm migration:generate:first 
-RUN pnpm migration:run
+# create a persistent storage directory for a  marker file 
+VOLUME /data
+
+# run migrations if /data/firstMigration.txt doesn't already exist
+RUN  if [ ! -f /data/firstMigration.txt ]; then \
+        pnpm migration:generate:first &&        \
+        pnpm migration:run &&                   \
+        touch /data/firstMigration.txt;         \
+     fi 
 
 # finally start the project
 CMD ["nest", "start"]
