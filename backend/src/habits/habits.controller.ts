@@ -73,7 +73,7 @@ export class HabitsController {
 
   @Get(':id/habit-days')
   async getHabitDays(@Param('id') habitId: string, @Req() req: any) {
-    const userAccountId = req.user.sub;
+    const userAccountId = req.userAccount.sub;
     const { habit } = await this.habitsService.getHabit(userAccountId, habitId);
     return this.habitDaysService.getAll(habit);
   }
