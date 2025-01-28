@@ -82,11 +82,11 @@ function Main({ todayHabits, ongoingHabits, completedHabits }: {
 
     return (
         <main className="w-full h-full flex flex-col gap-12 overflow-y-auto lg:flex-row lg:gap-0">
-            <section className="flex flex-col gap-12 w-full lg:overflow-y-auto lg:h-full">
+            <section className="flex flex-col gap-12 w-full h-fit lg:overflow-y-auto lg:h-full">
                 <GreetingAndStats ongoingHabitsCount={ongoingHabits.length} completedHabitsCount={completedHabits.length} topHabit={topHabit} />
 
                 {/* today habits */}
-                <section className="flex flex-col gap-8 w-full p-4">
+                <section className="flex flex-col gap-4 md:gap-8 w-full p-4">
                     <h3 className="font-bold text-lg w-full">Today&apos;s Habits</h3>
                     <Habits habits={todayHabits} />
                 </section>
@@ -95,7 +95,7 @@ function Main({ todayHabits, ongoingHabits, completedHabits }: {
             <section className="flex flex-col gap-12 w-full lg:overflow-y-auto lg:h-full lg:max-w-screen-sm">
                 {/* in progress habits */}
 
-                <section className="flex flex-col gap-8 w-full p-4">
+                <section className="flex flex-col gap-4 md:gap-8 w-full p-4">
                     <div className="flex gap-2 items-center">
                         <h3 className="font-bold text-lg w-full">On-going Habits</h3>
                         <Link href="/habits?filter=on-going" className="min-w-fit rounded-full hover:bg-primary-500/5 flex items-center gap-1 px-4 py-2 group">
@@ -107,7 +107,7 @@ function Main({ todayHabits, ongoingHabits, completedHabits }: {
                 </section>
 
                 {/*completed habits*/}
-                <section className="flex flex-col gap-8 w-full p-4">
+                <section className="flex flex-col gap-4 md:gap-8 w-full p-4">
                     <div className="flex gap-2 items-center">
                         <h3 className="font-bold text-lg w-full">Completed Habits</h3>
                         <Link href="/habits?filter=completed" className="min-w-fit rounded-full hover:bg-primary-500/5 flex items-center gap-1 px-4 py-2 group">
