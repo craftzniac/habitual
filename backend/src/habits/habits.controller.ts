@@ -147,7 +147,7 @@ export class HabitsController {
     @Body(ValidationPipe) habitDayDto: UpsertHabitDayDto,
     @Req() req: any,
   ) {
-    const userAccountId = req['user'].sub;
+    const userAccountId = req.userAccount.sub;
     return await this.habitDaysService.upsert(
       habitId,
       habitDayDto,
