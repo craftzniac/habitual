@@ -1,52 +1,55 @@
 import * as bcrypt from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
+import { UserAccountsService } from 'src/user-accounts/user-accounts.service';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
-// import { HabitsService } from 'src/habits/habits.service';
 import { HabitDaysService } from 'src/habit-days/habit-days.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private userAccountsService: UserAccountsService,
     private jwtService: JwtService,
-    // private habitsService: HabitsService,
     private habitDaysService: HabitDaysService,
-  ) { }
+  ) {}
 
   async login(loginDto: LoginDto) {
-    // check if user exists in db
-    const user = await this.usersService.getUserByEmail(loginDto.email);
-    if (!user) {
+    // check if userAccount exists in db
+    const userAccount = await this.userAccountsService.getUserAccountByEmail(
+      loginDto.email,
+    );
+    if (!userAccount) {
       throw new UnauthorizedException('Email or Password is invalid');
     }
 
     // compare password with hash
-    const isMatches = await bcrypt.compare(loginDto.password, user.password);
+    const isMatches = await bcrypt.compare(
+      loginDto.password,
+      userAccount.password,
+    );
     if (isMatches === false) {
       throw new UnauthorizedException('Email or Password is invalid');
     }
 
     // sign jwt
     const { accessToken, accessTokenExpiresIn } = await this.signAccessToken({
-      sub: user.id,
-      email: user.email,
+      sub: userAccount.id,
+      email: userAccount.email,
     });
     const refreshToken = await this.signRefreshToken({
-      sub: user.id,
-      email: user.email,
+      sub: userAccount.id,
+      email: userAccount.email,
     });
     return {
       accessToken,
       refreshToken,
       accessTokenExpiresIn,
-      userId: user.id,
-      email: user.email,
-      username: user.username,
-      // TODO: will be url to user's public profile image
-      profileImage: user.profileImage || '',
+      userAccountId: userAccount.id,
+      email: userAccount.email,
+      username: userAccount.username,
+      // TODO: will be url to userAccount's public profile image
+      profileImage: userAccount.profileImage || '',
     };
   }
 
@@ -57,21 +60,22 @@ export class AuthService {
 
     signupDto.password = hashedPassword;
 
-    // create user in db
-    const newUser = await this.usersService.createUser(signupDto);
+    // create userAccount in db
+    const newuserAccount =
+      await this.userAccountsService.createUserAccount(signupDto);
 
     // sign jwt
     const { accessToken, accessTokenExpiresIn } = await this.signAccessToken({
-      sub: newUser.id,
-      email: newUser.email,
+      sub: newuserAccount.id,
+      email: newuserAccount.email,
     });
     const refreshToken = await this.signRefreshToken({
-      sub: newUser.id,
-      email: newUser.email,
+      sub: newuserAccount.id,
+      email: newuserAccount.email,
     });
 
     return {
-      user: newUser,
+      userAccount: newuserAccount,
       accessToken,
       accessTokenExpiresIn,
       refreshToken,
@@ -96,10 +100,10 @@ export class AuthService {
     };
   }
 
-  async getCurrentUser(id: string) {
-    const user = await this.usersService.getUserById(id);
-    delete user.password;
-    return user;
+  async getCurrentUserAccount(id: string) {
+    const userAccount = await this.userAccountsService.getUserAccountById(id);
+    delete userAccount.password;
+    return userAccount;
   }
 
   async refreshAccessToken(refreshToken: string) {
@@ -114,7 +118,7 @@ export class AuthService {
       });
 
       return {
-        userId: decoded.sub,
+        userAccountId: decoded.sub,
         accessToken,
         accessTokenExpiresIn,
         refreshToken,
@@ -124,17 +128,21 @@ export class AuthService {
     }
   }
 
-  async deleteAccount(userId: string): Promise<{ success: boolean }> {
-    const user = await this.usersService.getUserById(userId);
-    if (!user) {
+  async deleteAccount(userAccountId: string): Promise<{ success: boolean }> {
+    const userAccount =
+      await this.userAccountsService.getUserAccountById(userAccountId);
+    if (!userAccount) {
       return { success: true };
     }
-    await this.habitDaysService.deleteAllForUser(userId);
-    await this.usersService.deleteUser(userId);
+    await this.habitDaysService.deleteAllForUserAccount(userAccountId);
+    await this.userAccountsService.deleteUserAccount(userAccountId);
     return null;
   }
 
-  async updateUsername(userId: string, username: string) {
-    return await this.usersService.updateUsername(userId, username);
+  async updateUsername(userAccountId: string, username: string) {
+    return await this.userAccountsService.updateUsername(
+      userAccountId,
+      username,
+    );
   }
 }

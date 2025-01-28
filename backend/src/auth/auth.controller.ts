@@ -23,7 +23,7 @@ export class AuthController {
   constructor(
     private authService: AuthService,
     private habitsService: HabitsService,
-  ) { }
+  ) {}
 
   @Post('login')
   @UsePipes(
@@ -50,8 +50,8 @@ export class AuthController {
   @Get('me')
   @UseGuards(AuthGuard)
   getMe(@Req() req: any) {
-    const userId = req['user'].sub;
-    return this.authService.getCurrentUser(userId);
+    const userAccountId = req['userAccount'].sub;
+    return this.authService.getCurrentUserAccount(userAccountId);
   }
 
   @UsePipes(
@@ -68,9 +68,9 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Delete('account/delete')
   async deleteAccount(@Req() request: any) {
-    const userId = request['user'].sub;
-    await this.habitsService.deleteAllUserHabits(userId);
-    return await this.authService.deleteAccount(userId);
+    const userAccountId = request['userAccount'].sub;
+    await this.habitsService.deleteAllUserAccountHabits(userAccountId);
+    return await this.authService.deleteAccount(userAccountId);
   }
 
   @UsePipes(
@@ -82,8 +82,7 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Patch('username')
   async updateUsername(@Body() body: UpdateUsernameDto, @Req() request: any) {
-    const userId = request['user'].sub;
-    return await this.authService.updateUsername(userId, body.username);
+    const userAccountId = request['userAccount'].sub;
+    return await this.authService.updateUsername(userAccountId, body.username);
   }
-
 }

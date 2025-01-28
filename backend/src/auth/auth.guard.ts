@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
     try {
       // check if token is valid
       const payload = await this.jwtService.verifyAsync(token);
-      request['user'] = payload;
+      request['userAccount'] = payload;
       return true;
     } catch (err) {
       throw new UnauthorizedException('You have to log in to continue', {

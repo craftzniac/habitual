@@ -16,7 +16,7 @@ export class HabitDay {
   habitId: string;
 
   @Column({ nullable: false })
-  userId: string;
+  userAccountId: string;
 
   @Column({ nullable: false, type: 'boolean', default: false })
   isCompleted: boolean;

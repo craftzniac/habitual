@@ -15,7 +15,7 @@ export class Habit {
   id: string;
 
   @Column({ nullable: false })
-  userId: string;
+  userAccountId: string;
 
   @Column({ nullable: false })
   name: string;

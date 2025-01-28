@@ -15,22 +15,24 @@ export class HabitsService {
   constructor(
     @InjectRepository(Habit)
     private habitsRepository: Repository<Habit>,
-  ) { }
+  ) {}
 
   /**
-   * Finds all habits for a specific user
+   * Finds all habits for a specific userAccount
    * */
-  async getUserHabits({
-    userId,
+  async getUserAccountHabits({
+    userAccountId,
     filter,
   }: {
-    userId: string;
+    userAccountId: string;
     filter: HabitFilter;
   }): Promise<{
     habits: Habit[];
     filter?: HabitFilter;
   }> {
-    const _habits = await this.habitsRepository.find({ where: { userId } });
+    const _habits = await this.habitsRepository.find({
+      where: { userAccountId },
+    });
     let habits = _habits.map((habit) => getHabitWithStatus(habit));
 
     switch (filter) {
@@ -54,7 +56,7 @@ export class HabitsService {
   }
 
   async create(
-    userId: string,
+    userAccountId: string,
     createHabitDto: CreateOrUpdateHabitDto,
   ): Promise<{ habit: Habit }> {
     const habitEntity = this.habitsRepository.create({
@@ -64,7 +66,7 @@ export class HabitsService {
       description: createHabitDto.description ?? '',
       frequency: createHabitDto.frequency,
       reminders: createHabitDto.reminders,
-      userId,
+      userAccountId,
     });
     const habit = await this.habitsRepository.save(habitEntity);
     return {
@@ -73,12 +75,15 @@ export class HabitsService {
   }
 
   async getHabit(
-    userId: string,
+    userAccountId: string,
     id: string,
   ): Promise<{ habit: Habit & { status: HabitStatus; isToday: boolean } }> {
     const exceptionMsg = 'Habit does not exist';
     try {
-      const habit = await this.habitsRepository.findOneBy({ id, userId });
+      const habit = await this.habitsRepository.findOneBy({
+        id,
+        userAccountId,
+      });
       if (!habit) {
         throw new NotFoundException(exceptionMsg);
       }
@@ -94,7 +99,7 @@ export class HabitsService {
   }
 
   async update(
-    userId: string,
+    userAccountId: string,
     id: string,
     updateHabitDto: CreateOrUpdateHabitDto,
   ): Promise<{ habit: Habit }> {
@@ -107,7 +112,7 @@ export class HabitsService {
         description: updateHabitDto.description,
         frequency: updateHabitDto.frequency,
         reminders: updateHabitDto.reminders,
-        userId,
+        userAccountId,
       },
     );
     const updatedHabit = await this.habitsRepository.findOneBy({ id });
@@ -125,8 +130,8 @@ export class HabitsService {
     return { id: habitId };
   }
 
-  async deleteAllUserHabits(userId: string) {
-    await this.habitsRepository.delete({ userId });
+  async deleteAllUserAccountHabits(userAccountId: string) {
+    await this.habitsRepository.delete({ userAccountId });
     return null;
   }
 }

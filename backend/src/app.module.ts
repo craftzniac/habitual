@@ -7,10 +7,10 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HabitsModule } from './habits/habits.module';
-import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { HabitDaysModule } from './habit-days/habit-days.module';
 import { dataSourceOptions } from 'db/datasource';
+import { UserAccountsModule } from './user-accounts/user-accounts.module';
 
 config();
 
@@ -20,7 +20,7 @@ config();
     TypeOrmModule.forRoot(dataSourceOptions),
     HabitsModule,
     AuthModule,
-    UsersModule,
+    UserAccountsModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
@@ -32,5 +32,5 @@ config();
   providers: [AppService],
 })
 export class AppModule {
-  constructor(private dataSource: DataSource) { }
+  constructor(private dataSource: DataSource) {}
 }

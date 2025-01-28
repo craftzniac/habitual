@@ -33,11 +33,14 @@ export class HabitsController {
   constructor(
     private habitsService: HabitsService,
     private habitDaysService: HabitDaysService,
-  ) { }
+  ) {}
   @Get()
   async getAll(@Req() request: any, @Query('filter') filter: HabitFilter) {
-    const userId = request.user.sub;
-    const res = await this.habitsService.getUserHabits({ userId, filter });
+    const userAccountId = request.userAccount.sub;
+    const res = await this.habitsService.getUserAccountHabits({
+      userAccountId,
+      filter,
+    });
 
     const habits = [];
     for (const habit of res.habits) {
@@ -55,8 +58,8 @@ export class HabitsController {
 
   @Get(':id')
   async getOne(@Param('id') habitId: string, @Req() request: any) {
-    const userId = request.user.sub;
-    const res = await this.habitsService.getHabit(userId, habitId);
+    const userAccountId = request.userAccount.sub;
+    const res = await this.habitsService.getHabit(userAccountId, habitId);
 
     delete res.habit.deletedAt;
 
@@ -70,8 +73,8 @@ export class HabitsController {
 
   @Get(':id/habit-days')
   async getHabitDays(@Param('id') habitId: string, @Req() req: any) {
-    const userId = req.user.sub;
-    const { habit } = await this.habitsService.getHabit(userId, habitId);
+    const userAccountId = req.user.sub;
+    const { habit } = await this.habitsService.getHabit(userAccountId, habitId);
     return this.habitDaysService.getAll(habit);
   }
 
@@ -81,8 +84,8 @@ export class HabitsController {
     @Req() request: any,
     @Param('id') habitId: string,
   ) {
-    const userId = request.user.sub;
-    const habitRes = await this.habitsService.getHabit(userId, habitId);
+    const userAccountId = request.userAccount.sub;
+    const habitRes = await this.habitsService.getHabit(userAccountId, habitId);
     const habit = habitRes.habit;
     if (!isValidTimestamp(slug)) {
       throw new BadRequestException('Invalid Habit Journal date');
@@ -110,8 +113,8 @@ export class HabitsController {
     @Param('id') habitId: string,
     @Body(ValidationPipe) upsertJournalEntryDto: UpsertJournalEntryDto,
   ) {
-    const userId = request.user.sub;
-    const habitRes = await this.habitsService.getHabit(userId, habitId);
+    const userAccountId = request.userAccount.sub;
+    const habitRes = await this.habitsService.getHabit(userAccountId, habitId);
     const habit = habitRes.habit;
     if (!isValidTimestamp(slug)) {
       throw new BadRequestException('Invalid Habit Journal date');
@@ -133,7 +136,7 @@ export class HabitsController {
       timestamp,
       upsertJournalEntryDto.note,
       habitId,
-      userId,
+      userAccountId,
     );
   }
 
@@ -144,8 +147,12 @@ export class HabitsController {
     @Body(ValidationPipe) habitDayDto: UpsertHabitDayDto,
     @Req() req: any,
   ) {
-    const userId = req['user'].sub;
-    return await this.habitDaysService.upsert(habitId, habitDayDto, userId);
+    const userAccountId = req['user'].sub;
+    return await this.habitDaysService.upsert(
+      habitId,
+      habitDayDto,
+      userAccountId,
+    );
   }
 
   @HttpCode(201)
@@ -154,8 +161,8 @@ export class HabitsController {
     @Body(ValidationPipe) createHabitDto: CreateOrUpdateHabitDto,
     @Req() request: any,
   ) {
-    const userId = request.user.sub;
-    const res = await this.habitsService.create(userId, createHabitDto);
+    const userAccountId = request.userAccount.sub;
+    const res = await this.habitsService.create(userAccountId, createHabitDto);
 
     delete res.habit.deletedAt;
 
@@ -172,8 +179,8 @@ export class HabitsController {
     @Param('id') habitId: string,
     @Req() request: any,
   ) {
-    const userId = request.user.sub;
-    return this.habitsService.update(userId, habitId, updateHabitDto);
+    const userAccountId = request.userAccount.sub;
+    return this.habitsService.update(userAccountId, habitId, updateHabitDto);
   }
 
   /**

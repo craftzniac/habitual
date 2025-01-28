@@ -17,7 +17,7 @@ export class HabitDaysService {
   constructor(
     @InjectRepository(HabitDay)
     private habitDaysRepository: Repository<HabitDay>,
-  ) { }
+  ) {}
 
   async calculateHabitConsistencyInPercent({
     habitDays,
@@ -77,7 +77,7 @@ export class HabitDaysService {
   }
 
   /**
-   * get all habit days for a particular user habit
+   * get all habit days for a particular userAccount habit
    * */
   async getAll(habit: Habit) {
     const { consistencyInPercent, habitId, habitDays } =
@@ -116,7 +116,7 @@ export class HabitDaysService {
     timestamp: number,
     note: string,
     habitId: string,
-    userId: string,
+    userAccountId: string,
   ) {
     let habitDay = await this.habitDaysRepository.findOne({
       where: { timestamp: String(timestamp) },
@@ -127,7 +127,7 @@ export class HabitDaysService {
       createHabitDayDto.timestamp = timestamp;
       createHabitDayDto.isCompleted = false;
       const newHabitDay = (
-        await this.create(habitId, createHabitDayDto, userId)
+        await this.create(habitId, createHabitDayDto, userAccountId)
       ).habitDay;
       habitDay = { ...newHabitDay, timestamp: String(newHabitDay.timestamp) };
     }
@@ -148,22 +148,22 @@ export class HabitDaysService {
   async upsert(
     habitId: string,
     habitDayDto: UpsertHabitDayDto,
-    userId: string,
+    userAccountId: string,
   ) {
     const datestamp = getDatestamp(habitDayDto.timestamp);
     // find a record matching the timestamp. If such record does not exist, create it.
     let habitDay = await this.habitDaysRepository.findOne({
-      where: { timestamp: String(datestamp), habitId, userId },
+      where: { timestamp: String(datestamp), habitId, userAccountId },
     });
 
     if (!habitDay) {
-      return await this.create(habitId, habitDayDto, userId);
+      return await this.create(habitId, habitDayDto, userAccountId);
     }
     habitDay.isCompleted = habitDayDto.isCompleted;
     habitDay = await this.habitDaysRepository.save(habitDay);
     delete habitDay.note;
     delete habitDay.deletedAt;
-    delete habitDay.userId;
+    delete habitDay.userAccountId;
     return {
       habitDay: { ...habitDay, timestamp: parseInt(habitDay.timestamp) },
       operation: 'update',
@@ -176,19 +176,19 @@ export class HabitDaysService {
   async create(
     habitId: string,
     createDayDto: UpsertHabitDayDto,
-    userId: string,
+    userAccountId: string,
   ) {
     const dateTimestamp = getDatestamp(createDayDto.timestamp);
     const habitDayEntity = this.habitDaysRepository.create({
       timestamp: String(dateTimestamp),
       isCompleted: createDayDto.isCompleted,
       habitId,
-      userId,
+      userAccountId,
     });
     const habitDay = await this.habitDaysRepository.save(habitDayEntity);
     delete habitDay.note;
     delete habitDay.deletedAt;
-    delete habitDay.userId;
+    delete habitDay.userAccountId;
     return {
       habitDay: { ...habitDay, timestamp: parseInt(habitDay.timestamp) },
       operation: 'create',
@@ -215,12 +215,12 @@ export class HabitDaysService {
   }
 
   /**
-   * Delete all habit days associated with a specific user
+   * Delete all habit days associated with a specific userAccount
    * */
-  async deleteAllForUser(userId: string) {
-    const res = await this.habitDaysRepository.delete({ userId });
+  async deleteAllForUserAccount(userAccountId: string) {
+    const res = await this.habitDaysRepository.delete({ userAccountId });
     return {
-      userId,
+      userAccountId,
       deleteCount: res.affected,
     };
   }
