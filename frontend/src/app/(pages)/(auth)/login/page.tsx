@@ -6,11 +6,10 @@ import Logo from "@/app/assets/logo.svg"
 import Link from "next/link"
 import TextField from "@/app/components/presentation/form/TextField";
 import Button from "@/app/components/presentation/form/Button";
-import { GoogleLogo } from "@/app/assets/icons";
+// import { GoogleLogo } from "@/app/assets/icons";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { TLoginFormInputs } from "@/app/utils/types";
-import PasswordField from "../components/presentation/PasswordField";
 import { useToast } from "@/app/components/logic/toast";
 
 export default function Login() {
@@ -62,14 +61,18 @@ export default function Login() {
                             infoText={errors.email?.message}
                         />
 
-                        <PasswordField register={register} errorMsg={errors.password?.message} />
+                        <TextField register={register("password", {
+                            required: "Password must not be empty"
+                        })} label="Password" name="password" infoText={errors.password?.message} />
 
                         <Button label={isSubmittingForm ? "loading..." : "Login"} isSubmit={true} stretch={true} disabled={isSubmittingForm} />
                     </form>
-                    <p className="text-[0.81rem] font-bold text-gray-75">Or Continue with</p>
-                    <Button variant="gray" label="Google" isSubmit={true} stretch disabled={isSubmittingForm}>
-                        <Image src={GoogleLogo} alt="google logo" />
-                    </Button>
+                    {
+                        // <p className="text-[0.81rem] font-bold text-gray-75">Or Continue with</p>
+                        // <Button variant="gray" label="Google" isSubmit={true} stretch disabled={isSubmittingForm}>
+                        //     <Image src={GoogleLogo} alt="google logo" />
+                        // </Button>
+                    }
 
                     <p className="text-[0.81rem] flex items-center gap-2">
                         <span>Don&apos;t have an account?</span>

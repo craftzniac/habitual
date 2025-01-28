@@ -40,6 +40,10 @@ export const authOptions: NextAuthOptions = {
         signIn: "/login",
     },
     callbacks: {
+        // NOTE: Somehow, returning baseUrl prevents nextauth from routing to the /login when router.push("/overview") after successful signup
+        redirect({ url, baseUrl }) {
+            return baseUrl
+        },
         async jwt({ user, token }) {
             if (user) {
                 token.accessToken = (user as any).accessToken as string;
