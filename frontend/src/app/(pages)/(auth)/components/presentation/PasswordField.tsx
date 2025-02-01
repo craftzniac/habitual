@@ -1,12 +1,14 @@
 import TextField from "@/app/components/presentation/form/TextField";
 import { TLoginPageProps } from "@/app/utils/types";
 
-export default function PasswordField({ register, errorMsg }: TLoginPageProps) {
+export default function PasswordField({ register, errorMsg, toIncludeValidation = true }: TLoginPageProps) {
+
   return (
     <TextField
+      type="password"
       label="Password" register={register("password", {
         required: "Password must not be empty",
-        validate: {
+        validate: toIncludeValidation ? {
           hasNumber: (v) => {
             const hasNumber = /[0-9]/.test(v);
             if (hasNumber === false) { return "Password must contain atleast one number" }
@@ -30,7 +32,7 @@ export default function PasswordField({ register, errorMsg }: TLoginPageProps) {
             }
             return true;
           }
-        }
+        } : undefined
       })}
       name="password"
       infoText={errorMsg}

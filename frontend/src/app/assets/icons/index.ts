@@ -49,6 +49,7 @@ import Info_16 from "./info_16.svg"
 import Date_Picker from "./date_16.svg"
 import Trash_16 from "./trash_16.svg"
 import Trash_16_White from "./trash_16_white.svg"
+import Logo from "./logo.svg";
 
 export {
     GoogleLogo,
@@ -102,4 +103,5 @@ export {
     Info_16,
     Trash_16,
     Trash_16_White,
+    Logo,
 }

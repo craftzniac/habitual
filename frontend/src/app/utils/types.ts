@@ -122,6 +122,7 @@ export type TLoginFormInputs = Omit<TSignupFormInputs, "username">
 export type TLoginPageProps = {
 	register: UseFormRegister<TSignupFormInputs | TLoginFormInputs>,
 	errorMsg?: string
+	toIncludeValidation?: boolean
 }
 
 

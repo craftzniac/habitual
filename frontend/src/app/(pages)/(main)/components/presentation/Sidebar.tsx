@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navItems, navPaths } from "@/app/utils/constants"
-import Logo from "@/app/assets/logo.svg"
 import LogoutBtn from "./LogoutBtn";
 import UserProfileBtn from "./UserProfileBtn";
+import { Logo } from "@/app/assets/icons";
 
 export default function Sidebar() {
     const currentPath = usePathname();

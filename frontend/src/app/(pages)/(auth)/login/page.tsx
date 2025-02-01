@@ -2,15 +2,15 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import Image from "next/image";
-import Logo from "@/app/assets/logo.svg"
 import Link from "next/link"
 import TextField from "@/app/components/presentation/form/TextField";
 import Button from "@/app/components/presentation/form/Button";
-// import { GoogleLogo } from "@/app/assets/icons";
+import { GoogleLogo, Logo } from "@/app/assets/icons";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { TLoginFormInputs } from "@/app/utils/types";
 import { useToast } from "@/app/components/logic/toast";
+import PasswordField from "../components/presentation/PasswordField";
 
 export default function Login() {
     const { toast } = useToast();
@@ -61,9 +61,7 @@ export default function Login() {
                             infoText={errors.email?.message}
                         />
 
-                        <TextField register={register("password", {
-                            required: "Password must not be empty"
-                        })} label="Password" name="password" infoText={errors.password?.message} />
+                        <PasswordField register={register} toIncludeValidation={false} errorMsg={errors.password?.message} />
 
                         <Button label={isSubmittingForm ? "loading..." : "Login"} isSubmit={true} stretch={true} disabled={isSubmittingForm} />
                     </form>
