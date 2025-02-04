@@ -6,7 +6,7 @@ import TextArea from "@/app/components/presentation/form/TextArea";
 import TextField from "@/app/components/presentation/form/TextField";
 import { Edit_Pencil_16_White, Plus_16_White } from "@/app/assets/icons";
 import Button from "@/app/components/presentation/form/Button";
-import RemindersInput from "../presentation/RemindersInput";
+// import RemindersInput from "../presentation/RemindersInput";
 import MultiSelect from "@/app/components/presentation/form/MultiSelect";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { TDayOfWeek, TReminderTime } from "@/app/utils/types";
@@ -112,6 +112,10 @@ export default function HabitForm({ mode }: { mode: "edit" | "add" }) {
                     validate: value => {
                         if (!value) {
                             return "A duration must be provided"
+                        }
+
+                        if (value < 2 || value > 100) {
+                            return "Duration must be between 2 and 100 days"
                         }
                         return true;
                     }
