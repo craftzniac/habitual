@@ -157,8 +157,10 @@ export class HabitDaysService {
     });
 
     if (!habitDay) {
-      return await this.create(habitId, habitDayDto, userAccountId);
+      const habitDay = await this.create(habitId, habitDayDto, userAccountId);
+      return habitDay;
     }
+
     habitDay.isCompleted = habitDayDto.isCompleted;
     habitDay = await this.habitDaysRepository.save(habitDay);
     delete habitDay.note;

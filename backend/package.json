@@ -17,8 +17,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json", 
-    "migration:generate:first": "pnpm build && pnpm dlx typeorm migration:generate -d dist/db/datasource.js db/migrations/FirstMigration",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migration:generate": "pnpm build && pnpm dlx typeorm migration:generate -d dist/db/datasource.js db/migrations/Migration",
     "migration:run": "pnpm build && pnpm dlx typeorm migration:run -d dist/db/datasource.js"
   },
   "dependencies": {
@@ -38,7 +38,8 @@
     "prisma": "^5.16.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

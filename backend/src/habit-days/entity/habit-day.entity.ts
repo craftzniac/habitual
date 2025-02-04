@@ -3,13 +3,17 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
 export class HabitDay {
-  @PrimaryColumn({ nullable: false, type: 'bigint' })
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  // habit days with the same timestamp can exist for different habits for different users, so this can't be the primary column
+  @Column({ nullable: false, type: 'bigint' })
   timestamp: string;
 
   @Column({ nullable: false })
