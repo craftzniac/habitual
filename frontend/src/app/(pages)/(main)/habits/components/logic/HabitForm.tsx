@@ -120,13 +120,15 @@ export default function HabitForm({ mode }: { mode: "edit" | "add" }) {
                     <DurationSelect name={name} label="Duration" onChange={onChange} value={value} onBlur={onBlur} errMsg={errors.durationInDays?.message} />
                 )}
             />
-            <Controller
-                name="reminders"
-                control={control}
-                render={({ field: { name, value, onChange, onBlur } }) => (
-                    <RemindersInput name={name} label="Reminders" onChange={onChange} value={value} onBlur={onBlur} errMsg={errors.reminders?.message} />
-                )}
-            />
+            {
+                // <Controller
+                //     name="reminders"
+                //     control={control}
+                //     render={({ field: { name, value, onChange, onBlur } }) => (
+                //         <RemindersInput name={name} label="Reminders" onChange={onChange} value={value} onBlur={onBlur} errMsg={errors.reminders?.message} />
+                //     )}
+                // />
+            }
             <Button isSubmit label={mode === "add" ? "Add Habit" : "Save Changes"} stretch disabled={isSubmittingForm}>
                 {mode === "add" ? (
                     <Image src={Plus_16_White} alt="white plus icon" />
